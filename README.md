@@ -1,5 +1,7 @@
-# pv179-food-delivery
-485122 Petr Janik, 485283 Oliver Svetlik, 484975 Luboslav Halama
+# PV179 Food Delivery
+- 👨‍🎓 485122 Petr Janik
+- 👨‍🎓 485283 Oliver Svetlik
+- 👨‍🎓 484975 Luboslav Halama
 
 
 ## User stories
@@ -14,3 +16,6 @@
 - As a user I can rate a restaurant.
 - As an admin I can create content managers and ban users.
 - As a content manager I can add/delete/edit restaurants, foods.
+
+## How to run
+- `dotnet watch --project FoodDeliveryFE` to run web application with hot reload
