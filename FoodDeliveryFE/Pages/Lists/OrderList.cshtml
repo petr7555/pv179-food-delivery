@@ -1,0 +1,12 @@
+@page
+@model FoodDeliveryFE.Pages.Lists.OrderList
+
+@{
+}
+
+<ul>
+    @foreach (var order in Model.Orders)
+    {
+        <li>@order.Note</li>
+    }
+</ul>
