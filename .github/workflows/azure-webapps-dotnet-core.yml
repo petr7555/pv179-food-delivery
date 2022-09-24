@@ -53,20 +53,26 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Create App.config
+        env:
+          APP_CONFIG: FoodDeliveryFE/App.config
         run: |
-          echo '<?xml version="1.0" encoding="utf-8"?>' > App.config
-          echo '<configuration>' >> App.config
-          echo '  <appSettings>' >> App.config
-          echo '    <add key="Environment" value="Production" />' >> App.config
-          echo '    <add key="ConnectionStringProduction" value="${{ secrets.CONNECTION_STRING }}" />' >> App.config
-          echo '  </appSettings>' >> App.config
-          echo '</configuration>' >> App.config
+          echo '<?xml version="1.0" encoding="utf-8"?>' > $APP_CONFIG
+          echo '<configuration>' >> $APP_CONFIG
+          echo '  <appSettings>' >> $APP_CONFIG
+          echo '    <add key="Environment" value="Production" />' >> $APP_CONFIG
+          echo '    <add key="ConnectionStringProduction" value="${{ secrets.CONNECTION_STRING }}" />' >> $APP_CONFIG
+          echo '  </appSettings>' >> $APP_CONFIG
+          echo '</configuration>' >> $APP_CONFIG
+          pwd
+          ls
           
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: |
+          dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+          ls ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
