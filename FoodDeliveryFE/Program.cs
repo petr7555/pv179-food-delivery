@@ -7,15 +7,16 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+// TODO later add development switch
+// if (app.Environment.IsDevelopment())
+// {
+using (var db = new FoodDeliveryDbContext())
 {
-    using (var db = new FoodDeliveryDbContext())
-    {
-        Console.WriteLine("Resetting database...");
-        db.Database.EnsureDeleted();
-        db.Database.EnsureCreated();
-    }
+    Console.WriteLine("Resetting database...");
+    db.Database.EnsureDeleted();
+    db.Database.EnsureCreated();
 }
+// }
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
