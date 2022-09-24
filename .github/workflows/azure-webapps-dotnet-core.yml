@@ -53,7 +53,14 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Create App.config
-        run: ${{ secrets.APP_CONFIG }} >> App.config
+        run: |
+          echo '<?xml version="1.0" encoding="utf-8"?>' > App.config
+          echo '<configuration>' >> App.config
+          echo '  <appSettings>' >> App.config
+          echo '    <add key="Environment" value="Production" />' >> App.config
+          echo '    <add key="ConnectionStringProduction" value="${{ secrets.CONNECTION_STRING }}" />' >> App.config
+          echo '  </appSettings>' >> App.config
+          echo '</configuration>' >> App.config
           
       - name: Build with dotnet
         run: dotnet build --configuration Release
