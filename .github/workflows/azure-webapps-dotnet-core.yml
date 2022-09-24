@@ -52,6 +52,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
 
+      - name: Create App.config
+        run: ${{ secrets.APP_CONFIG }} >> App.config
+          
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
