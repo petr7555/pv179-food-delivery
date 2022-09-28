@@ -12,7 +12,7 @@ See the app [deployed here](https://pv179-food-delivery.azurewebsites.net/).
 - As a user I can edit my personal information (delivery address, payment information).
 - As a user I can can choose a food category.
 - As a user I can search by name of restaurant.
-- As a user I can filter by food price, delivery price, deliviery time or restaurant rating.
+- As a user I can filter by food price, delivery price, delivery time or restaurant rating.
 - As a user I can view menu of restaurants (food/drinks).
 - As a user I can create order and choose payment method (card, cash, coupon).
 - As a user I can view my order history.
