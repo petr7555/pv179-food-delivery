@@ -7,3 +7,4 @@ App.config
 *.vpp.lck
 *.vpp.bak_*
 .vs/
+.vscode/
