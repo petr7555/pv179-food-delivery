@@ -3,22 +3,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FoodDeliveryDAL.Models;
 
-public class Rating: BaseEntity
+public class Rating : BaseEntity
 {
     public int RestaurantId { get; set; }
 
-    [ForeignKey(nameof(RestaurantId))]
-    public virtual Restaurant Restaurant { get; set; }
+    [ForeignKey(nameof(RestaurantId))] public virtual Restaurant Restaurant { get; set; }
 
     public int OrderId { get; set; }
 
-    [ForeignKey(nameof(OrderId))]
-    public virtual Order Order { get; set; }
+    [ForeignKey(nameof(OrderId))] public virtual Order Order { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
-    [Range(1, 5)]
-    public int Stars { get; set; }
+    [Range(1, 5)] public int Stars { get; set; }
 
     public string Comment { get; set; }
 }

@@ -1,6 +1,6 @@
 namespace FoodDeliveryDAL.Models;
 
-public class Coupon: BaseEntity
+public class Coupon : BaseEntity
 {
     public string Code { get; set; }
     public DateTime ValidUntil { get; set; }

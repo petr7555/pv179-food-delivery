@@ -9,8 +9,7 @@ namespace FoodDeliveryDAL.Models
         //[ForeignKey("Address")]
         public int? BillingAddressId { get; set; }
 
-        [ForeignKey(nameof(BillingAddressId))]
-        public virtual Address? BillingAddress { get; set; }
+        [ForeignKey(nameof(BillingAddressId))] public virtual Address? BillingAddress { get; set; }
 
         //[ForeignKey("Address")]
         public int DeliveryAddressId { get; set; }
@@ -20,7 +19,6 @@ namespace FoodDeliveryDAL.Models
 
         public int CompanyInfoId { get; set; }
 
-        [ForeignKey(nameof(CompanyInfoId))]
-        public virtual CompanyInfo CompanyInfo { get; set; }
+        [ForeignKey(nameof(CompanyInfoId))] public virtual CompanyInfo CompanyInfo { get; set; }
     }
 }
