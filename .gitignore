@@ -6,3 +6,4 @@ riderModule.iml
 App.config
 *.vpp.lck
 *.vpp.bak_*
+.vs/
