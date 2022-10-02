@@ -5,7 +5,7 @@ namespace FoodDeliveryDAL.Models;
 public class PaymentMethod: BaseEntity
 {
     public string Type { get; set; }
-    public int CouponId { get; set; }
+    public int? CouponId { get; set; }
     [ForeignKey(nameof(CouponId))]
-    public virtual Coupon Coupon { get; set; }
+    public virtual Coupon? Coupon { get; set; }
 }
