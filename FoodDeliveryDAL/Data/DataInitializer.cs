@@ -178,9 +178,6 @@ public static class DataInitializer
          **   ORDERS   **
          ****************/
 
-        List<Product> orderItems = new List<Product>();
-        orderItems.Add(pizzaSalami);
-
         var pizzaSalamiOrder = new Order
         {
             Id = 1,
