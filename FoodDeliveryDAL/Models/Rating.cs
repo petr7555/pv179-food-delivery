@@ -20,5 +20,6 @@ public class Rating : BaseEntity
     [Range(1, 5)]
     public int Stars { get; set; }
 
+    [MaxLength(255)]
     public string? Comment { get; set; }
 }

@@ -1,11 +1,16 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FoodDeliveryDAL.Models;
 
 public class Product : BaseEntity
 {
+    [MaxLength(255)]
     public string Name { get; set; }
+
     public string? Description { get; set; }
+
+    [MaxLength(255)]
     public string? ImageUrl { get; set; }
 
     public int CategoryId { get; set; }
