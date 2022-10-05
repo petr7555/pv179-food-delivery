@@ -9,7 +9,8 @@ namespace FoodDeliveryDAL.Models
         public string Salt { get; set; }
         public int RoleId { get; set; }
 
-        [ForeignKey(nameof(RoleId))] public virtual Role Role { get; set; }
+        [ForeignKey(nameof(RoleId))]
+        public virtual Role Role { get; set; }
 
         public int CustomerDetailsId { get; set; }
 
