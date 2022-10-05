@@ -16,5 +16,5 @@ public class Order : BaseEntity
     [ForeignKey(nameof(PaymentMethodId))]
     public virtual PaymentMethod PaymentMethod { get; set; }
 
-    public virtual List<OrderProduct> OrderProducts { get; set; }
+    public virtual List<Product> Products { get; set; }
 }

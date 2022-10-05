@@ -1,8 +1,7 @@
-namespace FoodDeliveryDAL.Models
+namespace FoodDeliveryDAL.Models;
+
+public class CompanyInfo : BaseEntity
 {
-    public class CompanyInfo : BaseEntity
-    {
-        public string CompanyName { get; set; }
-        public string Vat { get; set; }
-    }
+    public string Vat { get; set; }
+    public string CompanyName { get; set; }
 }

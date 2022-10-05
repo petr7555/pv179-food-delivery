@@ -65,12 +65,12 @@ public static class DataInitializer
             },
             new CustomerDetails
             {
-                Id = 2, Email = "michal.vrbovsky@funkcnymail.sk", BillingAddressId = null, DeliveryAddressId = 1,
+                Id = 2, Email = "michal.vrbovsky@funkcnymail.sk", BillingAddressId = 1,
                 CompanyInfoId = 1
             },
             new CustomerDetails
             {
-                Id = 3, Email = "bohumil.sedlacek@funkcnymail.sk", BillingAddressId = null, DeliveryAddressId = 1,
+                Id = 3, Email = "bohumil.sedlacek@funkcnymail.sk", BillingAddressId = 1,
                 CompanyInfoId = 1
             }
         );
@@ -80,13 +80,16 @@ public static class DataInitializer
          ***************/
 
         var customer = new User
-            { Id = 3, Username = "customer", Password = "customer", Salt = "3", RoleId = 3, CustomerDetailsId = 3 };
+            { Id = 3, Username = "customer", PasswordHash = "customer", Salt = "3", RoleId = 3, CustomerDetailsId = 3 };
 
         modelBuilder.Entity<User>().HasData(
-            new User { Id = 1, Username = "admin", Password = "admin", Salt = "1", RoleId = 1, CustomerDetailsId = 1 },
             new User
             {
-                Id = 2, Username = "manager", Password = "manager", Salt = "2", RoleId = 2, CustomerDetailsId = 2
+                Id = 1, Username = "admin", PasswordHash = "admin", Salt = "1", RoleId = 1, CustomerDetailsId = 1
+            },
+            new User
+            {
+                Id = 2, Username = "manager", PasswordHash = "manager", Salt = "2", RoleId = 2, CustomerDetailsId = 2
             },
             customer
         );
@@ -154,7 +157,7 @@ public static class DataInitializer
          *********************/
 
         var pizzeriaGuiseppe = new Restaurant
-            { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceID = pizzeriaGiuseppeDeliveryPrice.Id };
+            { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = pizzeriaGiuseppeDeliveryPrice.Id };
 
         modelBuilder.Entity<Restaurant>().HasData(pizzeriaGuiseppe);
 
@@ -192,7 +195,11 @@ public static class DataInitializer
          **   ORDER-PRODUCT TABLE   **
          *****************************/
 
-        modelBuilder.Entity<OrderProduct>().HasData(new OrderProduct { Id = 1, OrderId = 1, ProductId = 1 });
+        modelBuilder
+            .Entity<Order>()
+            .HasMany(o => o.Products)
+            .WithMany(p => p.Orders)
+            .UsingEntity(etb => etb.HasData(new { OrdersId = 1, ProductsId = 1 }));
 
         /*****************
          **   RATINGS   **

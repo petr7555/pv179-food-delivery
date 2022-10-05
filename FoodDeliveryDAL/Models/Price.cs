@@ -5,6 +5,7 @@ namespace FoodDeliveryDAL.Models;
 public class Price : BaseEntity
 {
     public float Amount { get; set; }
+
     public int CurrencyId { get; set; }
 
     [ForeignKey(nameof(CurrencyId))]

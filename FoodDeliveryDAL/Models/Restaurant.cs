@@ -5,8 +5,9 @@ namespace FoodDeliveryDAL.Models;
 public class Restaurant : BaseEntity
 {
     public string Name { get; set; }
-    public int DeliveryPriceID { get; set; }
 
-    [ForeignKey(nameof(DeliveryPriceID))]
+    public int DeliveryPriceId { get; set; }
+
+    [ForeignKey(nameof(DeliveryPriceId))]
     public virtual Price DeliveryPrice { get; set; }
 }
