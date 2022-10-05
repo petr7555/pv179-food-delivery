@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace FoodDeliveryDAL.Models;
 
+[Index(nameof(Username), IsUnique = true)]
 public class User : BaseEntity
 {
     public string Username { get; set; }
