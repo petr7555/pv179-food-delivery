@@ -6,7 +6,9 @@ namespace FoodDeliveryDAL.Data;
 
 public class FoodDeliveryDbContext : DbContext
 {
+    public DbSet<User> Users { get; set; }
     public DbSet<Order> Orders { get; set; }
+    public DbSet<Order> Restaurants { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
