@@ -1,18 +1,18 @@
-using FoodDeliveryDAL.Data;
 using FoodDeliveryDAL.Models;
+using FoodDeliveryDAL.UnitOfWork;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FoodDeliveryFE.Pages.Lists;
 
 public class OrderList : PageModel
 {
-    public List<Order> Orders { get; set; }
+    public IEnumerable<Order> Orders { get; set; }
 
-    public void OnGet()
+    public async Task OnGet()
     {
-        using (var context = new FoodDeliveryDbContext())
+        await using (var uow = new EfUnitOfWork())
         {
-            Orders = context.Orders.ToList();
+            Orders = await uow.OrderRepository.GetAllAsync();
         }
     }
 }
