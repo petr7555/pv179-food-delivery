@@ -1,8 +1,8 @@
 ﻿using System.Configuration;
-using FoodDeliveryDAL.Models;
+using FoodDelivery.DAL.EntityFramework.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace FoodDeliveryDAL.Data;
+namespace FoodDelivery.DAL.EntityFramework.Data;
 
 public class FoodDeliveryDbContext : DbContext
 {

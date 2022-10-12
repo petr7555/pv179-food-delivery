@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace FoodDeliveryDAL.Models;
+namespace FoodDelivery.DAL.EntityFramework.Models;
 
-public class Role : BaseEntity
+public class Currency : BaseEntity
 {
     [MaxLength(255)]
     public string Name { get; set; }

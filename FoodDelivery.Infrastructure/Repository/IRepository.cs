@@ -1,4 +1,4 @@
-namespace FoodDeliveryDAL.Repositories;
+namespace FoodDelivery.Infrastructure.Repository;
 
 public interface IRepository<TEntity, in TKey> where TEntity : class where TKey : struct
 {

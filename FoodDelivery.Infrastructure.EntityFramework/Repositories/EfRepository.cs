@@ -1,7 +1,8 @@
-using FoodDeliveryDAL.Models;
+using FoodDelivery.DAL.EntityFramework.Models;
+using FoodDelivery.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 
-namespace FoodDeliveryDAL.Repositories;
+namespace FoodDelivery.Infrastructure.EntityFramework.Repositories;
 
 public class EfRepository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : BaseEntity where TKey : struct
 

@@ -1,7 +1,7 @@
-using FoodDeliveryDAL.Models;
-using FoodDeliveryDAL.Repositories;
+using FoodDelivery.DAL.EntityFramework.Models;
+using FoodDelivery.Infrastructure.Repository;
 
-namespace FoodDeliveryDAL.UnitOfWork;
+namespace FoodDelivery.Infrastructure.UnitOfWork;
 
 public interface IUnitOfWork : IAsyncDisposable
 {

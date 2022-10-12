@@ -1,8 +1,10 @@
-using FoodDeliveryDAL.Data;
-using FoodDeliveryDAL.Models;
-using FoodDeliveryDAL.Repositories;
+using FoodDelivery.DAL.EntityFramework.Data;
+using FoodDelivery.DAL.EntityFramework.Models;
+using FoodDelivery.Infrastructure.EntityFramework.Repositories;
+using FoodDelivery.Infrastructure.Repository;
+using FoodDelivery.Infrastructure.UnitOfWork;
 
-namespace FoodDeliveryDAL.UnitOfWork;
+namespace FoodDelivery.Infrastructure.EntityFramework.UnitOfWork;
 
 public class EfUnitOfWork : IUnitOfWork
 {

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace FoodDeliveryDAL.Models;
+namespace FoodDelivery.DAL.EntityFramework.Models;
 
 public class Address : BaseEntity
 {

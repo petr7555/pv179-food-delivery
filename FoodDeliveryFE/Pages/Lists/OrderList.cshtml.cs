@@ -1,5 +1,5 @@
-using FoodDeliveryDAL.Models;
-using FoodDeliveryDAL.UnitOfWork;
+using FoodDelivery.DAL.EntityFramework.Models;
+using FoodDelivery.Infrastructure.EntityFramework.UnitOfWork;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FoodDeliveryFE.Pages.Lists;
