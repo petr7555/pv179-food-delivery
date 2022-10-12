@@ -8,7 +8,7 @@ namespace FoodDelivery.Infrastructure.EntityFramework.UnitOfWork;
 
 public class EfUnitOfWork : IUnitOfWork
 {
-    private FoodDeliveryDbContext _context;
+    private readonly FoodDeliveryDbContext _context;
 
     public IRepository<User, int> UserRepository { get; }
     public IRepository<Order, int> OrderRepository { get; }

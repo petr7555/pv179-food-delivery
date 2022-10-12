@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Query"/>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\FoodDelivery.DAL.EntityFramework\FoodDelivery.DAL.EntityFramework.csproj"/>
   </ItemGroup>
 
