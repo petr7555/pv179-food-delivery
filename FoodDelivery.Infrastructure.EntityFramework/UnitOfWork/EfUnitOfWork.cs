@@ -16,6 +16,8 @@ public class EfUnitOfWork : IUnitOfWork
     public IRepository<Order, int> OrderRepository { get; }
     public IRepository<Restaurant, int> RestaurantRepository { get; }
 
+    public IQuery<User> UserQuery { get; }
+    public IQuery<Order> OrderQuery { get; }
     public IQuery<Restaurant> RestaurantQuery { get; }
 
     public EfUnitOfWork()
@@ -26,6 +28,8 @@ public class EfUnitOfWork : IUnitOfWork
         OrderRepository = new EfRepository<Order, int>(_context);
         RestaurantRepository = new EfRepository<Restaurant, int>(_context);
 
+        UserQuery = new EfQuery<User>(_context);
+        OrderQuery = new EfQuery<Order>(_context);
         RestaurantQuery = new EfQuery<Restaurant>(_context);
     }
 
