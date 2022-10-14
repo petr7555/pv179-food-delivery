@@ -1,6 +1,8 @@
 using FoodDelivery.DAL.EntityFramework.Data;
 using FoodDelivery.DAL.EntityFramework.Models;
+using FoodDelivery.Infrastructure.EntityFramework.Query;
 using FoodDelivery.Infrastructure.EntityFramework.Repositories;
+using FoodDelivery.Infrastructure.Query;
 using FoodDelivery.Infrastructure.Repository;
 using FoodDelivery.Infrastructure.UnitOfWork;
 
@@ -14,6 +16,8 @@ public class EfUnitOfWork : IUnitOfWork
     public IRepository<Order, int> OrderRepository { get; }
     public IRepository<Restaurant, int> RestaurantRepository { get; }
 
+    public IQuery<Restaurant> RestaurantQuery { get; }
+
     public EfUnitOfWork()
     {
         _context = new FoodDeliveryDbContext();
@@ -21,6 +25,8 @@ public class EfUnitOfWork : IUnitOfWork
         UserRepository = new EfRepository<User, int>(_context);
         OrderRepository = new EfRepository<Order, int>(_context);
         RestaurantRepository = new EfRepository<Restaurant, int>(_context);
+
+        RestaurantQuery = new EfQuery<Restaurant>(_context);
     }
 
     public async Task CommitAsync()
