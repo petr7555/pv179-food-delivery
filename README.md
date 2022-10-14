@@ -5,7 +5,7 @@
 See the app [deployed here](https://pv179-food-delivery.azurewebsites.net/).
 
 ## Team
-- 👨‍🎓 485122 Petr Janik (Discord petr7555#4977)
+- 👨‍🎓 485122 Petr Janik (Discord `petr7555#4977`)
 - 👨‍🎓 485283 Oliver Svetlik
 - 👨‍🎓 484975 Luboslav Halama
 
