@@ -8,10 +8,22 @@ public class FoodDeliveryDbContext : DbContext
 {
     public DbSet<User> Users { get; set; }
     public DbSet<Order> Orders { get; set; }
-    public DbSet<Order> Restaurants { get; set; }
+    public DbSet<Restaurant> Restaurants { get; set; }
+    public DbSet<Price> Prices { get; set; }
+    public DbSet<Currency> Currencies { get; set; }
+
+    public FoodDeliveryDbContext()
+    {
+    }
+
+    public FoodDeliveryDbContext(DbContextOptions<FoodDeliveryDbContext> options) : base(options)
+    {
+    }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        if (optionsBuilder.IsConfigured) return;
+
         var environment = ConfigurationManager.AppSettings["Environment"];
         var connectionString = environment switch
         {

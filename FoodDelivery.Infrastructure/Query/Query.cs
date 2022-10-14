@@ -5,12 +5,12 @@ namespace FoodDelivery.Infrastructure.Query;
 public abstract class Query<TEntity> : IQuery<TEntity>
 {
     protected List<Expression<Func<TEntity, bool>>> WherePredicates { get; } = new();
-    protected (Expression<Func<TEntity, object>> keySelector, bool descending) OrderByConfig { get; private set; }
-    protected (int pageToFetch, int pageSize) PageConfig { get; private set; }
+    protected (Expression<Func<TEntity, object>> keySelector, bool descending)? OrderByConfig { get; private set; }
+    protected (int pageToFetch, int pageSize)? PageConfig { get; private set; }
 
-    public IQuery<TEntity> Page(int pageToFetch, int pageSize = 10)
+    public IQuery<TEntity> Where(Expression<Func<TEntity, bool>> predicate)
     {
-        PageConfig = (pageToFetch, pageSize);
+        WherePredicates.Add(predicate);
         return this;
     }
 
@@ -20,9 +20,9 @@ public abstract class Query<TEntity> : IQuery<TEntity>
         return this;
     }
 
-    public IQuery<TEntity> Where(Expression<Func<TEntity, bool>> predicate)
+    public IQuery<TEntity> Page(int pageToFetch, int pageSize = 10)
     {
-        WherePredicates.Add(predicate);
+        PageConfig = (pageToFetch, pageSize);
         return this;
     }
 

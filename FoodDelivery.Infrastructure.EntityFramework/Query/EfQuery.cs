@@ -1,35 +1,24 @@
-﻿using FoodDelivery.DAL.EntityFramework.Data;
 using FoodDelivery.Infrastructure.Query;
+using Microsoft.EntityFrameworkCore;
 
 namespace FoodDelivery.Infrastructure.EntityFramework.Query;
 
 public class EfQuery<TEntity> : Query<TEntity> where TEntity : class
 {
-    private FoodDeliveryDbContext Context { get; }
+    private DbContext Context { get; }
 
-    public EfQuery()
+    public EfQuery(DbContext dbContext)
     {
-        Context = new FoodDeliveryDbContext();
+        Context = dbContext;
     }
 
     public override IEnumerable<TEntity> Execute()
     {
         IQueryable<TEntity> query = Context.Set<TEntity>();
 
-        if (PageConfig != (0, 0))
-        {
-            query = ApplyPaging(query);
-        }
-
-        if (WherePredicates.Capacity != 0)
-        {
-            query = ApplyWhere(query);
-        }
-
-        if (OrderByConfig != (null, false))
-        {
-            query = ApplyOrderBy(query);
-        }
+        query = ApplyWhere(query);
+        query = ApplyOrderBy(query);
+        query = ApplyPaging(query);
 
         return query.ToList();
     }
@@ -41,13 +30,17 @@ public class EfQuery<TEntity> : Query<TEntity> where TEntity : class
 
     private IQueryable<TEntity> ApplyOrderBy(IQueryable<TEntity> query)
     {
-        var (keySelector, descending) = OrderByConfig;
+        if (!OrderByConfig.HasValue) return query;
+
+        var (keySelector, descending) = OrderByConfig.Value;
         return descending ? query.OrderByDescending(keySelector) : query.OrderBy(keySelector);
     }
 
     private IQueryable<TEntity> ApplyPaging(IQueryable<TEntity> query)
     {
-        var (pageToFetch, pageSize) = PageConfig;
-        return query.Skip(pageToFetch * pageSize).Take(pageSize);
+        if (!PageConfig.HasValue) return query;
+
+        var (pageToFetch, pageSize) = PageConfig.Value;
+        return query.Skip((pageToFetch - 1) * pageSize).Take(pageSize);
     }
 }
