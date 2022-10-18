@@ -1,0 +1,12 @@
+@page
+@model FoodDeliveryFE.Pages.Lists.RestaurantList
+
+@{
+}
+
+<ul>
+    @foreach (var restaurant in Model.Restaurants)
+    {
+        <li>@restaurant.Name</li>
+    }
+</ul>

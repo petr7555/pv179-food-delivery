@@ -1,4 +1,4 @@
-using FoodDeliveryDAL.Data;
+using FoodDelivery.DAL.EntityFramework.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

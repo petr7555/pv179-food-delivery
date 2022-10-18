@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace FoodDeliveryDAL.Models;
+namespace FoodDelivery.DAL.EntityFramework.Models;
 
 [Index(nameof(Code), IsUnique = true)]
 public class Coupon : BaseEntity

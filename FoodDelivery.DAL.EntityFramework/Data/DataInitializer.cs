@@ -1,7 +1,7 @@
-﻿using FoodDeliveryDAL.Models;
+﻿using FoodDelivery.DAL.EntityFramework.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace FoodDeliveryDAL.Data;
+namespace FoodDelivery.DAL.EntityFramework.Data;
 
 public static class DataInitializer
 {
