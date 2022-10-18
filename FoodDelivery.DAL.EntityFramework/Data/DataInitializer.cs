@@ -142,7 +142,21 @@ public static class DataInitializer
         var pizzaPrice = new Price { Id = 1, Amount = 199, CurrencyId = czkCurrency.Id };
         var pizzeriaGiuseppeDeliveryPrice = new Price { Id = 2, Amount = 29, CurrencyId = czkCurrency.Id };
 
-        modelBuilder.Entity<Price>().HasData(pizzaPrice, pizzeriaGiuseppeDeliveryPrice);
+        var californiaSalmonEightRollsPrice = new Price { Id = 3, Amount = 169, CurrencyId = czkCurrency.Id };
+        var salmonTunaPrawnEightMakiEachPrice = new Price { Id= 4, Amount = 199, CurrencyId= czkCurrency.Id };
+        var happySushiDeliveryPrice = new Price { Id = 5, Amount = 39, CurrencyId = czkCurrency.Id };
+
+        var barbecueBurgerPrice = new Price { Id = 6, Amount = 239, CurrencyId = czkCurrency.Id };
+        var chickenBurgerPrice = new Price { Id = 7, Amount = 199, CurrencyId = czkCurrency.Id };
+        var royalBurgerPrice = new Price { Id = 8, Amount = 269, CurrencyId = czkCurrency.Id };
+        var devilBurgerPrice = new Price { Id = 9, Amount = 249, CurrencyId = czkCurrency.Id };
+        var burgerinoDeliveryPrice = new Price { Id = 10, Amount = 25, CurrencyId = czkCurrency.Id };
+
+        modelBuilder.Entity<Price>().HasData(
+            pizzaPrice, pizzeriaGiuseppeDeliveryPrice,
+            californiaSalmonEightRollsPrice, salmonTunaPrawnEightMakiEachPrice, happySushiDeliveryPrice,
+            barbecueBurgerPrice, chickenBurgerPrice, royalBurgerPrice, devilBurgerPrice, burgerinoDeliveryPrice
+        );
 
         /*************************
          **   PAYMENT METHODS   **
@@ -156,10 +170,15 @@ public static class DataInitializer
          **   RESTAURANTS   **
          *********************/
 
-        var pizzeriaGuiseppe = new Restaurant
-            { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = pizzeriaGiuseppeDeliveryPrice.Id };
+        var pizzeriaGuiseppe = new Restaurant { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = pizzeriaGiuseppeDeliveryPrice.Id };
+        var happySushi = new Restaurant { Id = 2, Name = "Happy Sushi", DeliveryPriceId = happySushiDeliveryPrice.Id };
+        var burgerino = new Restaurant { Id = 3, Name = "Burgerino", DeliveryPriceId = burgerinoDeliveryPrice.Id };
 
-        modelBuilder.Entity<Restaurant>().HasData(pizzeriaGuiseppe);
+        modelBuilder.Entity<Restaurant>().HasData(
+            pizzeriaGuiseppe,
+            happySushi,
+            burgerino
+        );
 
         /******************
          **   PRODUCTS   **
@@ -175,7 +194,71 @@ public static class DataInitializer
             PriceId = pizzaPrice.Id
         };
 
-        modelBuilder.Entity<Product>().HasData(pizzaSalami);
+        var californiaSalmonEightRolls = new Product
+        {
+            Id = 2,
+            CategoryId = sushiCategory.Id,
+            Name = "California Salmon Eight",
+            Description = "California rolls with salmon",
+            RestaurantId = happySushi.Id,
+            PriceId = californiaSalmonEightRollsPrice.Id
+        };
+
+        var salmonTunaPrawnEightMakiEach = new Product
+        {
+            Id = 3,
+            CategoryId = sushiCategory.Id,
+            Name = "24 Salmon, tuna and prawn maki mix",
+            Description = "Salmon, tuna and prawn maki with 8 pieces each.",
+            RestaurantId = happySushi.Id,
+            PriceId = salmonTunaPrawnEightMakiEachPrice.Id
+        };
+
+        var barbecueBurger = new Product
+        {
+            Id = 4,
+            CategoryId = burgerCategory.Id,
+            Name = "Barbecue Burger",
+            Description = "Special homemade bun, 200g beef meat, cheddar, onion rings, lettuce, tomato, barbecue sauce, fries",
+            RestaurantId = burgerino.Id,
+            PriceId = barbecueBurgerPrice.Id
+        };
+
+        var chickenBurger = new Product 
+        { 
+            Id = 5, 
+            CategoryId = burgerCategory.Id,
+            Name = "Chicken Burger",
+            Description = "Special homemade bun, 150g chicken, lettuce, tomato, homemade mayo with herbs, fries",
+            RestaurantId = burgerino.Id,
+            PriceId = chickenBurgerPrice.Id
+        };
+
+        var royalBurger = new Product 
+        { 
+            Id = 6, 
+            CategoryId = burgerCategory.Id,
+            Name = "Royal Burger",
+            Description = "Special homemade bun, 200g beef meat, cheddar, roasted smoked bacon, egg, caramelized onion, lettuce, tomato, fries",
+            RestaurantId = burgerino.Id,
+            PriceId = royalBurgerPrice.Id
+        };
+
+        var devilBurger = new Product
+        {
+            Id = 7,
+            CategoryId = burgerCategory.Id,
+            Name = "Devil Burger",
+            Description = "Special homemade bun, 200g beef meat, cheddar, roasted smoked bacon, red habanero mayo, lettuce, tomato, fries",
+            RestaurantId = burgerino.Id,
+            PriceId = devilBurgerPrice.Id
+        };
+
+        modelBuilder.Entity<Product>().HasData(
+            pizzaSalami,
+            californiaSalmonEightRolls, salmonTunaPrawnEightMakiEach,
+            barbecueBurger, chickenBurger, royalBurger, devilBurger
+        );
 
         /****************
          **   ORDERS   **
@@ -189,7 +272,15 @@ public static class DataInitializer
             PaymentMethodId = cardPaymentMethod.Id,
         };
 
-        modelBuilder.Entity<Order>().HasData(pizzaSalamiOrder);
+        var royalBurgerOrder = new Order
+        {
+            Id = 2,
+            CreatedAt = DateTime.UtcNow.AddDays(-1),
+            CustomerId = customer.Id,
+            PaymentMethodId = cardPaymentMethod.Id
+        };
+
+        modelBuilder.Entity<Order>().HasData(pizzaSalamiOrder, royalBurgerOrder);
 
         /*****************************
          **   ORDER-PRODUCT TABLE   **
@@ -199,7 +290,7 @@ public static class DataInitializer
             .Entity<Order>()
             .HasMany(o => o.Products)
             .WithMany(p => p.Orders)
-            .UsingEntity(etb => etb.HasData(new { OrdersId = 1, ProductsId = 1 }));
+            .UsingEntity(etb => etb.HasData(new { OrdersId = 1, ProductsId = 1 }, new { OrdersId = 2, ProductsId = 6}));
 
         /*****************
          **   RATINGS   **
