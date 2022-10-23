@@ -12,7 +12,6 @@ public class QueryTests
 {
     private readonly FoodDeliveryDbContext _dbContext;
     private readonly Price price;
-    private readonly EfRepository<Restaurant, int> efRestaurantRepository;
     public QueryTests()
     {
         var databaseName = "QueryTests_db_" + DateTime.Now.ToFileTimeUtc();
@@ -22,8 +21,6 @@ public class QueryTests
             .Options;
 
         _dbContext = new FoodDeliveryDbContext(dbContextOptions);
-
-        efRestaurantRepository = new EfRepository<Restaurant, int>(_dbContext);
 
         var czkCurrency = new Currency { Id = 1, Name = "CZK" };
         _dbContext.Currencies.Add(czkCurrency);
@@ -50,74 +47,6 @@ public class QueryTests
         );
 
         _dbContext.SaveChanges();
-    }
-
-    [Fact]
-    public void ItGetsValidRestaurant()
-    {
-        var expectedRestaurant = new Restaurant { Id = 6, Name = "POE POE", DeliveryPriceId = price.Id, DeliveryPrice = price };
-        var result = efRestaurantRepository.GetByIdAsync(6).Result;
-
-        result.Should().BeEquivalentTo(expectedRestaurant);        
-    }
-
-    [Fact]
-    public void ItGetsAllRestaurants()
-    {
-        var expectedRestaurants = new List<Restaurant>
-        {
-            new() { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 2, Name = "Pizza Domino's", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 3, Name = "Pizza Hut", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 4, Name = "Steak House K1", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 5, Name = "Jean Paul's", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 6, Name = "POE POE", DeliveryPriceId = price.Id, DeliveryPrice = price }
-        };
-
-        var result = efRestaurantRepository.GetAllAsync().Result;
-
-        result.Should().BeEquivalentTo(expectedRestaurants);
-    }
-
-    [Fact]
-    public void ItCreatesRestaurant()
-    {
-        var restaurant = new Restaurant { Id = 7, Name = "Pizza test", DeliveryPriceId = price.Id, DeliveryPrice = price };
-        efRestaurantRepository.Create(restaurant);
-
-        var found = _dbContext.Restaurants.Find(7);
-        found.Should().BeEquivalentTo(restaurant);
-
-        // clean up
-        _dbContext.Restaurants.Remove(restaurant);
-    }
-
-    [Fact]
-    public void ItUpdatesValidRestaurant()
-    {
-        var restaurant = new Restaurant { Id = 7, Name = "Pizza test", DeliveryPriceId = price.Id, DeliveryPrice = price };
-        _dbContext.Restaurants.Add(restaurant);
-
-        restaurant.Name = "Changed pizza test";
-
-        efRestaurantRepository.Update(restaurant);
-
-        var found = _dbContext.Restaurants.Find(7);
-        found.Should().BeEquivalentTo(restaurant);
-
-        // clean up
-        _dbContext.Restaurants.Remove(restaurant);
-    }
-
-    [Fact]
-    public void ItDeletesValidRestaurant()
-    {
-        var restaurant = new Restaurant { Id = 7, Name = "Pizza test", DeliveryPriceId = price.Id, DeliveryPrice = price };
-        _dbContext.Restaurants.Add(restaurant);
-
-        efRestaurantRepository.Delete(7);
-
-        Assert.False(_dbContext.Restaurants.Contains(restaurant));
     }
 
     [Fact]
