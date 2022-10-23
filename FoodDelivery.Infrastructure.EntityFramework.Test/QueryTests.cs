@@ -2,9 +2,7 @@ using FluentAssertions;
 using FoodDelivery.DAL.EntityFramework.Data;
 using FoodDelivery.DAL.EntityFramework.Models;
 using FoodDelivery.Infrastructure.EntityFramework.Query;
-using FoodDelivery.Infrastructure.EntityFramework.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Assert = Xunit.Assert;
 
 namespace FoodDelivery.Infrastructure.EntityFramework.Test;
 
@@ -12,6 +10,7 @@ public class QueryTests
 {
     private readonly FoodDeliveryDbContext _dbContext;
     private readonly Price price;
+
     public QueryTests()
     {
         var databaseName = "QueryTests_db_" + DateTime.Now.ToFileTimeUtc();
