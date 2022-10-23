@@ -90,9 +90,6 @@ public class RepositoryTests
 
         var found = _dbContext.Restaurants.Find(7);
         found.Should().BeEquivalentTo(restaurant);
-
-        // clean up
-        _dbContext.Restaurants.Remove(restaurant);
     }
 
     [Fact]
@@ -108,9 +105,6 @@ public class RepositoryTests
 
         var found = _dbContext.Restaurants.Find(7);
         found.Should().BeEquivalentTo(restaurant);
-
-        // clean up
-        _dbContext.Restaurants.Remove(restaurant);
     }
 
     [Fact]
