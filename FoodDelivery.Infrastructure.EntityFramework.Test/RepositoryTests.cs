@@ -12,7 +12,7 @@ public class RepositoryTests
 {
     private readonly FoodDeliveryDbContext _dbContext;
     private readonly Price price;
-    private readonly EfRepository<Restaurant, int> efRestaurantRepository;
+    private readonly EfRepository<Restaurant, int> repository;
 
     public RepositoryTests()
     {
@@ -24,7 +24,7 @@ public class RepositoryTests
 
         _dbContext = new FoodDeliveryDbContext(dbContextOptions);
 
-        efRestaurantRepository = new EfRepository<Restaurant, int>(_dbContext);
+        repository = new EfRepository<Restaurant, int>(_dbContext);
 
         var czkCurrency = new Currency { Id = 1, Name = "CZK" };
         _dbContext.Currencies.Add(czkCurrency);
@@ -54,11 +54,11 @@ public class RepositoryTests
     }
 
     [Fact]
-    public void ItGetsValidRestaurant()
+    public void ItGetsRestaurantThatExistsById()
     {
         var expectedRestaurant = new Restaurant
             { Id = 6, Name = "POE POE", DeliveryPriceId = price.Id, DeliveryPrice = price };
-        var result = efRestaurantRepository.GetByIdAsync(6).Result;
+        var result = repository.GetByIdAsync(6).Result;
 
         result.Should().BeEquivalentTo(expectedRestaurant);
     }
@@ -76,7 +76,7 @@ public class RepositoryTests
             new() { Id = 6, Name = "POE POE", DeliveryPriceId = price.Id, DeliveryPrice = price }
         };
 
-        var result = efRestaurantRepository.GetAllAsync().Result;
+        var result = repository.GetAllAsync().Result;
 
         result.Should().BeEquivalentTo(expectedRestaurants);
     }
@@ -86,66 +86,62 @@ public class RepositoryTests
     {
         var restaurant = new Restaurant
             { Id = 7, Name = "Pizza test", DeliveryPriceId = price.Id, DeliveryPrice = price };
-        efRestaurantRepository.Create(restaurant);
+        repository.Create(restaurant);
 
         var found = _dbContext.Restaurants.Find(7);
         found.Should().BeEquivalentTo(restaurant);
     }
 
     [Fact]
-    public void ItUpdatesValidRestaurant()
+    public void ItUpdatesRestaurantThatExists()
     {
-        var restaurant = new Restaurant
-            { Id = 7, Name = "Pizza test", DeliveryPriceId = price.Id, DeliveryPrice = price };
-        _dbContext.Restaurants.Add(restaurant);
+        var restaurant = _dbContext.Restaurants.Find(1)!;
 
         restaurant.Name = "Changed pizza test";
 
-        efRestaurantRepository.Update(restaurant);
+        repository.Update(restaurant);
 
-        var found = _dbContext.Restaurants.Find(7);
-        found.Should().BeEquivalentTo(restaurant);
+        var found = _dbContext.Restaurants.Find(1);
+        found.Should()
+            .BeEquivalentTo(new Restaurant { Id = 1, Name = "Changed pizza test", DeliveryPriceId = price.Id, DeliveryPrice = price });
     }
 
     [Fact]
-    public void ItDeletesValidRestaurant()
+    public void ItDeletesRestaurantThatExists()
     {
-        var restaurant = new Restaurant
-            { Id = 7, Name = "Pizza test", DeliveryPriceId = price.Id, DeliveryPrice = price };
-        _dbContext.Restaurants.Add(restaurant);
-
-        efRestaurantRepository.Delete(7);
-
-        Assert.False(_dbContext.Restaurants.Contains(restaurant));
+        repository.Delete(1);
+        _dbContext.SaveChanges();
+        
+        _dbContext.Restaurants.Find(1).Should().BeNull();
     }
 
 
     [Fact]
-    public void ItGetsInvalidRestaurant()
+    public void ItReturnsNullWhenRestaurantDoesNotExist()
     {
-        var result = efRestaurantRepository.GetByIdAsync(7).Result;
+        var result = repository.GetByIdAsync(7).Result;
 
         result.Should().BeNull();
     }
 
     [Fact]
-    public void ItCreatesNullRestaurant()
+    public void ItThrowsAnExceptionWhenCreatingNullRestaurant()
     {
-        Assert.Throws<ArgumentNullException>(() => efRestaurantRepository.Create(null));
+        Assert.Throws<ArgumentNullException>(() => repository.Create(null));
     }
 
     [Fact]
-    public void ItUpdatesInvalidRestaurant()
+    public void ItThrowsAnExceptionWhenUpdatingNullRestaurant()
     {
-        Assert.Throws<ArgumentNullException>(() => efRestaurantRepository.Update(null));
+        Assert.Throws<ArgumentNullException>(() => repository.Update(null));
     }
 
     [Fact]
-    public void ItDeletesInvalidRestaurant()
+    public void ItDoesNothingWhenAttemptingToDeleteNonexistentRestaurant()
     {
-        var originalAmount = _dbContext.Restaurants.Count();
-        efRestaurantRepository.Delete(8);
-        var updatedAmount = _dbContext.Restaurants.Count();
-        updatedAmount.Should().Be(originalAmount);
+        var numRestaurantsBeforeDelete = _dbContext.Restaurants.Count();
+        repository.Delete(8);
+        var numRestaurantsAfterDelete = _dbContext.Restaurants.Count();
+        numRestaurantsAfterDelete.Should().Be(numRestaurantsBeforeDelete);
     }
 }
