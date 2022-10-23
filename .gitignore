@@ -8,3 +8,4 @@ App.config
 *.vpp.bak_*
 .vs/
 .vscode/
+*.DotSettings.user
