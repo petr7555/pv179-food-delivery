@@ -2,7 +2,9 @@ using FluentAssertions;
 using FoodDelivery.DAL.EntityFramework.Data;
 using FoodDelivery.DAL.EntityFramework.Models;
 using FoodDelivery.Infrastructure.EntityFramework.Query;
+using FoodDelivery.Infrastructure.EntityFramework.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Assert = Xunit.Assert;
 
 namespace FoodDelivery.Infrastructure.EntityFramework.Test;
 
@@ -10,7 +12,7 @@ public class QueryTests
 {
     private readonly FoodDeliveryDbContext _dbContext;
     private readonly Price price;
-
+    private readonly EfRepository<Restaurant, int> efRestaurantRepository;
     public QueryTests()
     {
         var databaseName = "QueryTests_db_" + DateTime.Now.ToFileTimeUtc();
@@ -20,6 +22,8 @@ public class QueryTests
             .Options;
 
         _dbContext = new FoodDeliveryDbContext(dbContextOptions);
+
+        efRestaurantRepository = new EfRepository<Restaurant, int>(_dbContext);
 
         var czkCurrency = new Currency { Id = 1, Name = "CZK" };
         _dbContext.Currencies.Add(czkCurrency);
@@ -58,14 +62,6 @@ public class QueryTests
     }
 
     [Fact]
-    public void ItGetsInvalidRestaurant()
-    {
-        var result = efRestaurantRepository.GetByIdAsync(7).Result;
-
-        result.Should().BeEquivalentTo(null);        
-    }
-
-    [Fact]
     public void ItGetsAllRestaurants()
     {
         var expectedRestaurants = new List<Restaurant>
@@ -88,18 +84,6 @@ public class QueryTests
     {
         var restaurant = new Restaurant { Id = 7, Name = "Pizza test", DeliveryPriceId = price.Id, DeliveryPrice = price };
         efRestaurantRepository.Create(restaurant);
-
-        var found = _dbContext.Restaurants.Find(7);
-        found.Should().BeEquivalentTo(restaurant);
-
-        // clean up
-        _dbContext.Restaurants.Remove(restaurant);
-    }
-
-    [Fact]
-    public void ItCreatesNullRestaurant()
-    {
-        efRestaurantRepository.Create(null);
 
         var found = _dbContext.Restaurants.Find(7);
         found.Should().BeEquivalentTo(restaurant);
