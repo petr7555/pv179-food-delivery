@@ -13,6 +13,7 @@ public class RepositoryTests
     private readonly FoodDeliveryDbContext _dbContext;
     private readonly Price price;
     private readonly EfRepository<Restaurant, int> efRestaurantRepository;
+
     public RepositoryTests()
     {
         var databaseName = "QueryTests_db_" + DateTime.Now.ToFileTimeUtc();
@@ -55,10 +56,11 @@ public class RepositoryTests
     [Fact]
     public void ItGetsValidRestaurant()
     {
-        var expectedRestaurant = new Restaurant { Id = 6, Name = "POE POE", DeliveryPriceId = price.Id, DeliveryPrice = price };
+        var expectedRestaurant = new Restaurant
+            { Id = 6, Name = "POE POE", DeliveryPriceId = price.Id, DeliveryPrice = price };
         var result = efRestaurantRepository.GetByIdAsync(6).Result;
 
-        result.Should().BeEquivalentTo(expectedRestaurant);        
+        result.Should().BeEquivalentTo(expectedRestaurant);
     }
 
     [Fact]
@@ -82,7 +84,8 @@ public class RepositoryTests
     [Fact]
     public void ItCreatesRestaurant()
     {
-        var restaurant = new Restaurant { Id = 7, Name = "Pizza test", DeliveryPriceId = price.Id, DeliveryPrice = price };
+        var restaurant = new Restaurant
+            { Id = 7, Name = "Pizza test", DeliveryPriceId = price.Id, DeliveryPrice = price };
         efRestaurantRepository.Create(restaurant);
 
         var found = _dbContext.Restaurants.Find(7);
@@ -95,7 +98,8 @@ public class RepositoryTests
     [Fact]
     public void ItUpdatesValidRestaurant()
     {
-        var restaurant = new Restaurant { Id = 7, Name = "Pizza test", DeliveryPriceId = price.Id, DeliveryPrice = price };
+        var restaurant = new Restaurant
+            { Id = 7, Name = "Pizza test", DeliveryPriceId = price.Id, DeliveryPrice = price };
         _dbContext.Restaurants.Add(restaurant);
 
         restaurant.Name = "Changed pizza test";
@@ -112,7 +116,8 @@ public class RepositoryTests
     [Fact]
     public void ItDeletesValidRestaurant()
     {
-        var restaurant = new Restaurant { Id = 7, Name = "Pizza test", DeliveryPriceId = price.Id, DeliveryPrice = price };
+        var restaurant = new Restaurant
+            { Id = 7, Name = "Pizza test", DeliveryPriceId = price.Id, DeliveryPrice = price };
         _dbContext.Restaurants.Add(restaurant);
 
         efRestaurantRepository.Delete(7);
@@ -132,7 +137,6 @@ public class RepositoryTests
     [Fact]
     public void ItCreatesNullRestaurant()
     {
-
         Assert.Throws<ArgumentNullException>(() => efRestaurantRepository.Create(null));
     }
 
@@ -150,5 +154,4 @@ public class RepositoryTests
         var updatedAmount = _dbContext.Restaurants.Count();
         updatedAmount.Should().Be(originalAmount);
     }
-
 }
