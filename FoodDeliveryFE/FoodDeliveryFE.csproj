@@ -8,8 +8,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\FoodDelivery.BL\FoodDelivery.BL.csproj" />
-      <ProjectReference Include="..\FoodDelivery.DAL.EntityFramework\FoodDelivery.DAL.EntityFramework.csproj" />
-      <ProjectReference Include="..\FoodDelivery.Infrastructure.EntityFramework\FoodDelivery.Infrastructure.EntityFramework.csproj" />
     </ItemGroup>
 
 </Project>
