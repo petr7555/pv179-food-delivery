@@ -143,7 +143,7 @@ public static class DataInitializer
         var pizzeriaGiuseppeDeliveryPrice = new Price { Id = 2, Amount = 29, CurrencyId = czkCurrency.Id };
 
         var californiaSalmonEightRollsPrice = new Price { Id = 3, Amount = 169, CurrencyId = czkCurrency.Id };
-        var salmonTunaPrawnEightMakiEachPrice = new Price { Id= 4, Amount = 199, CurrencyId= czkCurrency.Id };
+        var salmonTunaPrawnEightMakiEachPrice = new Price { Id = 4, Amount = 199, CurrencyId = czkCurrency.Id };
         var happySushiDeliveryPrice = new Price { Id = 5, Amount = 39, CurrencyId = czkCurrency.Id };
 
         var barbecueBurgerPrice = new Price { Id = 6, Amount = 239, CurrencyId = czkCurrency.Id };
@@ -170,7 +170,8 @@ public static class DataInitializer
          **   RESTAURANTS   **
          *********************/
 
-        var pizzeriaGuiseppe = new Restaurant { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = pizzeriaGiuseppeDeliveryPrice.Id };
+        var pizzeriaGuiseppe = new Restaurant
+            { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = pizzeriaGiuseppeDeliveryPrice.Id };
         var happySushi = new Restaurant { Id = 2, Name = "Happy Sushi", DeliveryPriceId = happySushiDeliveryPrice.Id };
         var burgerino = new Restaurant { Id = 3, Name = "Burgerino", DeliveryPriceId = burgerinoDeliveryPrice.Id };
 
@@ -219,14 +220,15 @@ public static class DataInitializer
             Id = 4,
             CategoryId = burgerCategory.Id,
             Name = "Barbecue Burger",
-            Description = "Special homemade bun, 200g beef meat, cheddar, onion rings, lettuce, tomato, barbecue sauce, fries",
+            Description =
+                "Special homemade bun, 200g beef meat, cheddar, onion rings, lettuce, tomato, barbecue sauce, fries",
             RestaurantId = burgerino.Id,
             PriceId = barbecueBurgerPrice.Id
         };
 
-        var chickenBurger = new Product 
-        { 
-            Id = 5, 
+        var chickenBurger = new Product
+        {
+            Id = 5,
             CategoryId = burgerCategory.Id,
             Name = "Chicken Burger",
             Description = "Special homemade bun, 150g chicken, lettuce, tomato, homemade mayo with herbs, fries",
@@ -234,12 +236,13 @@ public static class DataInitializer
             PriceId = chickenBurgerPrice.Id
         };
 
-        var royalBurger = new Product 
-        { 
-            Id = 6, 
+        var royalBurger = new Product
+        {
+            Id = 6,
             CategoryId = burgerCategory.Id,
             Name = "Royal Burger",
-            Description = "Special homemade bun, 200g beef meat, cheddar, roasted smoked bacon, egg, caramelized onion, lettuce, tomato, fries",
+            Description =
+                "Special homemade bun, 200g beef meat, cheddar, roasted smoked bacon, egg, caramelized onion, lettuce, tomato, fries",
             RestaurantId = burgerino.Id,
             PriceId = royalBurgerPrice.Id
         };
@@ -249,7 +252,8 @@ public static class DataInitializer
             Id = 7,
             CategoryId = burgerCategory.Id,
             Name = "Devil Burger",
-            Description = "Special homemade bun, 200g beef meat, cheddar, roasted smoked bacon, red habanero mayo, lettuce, tomato, fries",
+            Description =
+                "Special homemade bun, 200g beef meat, cheddar, roasted smoked bacon, red habanero mayo, lettuce, tomato, fries",
             RestaurantId = burgerino.Id,
             PriceId = devilBurgerPrice.Id
         };
@@ -290,7 +294,8 @@ public static class DataInitializer
             .Entity<Order>()
             .HasMany(o => o.Products)
             .WithMany(p => p.Orders)
-            .UsingEntity(etb => etb.HasData(new { OrdersId = 1, ProductsId = 1 }, new { OrdersId = 2, ProductsId = 6}));
+            .UsingEntity(etb =>
+                etb.HasData(new { OrdersId = 1, ProductsId = 1 }, new { OrdersId = 2, ProductsId = 6 }));
 
         /*****************
          **   RATINGS   **

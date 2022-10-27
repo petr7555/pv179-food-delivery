@@ -1,6 +1,5 @@
 using AutoMapper;
 using AutoMapper.Extensions.ExpressionMapping;
-using FoodDelivery.BL.DTOs;
 using FoodDelivery.BL.DTOs.Restaurant;
 using FoodDelivery.DAL.EntityFramework.Models;
 
