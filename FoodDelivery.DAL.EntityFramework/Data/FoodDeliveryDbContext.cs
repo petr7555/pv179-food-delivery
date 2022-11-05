@@ -22,7 +22,10 @@ public class FoodDeliveryDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        if (optionsBuilder.IsConfigured) return;
+        if (optionsBuilder.IsConfigured)
+        {
+            return;
+        }
 
         var environment = ConfigurationManager.AppSettings["Environment"];
         var connectionString = environment switch
