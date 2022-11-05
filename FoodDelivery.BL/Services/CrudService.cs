@@ -16,14 +16,14 @@ public class CrudService<TEntity, TKey, TGetDto, TCreateDto, TUpdateDto> where T
 
     public async Task<TGetDto?> GetByIdAsync(TKey id)
     {
-        var restaurant = await _repository.GetByIdAsync(id);
-        return Mapper.Map<TGetDto>(restaurant);
+        var entity = await _repository.GetByIdAsync(id);
+        return Mapper.Map<TGetDto>(entity);
     }
 
     public async Task<IEnumerable<TGetDto>> GetAllAsync()
     {
-        var restaurants = await _repository.GetAllAsync();
-        return Mapper.Map<IEnumerable<TGetDto>>(restaurants);
+        var entities = await _repository.GetAllAsync();
+        return Mapper.Map<IEnumerable<TGetDto>>(entities);
     }
 
     public void Create(TCreateDto dto)
