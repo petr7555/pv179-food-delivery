@@ -1,18 +1,16 @@
 using FluentAssertions;
 using FoodDelivery.DAL.EntityFramework.Data;
 using FoodDelivery.DAL.EntityFramework.Models;
-using FoodDelivery.Infrastructure.EntityFramework.Query;
 using FoodDelivery.Infrastructure.EntityFramework.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Assert = Xunit.Assert;
 
 namespace FoodDelivery.Infrastructure.EntityFramework.Test;
 
 public class RepositoryTests
 {
     private readonly FoodDeliveryDbContext _dbContext;
-    private readonly Price price;
-    private readonly EfRepository<Restaurant, int> repository;
+    private readonly Price _price;
+    private readonly EfRepository<Restaurant, int> _repository;
 
     public RepositoryTests()
     {
@@ -24,30 +22,30 @@ public class RepositoryTests
 
         _dbContext = new FoodDeliveryDbContext(dbContextOptions);
 
-        repository = new EfRepository<Restaurant, int>(_dbContext);
+        _repository = new EfRepository<Restaurant, int>(_dbContext);
 
         var czkCurrency = new Currency { Id = 1, Name = "CZK" };
         _dbContext.Currencies.Add(czkCurrency);
-        price = new Price { Id = 1, Amount = 50, CurrencyId = czkCurrency.Id };
-        _dbContext.Prices.Add(price);
+        _price = new Price { Id = 1, Amount = 50, CurrencyId = czkCurrency.Id };
+        _dbContext.Prices.Add(_price);
 
         _dbContext.Restaurants.Add(new Restaurant
-            { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = price.Id }
+            { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = _price.Id }
         );
         _dbContext.Restaurants.Add(new Restaurant
-            { Id = 2, Name = "Pizza Domino's", DeliveryPriceId = price.Id }
+            { Id = 2, Name = "Pizza Domino's", DeliveryPriceId = _price.Id }
         );
         _dbContext.Restaurants.Add(new Restaurant
-            { Id = 3, Name = "Pizza Hut", DeliveryPriceId = price.Id }
+            { Id = 3, Name = "Pizza Hut", DeliveryPriceId = _price.Id }
         );
         _dbContext.Restaurants.Add(new Restaurant
-            { Id = 4, Name = "Steak House K1", DeliveryPriceId = price.Id }
+            { Id = 4, Name = "Steak House K1", DeliveryPriceId = _price.Id }
         );
         _dbContext.Restaurants.Add(new Restaurant
-            { Id = 5, Name = "Jean Paul's", DeliveryPriceId = price.Id }
+            { Id = 5, Name = "Jean Paul's", DeliveryPriceId = _price.Id }
         );
         _dbContext.Restaurants.Add(new Restaurant
-            { Id = 6, Name = "POE POE", DeliveryPriceId = price.Id }
+            { Id = 6, Name = "POE POE", DeliveryPriceId = _price.Id }
         );
 
         _dbContext.SaveChanges();
@@ -57,8 +55,8 @@ public class RepositoryTests
     public void ItGetsRestaurantThatExistsById()
     {
         var expectedRestaurant = new Restaurant
-            { Id = 6, Name = "POE POE", DeliveryPriceId = price.Id, DeliveryPrice = price };
-        var result = repository.GetByIdAsync(6).Result;
+            { Id = 6, Name = "POE POE", DeliveryPriceId = _price.Id, DeliveryPrice = _price };
+        var result = _repository.GetByIdAsync(6).Result;
 
         result.Should().BeEquivalentTo(expectedRestaurant);
     }
@@ -68,15 +66,15 @@ public class RepositoryTests
     {
         var expectedRestaurants = new List<Restaurant>
         {
-            new() { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 2, Name = "Pizza Domino's", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 3, Name = "Pizza Hut", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 4, Name = "Steak House K1", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 5, Name = "Jean Paul's", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 6, Name = "POE POE", DeliveryPriceId = price.Id, DeliveryPrice = price }
+            new() { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = _price.Id, DeliveryPrice = _price },
+            new() { Id = 2, Name = "Pizza Domino's", DeliveryPriceId = _price.Id, DeliveryPrice = _price },
+            new() { Id = 3, Name = "Pizza Hut", DeliveryPriceId = _price.Id, DeliveryPrice = _price },
+            new() { Id = 4, Name = "Steak House K1", DeliveryPriceId = _price.Id, DeliveryPrice = _price },
+            new() { Id = 5, Name = "Jean Paul's", DeliveryPriceId = _price.Id, DeliveryPrice = _price },
+            new() { Id = 6, Name = "POE POE", DeliveryPriceId = _price.Id, DeliveryPrice = _price }
         };
 
-        var result = repository.GetAllAsync().Result;
+        var result = _repository.GetAllAsync().Result;
 
         result.Should().BeEquivalentTo(expectedRestaurants);
     }
@@ -85,8 +83,8 @@ public class RepositoryTests
     public void ItCreatesRestaurant()
     {
         var restaurant = new Restaurant
-            { Id = 7, Name = "Pizza test", DeliveryPriceId = price.Id, DeliveryPrice = price };
-        repository.Create(restaurant);
+            { Id = 7, Name = "Pizza test", DeliveryPriceId = _price.Id, DeliveryPrice = _price };
+        _repository.Create(restaurant);
 
         var found = _dbContext.Restaurants.Find(7);
         found.Should().BeEquivalentTo(restaurant);
@@ -95,23 +93,33 @@ public class RepositoryTests
     [Fact]
     public void ItUpdatesRestaurantThatExists()
     {
-        var restaurant = _dbContext.Restaurants.Find(1)!;
+        var databaseName = "QueryTests_db_" + DateTime.Now.ToFileTimeUtc();
+        var dbContextOptions = new DbContextOptionsBuilder<FoodDeliveryDbContext>()
+            .UseInMemoryDatabase(databaseName)
+            .Options;
 
-        restaurant.Name = "Changed pizza test";
+        using (var dbContext = new FoodDeliveryDbContext(dbContextOptions))
+        {
+            dbContext.Restaurants.Add(new Restaurant
+                { Id = 10, Name = "Pizza test", DeliveryPriceId = _price.Id, DeliveryPrice = _price });
+            dbContext.SaveChanges();
+        }
 
-        repository.Update(restaurant);
-
-        var found = _dbContext.Restaurants.Find(1);
-        found.Should()
-            .BeEquivalentTo(new Restaurant { Id = 1, Name = "Changed pizza test", DeliveryPriceId = price.Id, DeliveryPrice = price });
+        using (var dbContext = new FoodDeliveryDbContext(dbContextOptions))
+        {
+            var repository = new EfRepository<Restaurant, int>(dbContext);
+            repository.Update(new Restaurant
+                { Id = 10, Name = "Updated pizza test", DeliveryPriceId = _price.Id, DeliveryPrice = _price });
+            dbContext.Restaurants.Find(10)!.Name.Should().BeEquivalentTo("Updated pizza test");
+        }
     }
 
     [Fact]
     public void ItDeletesRestaurantThatExists()
     {
-        repository.Delete(1);
+        _repository.Delete(1);
         _dbContext.SaveChanges();
-        
+
         _dbContext.Restaurants.Find(1).Should().BeNull();
     }
 
@@ -119,7 +127,7 @@ public class RepositoryTests
     [Fact]
     public void ItReturnsNullWhenRestaurantDoesNotExist()
     {
-        var result = repository.GetByIdAsync(7).Result;
+        var result = _repository.GetByIdAsync(7).Result;
 
         result.Should().BeNull();
     }
@@ -127,20 +135,20 @@ public class RepositoryTests
     [Fact]
     public void ItThrowsAnExceptionWhenCreatingNullRestaurant()
     {
-        Assert.Throws<ArgumentNullException>(() => repository.Create(null));
+        Assert.Throws<ArgumentNullException>(() => _repository.Create(null));
     }
 
     [Fact]
     public void ItThrowsAnExceptionWhenUpdatingNullRestaurant()
     {
-        Assert.Throws<ArgumentNullException>(() => repository.Update(null));
+        Assert.Throws<ArgumentNullException>(() => _repository.Update(null));
     }
 
     [Fact]
     public void ItDoesNothingWhenAttemptingToDeleteNonexistentRestaurant()
     {
         var numRestaurantsBeforeDelete = _dbContext.Restaurants.Count();
-        repository.Delete(8);
+        _repository.Delete(8);
         var numRestaurantsAfterDelete = _dbContext.Restaurants.Count();
         numRestaurantsAfterDelete.Should().Be(numRestaurantsBeforeDelete);
     }
