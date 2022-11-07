@@ -1,6 +1,6 @@
-﻿using System.Configuration;
-using FoodDelivery.DAL.EntityFramework.Models;
+﻿using FoodDelivery.DAL.EntityFramework.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace FoodDelivery.DAL.EntityFramework.Data;
 
@@ -27,17 +27,18 @@ public class FoodDeliveryDbContext : DbContext
             return;
         }
 
-        var environment = ConfigurationManager.AppSettings["Environment"];
-        var connectionString = environment switch
-        {
-            null => throw new Exception("Missing environment."),
-            "Development" => ConfigurationManager.AppSettings["ConnectionStringDevelopment"],
-            "Production" => ConfigurationManager.AppSettings["ConnectionStringProduction"],
-            _ => throw new Exception($"Invalid environment {environment}")
-        };
+        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        var configuration = new ConfigurationBuilder()
+            // TODO remove if it proves that it is not needed
+            // .SetBasePath(Path.Combine(Directory.GetCurrentDirectory()))
+            .AddJsonFile("appsettings.json", optional: false)
+            .AddJsonFile($"appsettings.{environment}.json", optional: false)
+            .Build();
+        
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
         if (connectionString is null)
         {
-            throw new Exception("Missing connection string.");
+            throw new Exception($"Missing connection string for environment {environment}.");
         }
 
         optionsBuilder.UseNpgsql(connectionString);

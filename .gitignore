@@ -3,9 +3,10 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
-App.config
 *.vpp.lck
 *.vpp.bak_*
 .vs/
 .vscode/
 *.DotSettings.user
+
+appsettings.Production.json
