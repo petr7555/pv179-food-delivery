@@ -52,19 +52,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
 
-      - name: Create App.config
+      - name: Create app settings for production
         env:
-          APP_CONFIG: FoodDeliveryFE/App.config
+          APP_SETTINGS: FoodDeliveryFE/appsettings.Production.json
         run: |
-          echo '<?xml version="1.0" encoding="utf-8"?>' > $APP_CONFIG
-          echo '<configuration>' >> $APP_CONFIG
-          echo '  <appSettings>' >> $APP_CONFIG
-          echo '    <add key="Environment" value="Production" />' >> $APP_CONFIG
-          echo '    <add key="ConnectionStringProduction" value="${{ secrets.CONNECTION_STRING }}" />' >> $APP_CONFIG
-          echo '  </appSettings>' >> $APP_CONFIG
-          echo '</configuration>' >> $APP_CONFIG
-          pwd
-          ls
+          echo '{'> $APP_SETTINGS
+          echo '  "ConnectionStrings": {' >> $APP_SETTINGS
+          echo '    "DefaultConnection": "${{ secrets.CONNECTION_STRING }}"' >> $APP_SETTINGS
+          echo '  }' >> $APP_SETTINGS
+          echo '}' >> $APP_SETTINGS
           
       - name: Build with dotnet
         run: dotnet build --configuration Release
