@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace FoodDeliveryFE.Pages;
+namespace FoodDelivery.FE.Pages;
 
 public class IndexModel : PageModel
 {

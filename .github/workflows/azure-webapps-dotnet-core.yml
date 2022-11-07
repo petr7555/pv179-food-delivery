@@ -54,7 +54,7 @@ jobs:
 
       - name: Create app settings for production
         env:
-          APP_SETTINGS: FoodDeliveryFE/appsettings.Production.json
+          APP_SETTINGS: FoodDelivery.FE/appsettings.Production.json
         run: |
           echo '{'> $APP_SETTINGS
           echo '  "ConnectionStrings": {' >> $APP_SETTINGS

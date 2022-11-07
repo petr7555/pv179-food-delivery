@@ -2,7 +2,7 @@ using FoodDelivery.DAL.EntityFramework.Models;
 using FoodDelivery.Infrastructure.EntityFramework.UnitOfWork;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace FoodDeliveryFE.Pages.Lists;
+namespace FoodDelivery.FE.Pages.Lists;
 
 public class OrderList : PageModel
 {

@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodDeliveryFE", "FoodDeliveryFE\FoodDeliveryFE.csproj", "{DB6DEE1C-42B4-4C81-B7C0-2487330163B3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodDelivery.FE", "FoodDelivery.FE\FoodDelivery.FE.csproj", "{DB6DEE1C-42B4-4C81-B7C0-2487330163B3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodDelivery.DAL.EntityFramework", "FoodDelivery.DAL.EntityFramework\FoodDelivery.DAL.EntityFramework.csproj", "{582C0147-ECB7-4109-A5CF-F78B450166F2}"
 EndProject

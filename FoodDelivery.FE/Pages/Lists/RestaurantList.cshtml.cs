@@ -3,7 +3,7 @@ using FoodDelivery.BL.DTOs.Restaurant;
 using FoodDelivery.BL.Facades;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace FoodDeliveryFE.Pages.Lists;
+namespace FoodDelivery.FE.Pages.Lists;
 
 public class RestaurantList : PageModel
 {

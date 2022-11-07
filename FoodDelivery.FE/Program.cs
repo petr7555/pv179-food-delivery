@@ -1,12 +1,12 @@
 using FoodDelivery.DAL.EntityFramework.Data;
+using FoodDelivery.DAL.EntityFramework.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-System.Diagnostics.Trace.TraceInformation("My message!");
+
 var keyVaultConnectionString = builder.Configuration.GetConnectionString("KeyVaultConnectionString");
-System.Diagnostics.Trace.TraceInformation("keyVaultConnectionString: " + keyVaultConnectionString);
 
 var app = builder.Build();
 
@@ -18,6 +18,16 @@ using (var db = new FoodDeliveryDbContext())
     Console.WriteLine("Resetting database...");
     db.Database.EnsureDeleted();
     db.Database.EnsureCreated();
+    db.Restaurants.Add(new Restaurant
+    {
+        Name = "Pizza" + keyVaultConnectionString,
+        DeliveryPrice = new Price
+        {
+            Amount = 1.2f,
+            Currency = new Currency { Name = "aaa" },
+        }
+    });
+    db.SaveChanges();
 }
 // }
 
