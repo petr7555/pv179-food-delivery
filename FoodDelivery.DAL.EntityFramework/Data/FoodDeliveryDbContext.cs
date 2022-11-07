@@ -27,7 +27,7 @@ public class FoodDeliveryDbContext : DbContext
             return;
         }
 
-        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
         var configuration = new ConfigurationBuilder()
             // TODO remove if it proves that it is not needed
             // .SetBasePath(Path.Combine(Directory.GetCurrentDirectory()))
