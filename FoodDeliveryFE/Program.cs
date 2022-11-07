@@ -4,6 +4,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+System.Diagnostics.Trace.TraceInformation("My message!");
+var keyVaultConnectionString = builder.Configuration.GetConnectionString("KeyVaultConnectionString");
+System.Diagnostics.Trace.TraceInformation("keyVaultConnectionString: " + keyVaultConnectionString);
 
 var app = builder.Build();
 
