@@ -1,5 +1,6 @@
 using AutoMapper;
 using AutoMapper.Extensions.ExpressionMapping;
+using FoodDelivery.BL.DTOs.Product;
 using FoodDelivery.BL.DTOs.Restaurant;
 using FoodDelivery.DAL.EntityFramework.Models;
 
@@ -11,6 +12,7 @@ public class MappingConfig
     {
         config.AddExpressionMapping();
 
+        config.CreateMap<Product, ProductGetDto>().ReverseMap();
         config.CreateMap<Restaurant, RestaurantGetDto>().ReverseMap();
     }
 }
