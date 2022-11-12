@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\FoodDelivery.BL\FoodDelivery.BL.csproj" />
+      <ProjectReference Include="..\FoodDelivery.DAL.EntityFramework\FoodDelivery.DAL.EntityFramework.csproj" />
+      <ProjectReference Include="..\FoodDelivery.Infrastructure.EntityFramework\FoodDelivery.Infrastructure.EntityFramework.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentAssertions" Version="6.8.0" />
+      <PackageReference Include="JustMock" Version="2022.3.912.3" />
+      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
+      <PackageReference Include="xunit" Version="2.4.2" />
+    </ItemGroup>
+
+</Project>
