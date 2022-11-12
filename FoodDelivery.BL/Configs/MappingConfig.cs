@@ -12,5 +12,7 @@ public class MappingConfig
         config.AddExpressionMapping();
 
         config.CreateMap<Restaurant, RestaurantGetDto>().ReverseMap();
+        config.CreateMap<Restaurant, RestaurantCreateDto>().ReverseMap();
+        config.CreateMap<Restaurant, RestaurantUpdateDto>().ReverseMap();
     }
 }
