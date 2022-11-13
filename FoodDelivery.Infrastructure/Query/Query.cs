@@ -26,5 +26,5 @@ public abstract class Query<TEntity> : IQuery<TEntity>
         return this;
     }
 
-    public abstract IEnumerable<TEntity> Execute();
+    public abstract Task<IEnumerable<TEntity>> ExecuteAsync();
 }

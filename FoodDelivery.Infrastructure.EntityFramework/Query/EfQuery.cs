@@ -12,7 +12,7 @@ public class EfQuery<TEntity> : Query<TEntity> where TEntity : class
         Context = dbContext;
     }
 
-    public override IEnumerable<TEntity> Execute()
+    public override async Task<IEnumerable<TEntity>> ExecuteAsync()
     {
         IQueryable<TEntity> query = Context.Set<TEntity>();
 
@@ -20,7 +20,7 @@ public class EfQuery<TEntity> : Query<TEntity> where TEntity : class
         query = ApplyOrderBy(query);
         query = ApplyPaging(query);
 
-        return query.ToList();
+        return await query.ToListAsync();
     }
 
     private IQueryable<TEntity> ApplyWhere(IQueryable<TEntity> query)

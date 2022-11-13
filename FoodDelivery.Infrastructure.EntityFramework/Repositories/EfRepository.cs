@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 namespace FoodDelivery.Infrastructure.EntityFramework.Repositories;
 
 public class EfRepository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : BaseEntity where TKey : struct
-
 {
     private readonly DbSet<TEntity> _dbSet;
 

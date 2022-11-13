@@ -3,7 +3,10 @@ using FoodDelivery.Infrastructure.Repository;
 
 namespace FoodDelivery.BL.Services;
 
-public class CrudService<TEntity, TKey, TGetDto, TCreateDto, TUpdateDto> where TEntity : class where TKey : struct
+public class
+    CrudService<TEntity, TKey, TGetDto, TCreateDto, TUpdateDto> :
+        ICrudService<TEntity, TKey, TGetDto, TCreateDto, TUpdateDto>
+    where TEntity : class where TKey : struct
 {
     private readonly IRepository<TEntity, TKey> _repository;
     protected readonly IMapper Mapper;
