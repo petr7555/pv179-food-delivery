@@ -19,7 +19,7 @@ public class CrudServiceTest
     
     public CrudServiceTest()
     {
-        _mapper = new Mapper(new MapperConfiguration(ConfigureMapping));
+        _mapper = new Mapper(new MapperConfiguration(TestMappingConfig.ConfigureMapping));
         _entity1 = new TestEntity { Id = 1, Name = "Test Entity 1" };
         _entity2 = new TestEntity { Id = 2, Name = "Test Entity 2" };
         _allEntities = new List<TestEntity>{ _entity1, _entity2 };
@@ -95,24 +95,6 @@ public class CrudServiceTest
         _mockDb.Add(testEntity);
         _service.Delete(testEntity.Id);
         Assert.DoesNotContain(_mockDb, e => e.Id == testEntity.Id);
-    }
-    
-    private static void ConfigureMapping(IMapperConfigurationExpression config)
-    {
-        config.AddExpressionMapping();
-        config.CreateMap<TestEntity, TestDto>().ReverseMap();
-    }
-    
-    public class TestEntity
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
-
-    public class TestDto
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
     }
 
     class TestService : CrudService<TestEntity, int, TestDto, TestDto, TestDto>
