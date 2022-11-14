@@ -5,6 +5,7 @@ riderModule.iml
 /_ReSharper.Caches/
 *.vpp.lck
 *.vpp.bak_*
+*.vpp.vbak
 .vs/
 .vscode/
 .idea/

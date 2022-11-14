@@ -1,21 +1,23 @@
-using FoodDelivery.DAL.EntityFramework.Data;
+using FoodDelivery.BL.Configs;
+using FoodDelivery.BL.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+// Dependency injection
+builder.Services.AddBlDependencies();
+
 var app = builder.Build();
 
-// TODO later add development switch
-// if (app.Environment.IsDevelopment())
-// {
-using (var db = new FoodDeliveryDbContext())
+if (app.Environment.IsDevelopment())
 {
-    Console.WriteLine("Resetting database...");
-    db.Database.EnsureDeleted();
-    db.Database.EnsureCreated();
+    using (var scope = app.Services.CreateScope())
+    {
+       scope.ServiceProvider.GetRequiredService<IDbUtilsService>().ResetDatabase();
+    }
 }
-// }
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

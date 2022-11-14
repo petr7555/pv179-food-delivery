@@ -1,6 +1,6 @@
 # PV179 Food Delivery
-[![Build and Test](https://github.com/petr7555/pv179-food-delivery/actions/workflows/dotnet.yml/badge.svg)](https://github.com/petr7555/pv179-food-delivery/actions/workflows/dotnet.yml)
-[![Build and deploy ASP.Net Core app to an Azure Web App](https://github.com/petr7555/pv179-food-delivery/actions/workflows/azure-webapps-dotnet-core.yml/badge.svg)](https://github.com/petr7555/pv179-food-delivery/actions/workflows/azure-webapps-dotnet-core.yml)
+[![Build and Test](https://github.com/petr7555/pv179-food-delivery/actions/workflows/build_and_test.yml/badge.svg)](https://github.com/petr7555/pv179-food-delivery/actions/workflows/build_and_test.yml)
+[![Build and deploy ASP.Net Core app to an Azure Web App](https://github.com/petr7555/pv179-food-delivery/actions/workflows/deploy.yml/badge.svg)](https://github.com/petr7555/pv179-food-delivery/actions/workflows/deploy.yml)
 
 See the app [deployed here](https://pv179-food-delivery.azurewebsites.net/).
 

@@ -16,13 +16,13 @@ public class QueryObject<TDto, TEntity> where TEntity : class
         _query = query;
     }
 
-    public IEnumerable<TDto> Execute(QueryDto<TDto> queryDto)
+    public async Task<IEnumerable<TDto>> ExecuteAsync(QueryDto<TDto> queryDto)
     {
         ApplyWhere(queryDto);
         ApplyOrderBy(queryDto);
         ApplyPaging(queryDto);
 
-        return _mapper.Map<IEnumerable<TDto>>(_query.Execute());
+        return _mapper.Map<IEnumerable<TDto>>(await _query.ExecuteAsync());
     }
 
     private void ApplyWhere(QueryDto<TDto> queryDto)

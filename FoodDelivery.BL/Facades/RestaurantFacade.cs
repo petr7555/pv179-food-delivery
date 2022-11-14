@@ -1,31 +1,25 @@
-using AutoMapper;
-using FoodDelivery.BL.Configs;
 using FoodDelivery.BL.DTOs;
 using FoodDelivery.BL.DTOs.Restaurant;
 using FoodDelivery.BL.Services;
-using FoodDelivery.Infrastructure.EntityFramework.UnitOfWork;
 
 namespace FoodDelivery.BL.Facades;
 
-public class RestaurantFacade
+public class RestaurantFacade: IRestaurantFacade
 {
-    private readonly IMapper _mapper = new Mapper(new MapperConfiguration(MappingConfig.ConfigureMapping));
+    private readonly IRestaurantService _restaurantService;
 
+    public RestaurantFacade(IRestaurantService restaurantService)
+    {
+        _restaurantService = restaurantService;
+    }
+    
     public async Task<IEnumerable<RestaurantGetDto>> GetAllAsync()
     {
-        await using (var uow = new EfUnitOfWork())
-        {
-            var restaurantService = new RestaurantService(uow, _mapper);
-            return await restaurantService.GetAllAsync();
-        }
+        return await _restaurantService.GetAllAsync();
     }
 
     public async Task<IEnumerable<RestaurantGetDto>> QueryAsync(QueryDto<RestaurantGetDto> queryDto)
     {
-        await using (var uow = new EfUnitOfWork())
-        {
-            var restaurantService = new RestaurantService(uow, _mapper);
-            return restaurantService.QueryAsync(queryDto);
-        }
+        return await _restaurantService.QueryAsync(queryDto);
     }
 }
