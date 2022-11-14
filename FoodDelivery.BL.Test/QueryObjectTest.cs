@@ -62,11 +62,11 @@ public class QueryObjectTest
         var dtoDesc = new QueryDto<TestDto>()
             .Where(e => e.Name.Contains("Entity"));
         
-        var result = _queryObject.Execute(dto);
+        var result = _queryObject.ExecuteAsync(dto).Result;
         result.Should()
             .BeEquivalentTo(expectedResult.Select(e => _mapper.Map<TestDto>(e)));
 
-        var resultDesc = _queryObject.Execute(dtoDesc);
+        var resultDesc = _queryObject.ExecuteAsync(dtoDesc).Result;
         resultDesc.Should()
             .BeEquivalentTo(expectedResultDesc.Select(e => _mapper.Map<TestDto>(e)));
     }
@@ -87,11 +87,11 @@ public class QueryObjectTest
         var dtoOrderById = new QueryDto<TestDto>()
             .OrderBy(e => e.Id);
         
-        var resultByName = _queryObject.Execute(dtoOrderByName);
+        var resultByName = _queryObject.ExecuteAsync(dtoOrderByName).Result;
         resultByName.Should()
             .BeEquivalentTo(expectedResult.Select(e => _mapper.Map<TestDto>(e)));
 
-        var resultById = _queryObject.Execute(dtoOrderById);
+        var resultById = _queryObject.ExecuteAsync(dtoOrderById).Result;
         resultById.Should()
             .BeEquivalentTo(_allEntities.Select(e => _mapper.Map<TestDto>(e)));
     }
@@ -102,7 +102,7 @@ public class QueryObjectTest
         var dto = new QueryDto<TestDto>()
             .Where(e => false);
         
-        var resultByName = _queryObject.Execute(dto);
+        var resultByName = _queryObject.ExecuteAsync(dto).Result;
         resultByName.Should()
             .BeEquivalentTo(new List<TestDto>());
     }
@@ -113,7 +113,7 @@ public class QueryObjectTest
         var dto1 = new QueryDto<TestDto>()
             .Page(1, 2);
         
-        var result1 = _queryObject.Execute(dto1);
+        var result1 = _queryObject.ExecuteAsync(dto1).Result;
         result1.Should()
             .BeEquivalentTo(
                 (new List<TestEntity>
@@ -130,7 +130,7 @@ public class QueryObjectTest
         var dto2 = new QueryDto<TestDto>()
             .Page(2, 2);
         
-        var result2 = _queryObject.Execute(dto2);
+        var result2 = _queryObject.ExecuteAsync(dto2).Result;
         result2.Should()
             .BeEquivalentTo
             (
@@ -148,7 +148,7 @@ public class QueryObjectTest
         var dto3 = new QueryDto<TestDto>()
             .Page(2, 3);
         
-        var result3 = _queryObject.Execute(dto3);
+        var result3 = _queryObject.ExecuteAsync(dto3).Result;
         result3.Should()
             .BeEquivalentTo
             (
@@ -165,7 +165,7 @@ public class QueryObjectTest
         var dto4 = new QueryDto<TestDto>()
             .Page(2, 5);
         
-        var result4 = _queryObject.Execute(dto4);
+        var result4 = _queryObject.ExecuteAsync(dto4).Result;
         result4.Should()
             .BeEquivalentTo
             (
@@ -182,7 +182,7 @@ public class QueryObjectTest
             _allEntities = allEntities;
         }
 
-        public override IEnumerable<TestEntity> Execute()
+        public override async Task<IEnumerable<TestEntity>> ExecuteAsync()
         {
             _allEntities = ApplyWhere(_allEntities);
             _allEntities = ApplyOrderBy(_allEntities);
