@@ -7,7 +7,7 @@ using FoodDelivery.Infrastructure.UnitOfWork;
 
 namespace FoodDelivery.BL.Services;
 
-public class ProductService : CrudService<Product, int, ProductGetDto, ProductCreateDto, ProductUpdateDto>
+public class ProductService : CrudService<Product, int, ProductGetDto, ProductCreateDto, ProductUpdateDto>, IProductService
 {
     private readonly IUnitOfWork _unitOfWork;
     
@@ -16,9 +16,9 @@ public class ProductService : CrudService<Product, int, ProductGetDto, ProductCr
         _unitOfWork = unitOfWork;
     }
     
-    public IEnumerable<ProductGetDto> QueryAsync(QueryDto<ProductGetDto> queryDto)
+    public async Task<IEnumerable<ProductGetDto>> QueryAsync(QueryDto<ProductGetDto> queryDto)
     {
         var queryObject = new QueryObject<ProductGetDto, Product>(Mapper, _unitOfWork.ProductQuery);
-        return queryObject.Execute(queryDto);
+        return await queryObject.ExecuteAsync(queryDto);
     }
 }
