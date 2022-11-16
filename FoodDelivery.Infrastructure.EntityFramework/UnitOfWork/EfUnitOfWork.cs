@@ -5,12 +5,13 @@ using FoodDelivery.Infrastructure.EntityFramework.Repositories;
 using FoodDelivery.Infrastructure.Query;
 using FoodDelivery.Infrastructure.Repository;
 using FoodDelivery.Infrastructure.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 
 namespace FoodDelivery.Infrastructure.EntityFramework.UnitOfWork;
 
 public class EfUnitOfWork : IUnitOfWork
 {
-    private readonly FoodDeliveryDbContext _context;
+    private readonly DbContext _context;
 
     public IRepository<User, int> UserRepository { get; }
     public IRepository<Order, int> OrderRepository { get; }
@@ -22,9 +23,9 @@ public class EfUnitOfWork : IUnitOfWork
     public IQuery<Restaurant> RestaurantQuery { get; }
     public IQuery<Product> ProductQuery { get; }
 
-    public EfUnitOfWork()
+    public EfUnitOfWork(DbContext context)
     {
-        _context = new FoodDeliveryDbContext();
+        _context = context;
 
         UserRepository = new EfRepository<User, int>(_context);
         OrderRepository = new EfRepository<Order, int>(_context);
@@ -42,8 +43,8 @@ public class EfUnitOfWork : IUnitOfWork
         await _context.SaveChangesAsync();
     }
 
-    public async ValueTask DisposeAsync()
-    {
-        await _context.DisposeAsync();
-    }
+    // public async ValueTask DisposeAsync()
+    // {
+        // await _context.DisposeAsync();
+    // }
 }

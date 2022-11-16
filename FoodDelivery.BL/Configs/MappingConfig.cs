@@ -6,7 +6,7 @@ using FoodDelivery.DAL.EntityFramework.Models;
 
 namespace FoodDelivery.BL.Configs;
 
-public class MappingConfig
+public static class MappingConfig
 {
     public static void ConfigureMapping(IMapperConfigurationExpression config)
     {

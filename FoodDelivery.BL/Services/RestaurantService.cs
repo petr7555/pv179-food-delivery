@@ -8,7 +8,7 @@ using FoodDelivery.Infrastructure.UnitOfWork;
 namespace FoodDelivery.BL.Services;
 
 public class
-    RestaurantService : CrudService<Restaurant, int, RestaurantGetDto, RestaurantCreateDto, RestaurantUpdateDto>
+    RestaurantService : CrudService<Restaurant, int, RestaurantGetDto, RestaurantCreateDto, RestaurantUpdateDto>, IRestaurantService
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -17,9 +17,9 @@ public class
         _unitOfWork = unitOfWork;
     }
 
-    public IEnumerable<RestaurantGetDto> QueryAsync(QueryDto<RestaurantGetDto> queryDto)
+    public async Task<IEnumerable<RestaurantGetDto>> QueryAsync(QueryDto<RestaurantGetDto> queryDto)
     {
         var queryObject = new QueryObject<RestaurantGetDto, Restaurant>(Mapper, _unitOfWork.RestaurantQuery);
-        return queryObject.Execute(queryDto);
+        return await queryObject.ExecuteAsync(queryDto);
     }
 }

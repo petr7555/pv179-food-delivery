@@ -49,11 +49,11 @@ public class QueryTests
     }
 
     [Fact]
-    public void ItFiltersPizzaHut()
+    public async Task ItFiltersPizzaHut()
     {
         var query = new EfQuery<Restaurant>(_dbContext);
         query.Where(r => r.Name == "Pizza Hut");
-        var result = query.Execute();
+        var result = await query.ExecuteAsync();
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
@@ -62,11 +62,11 @@ public class QueryTests
     }
 
     [Fact]
-    public void ItFiltersRestaurantsStartingWithP()
+    public async Task ItFiltersRestaurantsStartingWithP()
     {
         var query = new EfQuery<Restaurant>(_dbContext);
         query.Where(r => r.Name.StartsWith("P"));
-        var result = query.Execute();
+        var result = await query.ExecuteAsync();
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
@@ -78,11 +78,11 @@ public class QueryTests
     }
 
     [Fact]
-    public void ItFiltersRestaurantsWithIdSmallerThanThree()
+    public async Task ItFiltersRestaurantsWithIdSmallerThanThree()
     {
         var query = new EfQuery<Restaurant>(_dbContext);
         query.Where(r => r.Id < 3);
-        var result = query.Execute();
+        var result = await query.ExecuteAsync();
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
@@ -92,12 +92,12 @@ public class QueryTests
     }
 
     [Fact]
-    public void ItFiltersByMultipleWheres()
+    public async Task ItFiltersByMultipleWheres()
     {
         var query = new EfQuery<Restaurant>(_dbContext);
         query.Where(r => r.Name.StartsWith("P"))
             .Where(r => r.Id > 2);
-        var result = query.Execute();
+        var result = await query.ExecuteAsync();
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
@@ -107,11 +107,11 @@ public class QueryTests
     }
 
     [Fact]
-    public void ItOrdersByNameAscending()
+    public async Task ItOrdersByNameAscending()
     {
         var query = new EfQuery<Restaurant>(_dbContext);
         query.OrderBy(r => r.Name);
-        var result = query.Execute().ToList();
+        var result = (await query.ExecuteAsync()).ToList();
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
@@ -125,11 +125,11 @@ public class QueryTests
     }
 
     [Fact]
-    public void ItOrdersByNameDescending()
+    public async Task ItOrdersByNameDescending()
     {
         var query = new EfQuery<Restaurant>(_dbContext);
         query.OrderBy(r => r.Name, true);
-        var result = query.Execute().ToList();
+        var result = (await query.ExecuteAsync()).ToList();
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
@@ -143,11 +143,11 @@ public class QueryTests
     }
 
     [Fact]
-    public void ItOrdersByIdDescending()
+    public async Task ItOrdersByIdDescending()
     {
         var query = new EfQuery<Restaurant>(_dbContext);
         query.OrderBy(r => r.Id);
-        var result = query.Execute().ToList();
+        var result = (await query.ExecuteAsync()).ToList();
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
@@ -162,12 +162,12 @@ public class QueryTests
 
 
     [Fact]
-    public void ItOrdersByTheLastOrderBy()
+    public async Task ItOrdersByTheLastOrderBy()
     {
         var query = new EfQuery<Restaurant>(_dbContext);
         query.OrderBy(r => r.Id, true)
             .OrderBy(r => r.Name);
-        var result = query.Execute().ToList();
+        var result = (await query.ExecuteAsync()).ToList();
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
@@ -182,11 +182,11 @@ public class QueryTests
 
 
     [Fact]
-    public void ItPagesFirstPageAllRecords()
+    public async Task ItPagesFirstPageAllRecords()
     {
         var query = new EfQuery<Restaurant>(_dbContext);
         query.Page(1, 3);
-        var result = query.Execute().ToList();
+        var result = (await query.ExecuteAsync()).ToList();
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
@@ -197,11 +197,11 @@ public class QueryTests
     }
 
     [Fact]
-    public void ItPagesFirstPageSubsetOfRecords()
+    public async Task ItPagesFirstPageSubsetOfRecords()
     {
         var query = new EfQuery<Restaurant>(_dbContext);
         query.Page(1, 2);
-        var result = query.Execute().ToList();
+        var result = (await query.ExecuteAsync()).ToList();
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
@@ -211,11 +211,11 @@ public class QueryTests
     }
 
     [Fact]
-    public void ItPagesSecondPageSubsetOfRecords()
+    public async Task ItPagesSecondPageSubsetOfRecords()
     {
         var query = new EfQuery<Restaurant>(_dbContext);
         query.Page(2, 2);
-        var result = query.Execute().ToList();
+        var result = (await query.ExecuteAsync()).ToList();
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
@@ -225,11 +225,11 @@ public class QueryTests
     }
 
     [Fact]
-    public void ItPagesSecondPageRestOfRecords()
+    public async Task ItPagesSecondPageRestOfRecords()
     {
         var query = new EfQuery<Restaurant>(_dbContext);
         query.Page(2, 4);
-        var result = query.Execute().ToList();
+        var result = (await query.ExecuteAsync()).ToList();
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
@@ -239,11 +239,11 @@ public class QueryTests
     }
 
     [Fact]
-    public void ItPagesThirdPageSubsetOfRecords()
+    public async Task ItPagesThirdPageSubsetOfRecords()
     {
         var query = new EfQuery<Restaurant>(_dbContext);
         query.Page(3, 2);
-        var result = query.Execute().ToList();
+        var result = (await query.ExecuteAsync()).ToList();
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
@@ -253,14 +253,14 @@ public class QueryTests
     }
 
     [Fact]
-    public void ItFiltersOrdersAndPages()
+    public async Task ItFiltersOrdersAndPages()
     {
         var query = new EfQuery<Restaurant>(_dbContext);
         query
             .Where(r => r.Name.Contains("Pizza"))
             .OrderBy(r => r.Name)
             .Page(2, 1);
-        var result = query.Execute().ToList();
+        var result = (await query.ExecuteAsync()).ToList();
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
@@ -269,14 +269,14 @@ public class QueryTests
     }
 
     [Fact]
-    public void ItAppliesPagingLast()
+    public async Task ItAppliesPagingLast()
     {
         var query = new EfQuery<Restaurant>(_dbContext);
         query
             .Page(2, 1)
             .Where(r => r.Name.Contains("Pizza"))
             .OrderBy(r => r.Name);
-        var result = query.Execute().ToList();
+        var result = (await query.ExecuteAsync()).ToList();
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
