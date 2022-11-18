@@ -14,10 +14,12 @@ public class FoodDeliveryDbContext : DbContext
 
     public FoodDeliveryDbContext()
     {
+        Console.WriteLine("Creating FoodDeliveryDbContext()");
     }
 
     public FoodDeliveryDbContext(DbContextOptions<FoodDeliveryDbContext> options) : base(options)
     {
+        Console.WriteLine("Creating FoodDeliveryDbContext(DbContextOptions<FoodDeliveryDbContext> options)");
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

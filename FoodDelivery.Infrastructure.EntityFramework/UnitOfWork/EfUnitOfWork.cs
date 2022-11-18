@@ -1,4 +1,3 @@
-using FoodDelivery.DAL.EntityFramework.Data;
 using FoodDelivery.DAL.EntityFramework.Models;
 using FoodDelivery.Infrastructure.EntityFramework.Query;
 using FoodDelivery.Infrastructure.EntityFramework.Repositories;
@@ -23,6 +22,8 @@ public class EfUnitOfWork : IUnitOfWork
 
     public EfUnitOfWork(DbContext context)
     {
+        Console.WriteLine("Creating EfUnitOfWork(DbContext context)");
+
         _context = context;
 
         UserRepository = new EfRepository<User, int>(_context);
@@ -39,8 +40,9 @@ public class EfUnitOfWork : IUnitOfWork
         await _context.SaveChangesAsync();
     }
 
-    // public async ValueTask DisposeAsync()
-    // {
-        // await _context.DisposeAsync();
-    // }
+    public async ValueTask DisposeAsync()
+    {
+        Console.WriteLine("Disposing EfUnitOfWork");
+        await _context.DisposeAsync();
+    }
 }

@@ -1,0 +1,12 @@
+﻿@page
+@model AddRestaurantModel
+@{
+}
+<form method="post">
+    <p>Name:</p>
+    <input type="text" asp-for="Restaurant.Name" />
+    <p>DeliveryPriceId:</p>
+    <input type="text" asp-for="Restaurant.DeliveryPriceId" />
+
+    <button type="submit">Add</button>
+</form>

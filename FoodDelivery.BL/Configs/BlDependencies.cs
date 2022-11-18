@@ -14,7 +14,9 @@ public static class BlDependencies
     public static IServiceCollection AddBlDependencies(this IServiceCollection services)
     {
         services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(MappingConfig.ConfigureMapping)));
-        services.AddSingleton<DbContext, FoodDeliveryDbContext>();
+        services.AddScoped<DbContext, FoodDeliveryDbContext>();
+        // TODO Same as
+        // services.AddDbContext<DbContext, FoodDeliveryDbContext>();
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();
         
         services.AddScoped<IDbUtilsService, DbUtilsService>();

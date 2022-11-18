@@ -7,4 +7,5 @@ public interface IRestaurantFacade
 {
     public Task<IEnumerable<RestaurantGetDto>> GetAllAsync();
     public Task<IEnumerable<RestaurantGetDto>> QueryAsync(QueryDto<RestaurantGetDto> queryDto);
+    public Task Create(RestaurantCreateDto restaurantCreateDto);
 }
