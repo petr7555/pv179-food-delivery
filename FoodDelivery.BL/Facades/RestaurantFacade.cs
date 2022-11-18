@@ -5,17 +5,17 @@ using FoodDelivery.Infrastructure.UnitOfWork;
 
 namespace FoodDelivery.BL.Facades;
 
-public class RestaurantFacade: IRestaurantFacade
+public class RestaurantFacade : IRestaurantFacade
 {
     private readonly IRestaurantService _restaurantService;
     private readonly IUnitOfWork _uow;
-    
+
     public RestaurantFacade(IUnitOfWork uow, IRestaurantService restaurantService)
     {
         _restaurantService = restaurantService;
         _uow = uow;
     }
-    
+
     public async Task<IEnumerable<RestaurantGetDto>> GetAllAsync()
     {
         return await _restaurantService.GetAllAsync();
