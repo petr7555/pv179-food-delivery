@@ -8,7 +8,8 @@ using FoodDelivery.Infrastructure.UnitOfWork;
 namespace FoodDelivery.BL.Services;
 
 public class
-    RestaurantService : CrudService<Restaurant, int, RestaurantGetDto, RestaurantCreateDto, RestaurantUpdateDto>, IRestaurantService
+    RestaurantService : CrudService<Restaurant, int, RestaurantGetDto, RestaurantCreateDto, RestaurantUpdateDto>,
+        IRestaurantService
 {
     private readonly IUnitOfWork _unitOfWork;
 

@@ -4,7 +4,7 @@ using FoodDelivery.Infrastructure.Repository;
 
 namespace FoodDelivery.Infrastructure.UnitOfWork;
 
-public interface IUnitOfWork
+public interface IUnitOfWork : IAsyncDisposable
 {
     public IRepository<User, int> UserRepository { get; }
     public IRepository<Order, int> OrderRepository { get; }

@@ -52,17 +52,17 @@ public class RepositoryTests
     }
 
     [Fact]
-    public void ItGetsRestaurantThatExistsById()
+    public async Task ItGetsRestaurantThatExistsById()
     {
         var expectedRestaurant = new Restaurant
             { Id = 6, Name = "POE POE", DeliveryPriceId = _price.Id, DeliveryPrice = _price };
-        var result = _repository.GetByIdAsync(6).Result;
+        var result = await _repository.GetByIdAsync(6);
 
         result.Should().BeEquivalentTo(expectedRestaurant);
     }
 
     [Fact]
-    public void ItGetsAllRestaurants()
+    public async Task ItGetsAllRestaurants()
     {
         var expectedRestaurants = new List<Restaurant>
         {
@@ -74,7 +74,7 @@ public class RepositoryTests
             new() { Id = 6, Name = "POE POE", DeliveryPriceId = _price.Id, DeliveryPrice = _price }
         };
 
-        var result = _repository.GetAllAsync().Result;
+        var result = await _repository.GetAllAsync();
 
         result.Should().BeEquivalentTo(expectedRestaurants);
     }
@@ -125,9 +125,9 @@ public class RepositoryTests
 
 
     [Fact]
-    public void ItReturnsNullWhenRestaurantDoesNotExist()
+    public async Task ItReturnsNullWhenRestaurantDoesNotExist()
     {
-        var result = _repository.GetByIdAsync(7).Result;
+        var result = await _repository.GetByIdAsync(7);
 
         result.Should().BeNull();
     }

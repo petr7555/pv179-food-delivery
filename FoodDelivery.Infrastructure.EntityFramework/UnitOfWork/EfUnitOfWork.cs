@@ -1,4 +1,3 @@
-using FoodDelivery.DAL.EntityFramework.Data;
 using FoodDelivery.DAL.EntityFramework.Models;
 using FoodDelivery.Infrastructure.EntityFramework.Query;
 using FoodDelivery.Infrastructure.EntityFramework.Repositories;
@@ -39,8 +38,8 @@ public class EfUnitOfWork : IUnitOfWork
         await _context.SaveChangesAsync();
     }
 
-    // public async ValueTask DisposeAsync()
-    // {
-        // await _context.DisposeAsync();
-    // }
+    public async ValueTask DisposeAsync()
+    {
+        await _context.DisposeAsync();
+    }
 }

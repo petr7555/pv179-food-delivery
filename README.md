@@ -24,4 +24,4 @@ See the app [deployed here](https://pv179-food-delivery.azurewebsites.net/).
 - As a content manager I can add/delete/edit restaurants, food and drinks.
 
 ## How to run
-- `dotnet watch --project FoodDeliveryFE` to run web application with hot reload
+- `dotnet watch --project FoodDelivery.FE` to run web application with hot reload
