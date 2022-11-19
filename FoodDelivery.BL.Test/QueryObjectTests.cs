@@ -8,6 +8,52 @@ namespace FoodDelivery.BL.Test;
 
 public class QueryObjectTest
 {
+    private class TestQuery : Query<TestEntity>
+    {
+        private IQueryable<TestEntity> _allEntities;
+
+        public TestQuery(IQueryable<TestEntity> allEntities)
+        {
+            _allEntities = allEntities;
+        }
+
+        public override Task<IEnumerable<TestEntity>> ExecuteAsync()
+        {
+            _allEntities = ApplyWhere(_allEntities);
+            _allEntities = ApplyOrderBy(_allEntities);
+            _allEntities = ApplyPaging(_allEntities);
+
+            return Task.FromResult<IEnumerable<TestEntity>>(_allEntities.ToList());
+        }
+
+        private IQueryable<TestEntity> ApplyWhere(IQueryable<TestEntity> query)
+        {
+            return WherePredicates.Aggregate(query, (current, expr) => current.Where(expr));
+        }
+
+        private IQueryable<TestEntity> ApplyOrderBy(IQueryable<TestEntity> query)
+        {
+            if (!OrderByConfig.HasValue)
+            {
+                return query;
+            }
+
+            var (keySelector, descending) = OrderByConfig.Value;
+            return descending ? query.OrderByDescending(keySelector) : query.OrderBy(keySelector);
+        }
+
+        private IQueryable<TestEntity> ApplyPaging(IQueryable<TestEntity> query)
+        {
+            if (!PageConfig.HasValue)
+            {
+                return query;
+            }
+
+            var (pageToFetch, pageSize) = PageConfig.Value;
+            return query.Skip((pageToFetch - 1) * pageSize).Take(pageSize);
+        }
+    }
+    
     private readonly IMapper _mapper;
     private readonly QueryObject<TestDto, TestEntity> _queryObject;
 
@@ -15,7 +61,6 @@ public class QueryObjectTest
     private readonly TestEntity _entityA;
     private readonly TestEntity _oneOfEntities;
     private readonly TestEntity _anotherOne;
-    private readonly List<TestEntity> _allEntities;
 
     public QueryObjectTest()
     {
@@ -23,7 +68,8 @@ public class QueryObjectTest
         _entityZ = new TestEntity { Id = 2, Name = "Entity Z" };
         _oneOfEntities = new TestEntity { Id = 3, Name = "One of test entities" };
         _anotherOne = new TestEntity { Id = 4, Name = "Another one" };
-        _allEntities = new List<TestEntity>
+        
+        var allEntities = new List<TestEntity>
         {
             _entityA,
             _entityZ,
@@ -31,7 +77,7 @@ public class QueryObjectTest
             _anotherOne,
         };
 
-        var query = new TestQuery(_allEntities.AsQueryable());
+        var query = new TestQuery(allEntities.AsQueryable());
 
         _mapper = new Mapper(new MapperConfiguration(TestMappingConfig.ConfigureMapping));
         _queryObject = new QueryObject<TestDto, TestEntity>(_mapper, query);
@@ -184,51 +230,5 @@ public class QueryObjectTest
             .BeEquivalentTo(
                 new List<TestEntity>().Select(e => _mapper.Map<TestDto>(e))
             );
-    }
-
-    private class TestQuery : Query<TestEntity>
-    {
-        private IQueryable<TestEntity> _allEntities;
-
-        public TestQuery(IQueryable<TestEntity> allEntities)
-        {
-            _allEntities = allEntities;
-        }
-
-        public override Task<IEnumerable<TestEntity>> ExecuteAsync()
-        {
-            _allEntities = ApplyWhere(_allEntities);
-            _allEntities = ApplyOrderBy(_allEntities);
-            _allEntities = ApplyPaging(_allEntities);
-
-            return Task.FromResult<IEnumerable<TestEntity>>(_allEntities.ToList());
-        }
-
-        private IQueryable<TestEntity> ApplyWhere(IQueryable<TestEntity> query)
-        {
-            return WherePredicates.Aggregate(query, (current, expr) => current.Where(expr));
-        }
-
-        private IQueryable<TestEntity> ApplyOrderBy(IQueryable<TestEntity> query)
-        {
-            if (!OrderByConfig.HasValue)
-            {
-                return query;
-            }
-
-            var (keySelector, descending) = OrderByConfig.Value;
-            return descending ? query.OrderByDescending(keySelector) : query.OrderBy(keySelector);
-        }
-
-        private IQueryable<TestEntity> ApplyPaging(IQueryable<TestEntity> query)
-        {
-            if (!PageConfig.HasValue)
-            {
-                return query;
-            }
-
-            var (pageToFetch, pageSize) = PageConfig.Value;
-            return query.Skip((pageToFetch - 1) * pageSize).Take(pageSize);
-        }
     }
 }
