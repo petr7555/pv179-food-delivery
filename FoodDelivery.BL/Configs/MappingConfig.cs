@@ -15,5 +15,6 @@ public static class MappingConfig
         config.CreateMap<Product, ProductGetDto>().ReverseMap();
         config.CreateMap<Restaurant, RestaurantGetDto>().ReverseMap();
         config.CreateMap<Restaurant, RestaurantCreateDto>().ReverseMap();
+        config.CreateMap<Restaurant, RestaurantUpdateDto>().ReverseMap();
     }
 }
