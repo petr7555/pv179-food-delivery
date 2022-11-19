@@ -3,10 +3,15 @@
 @{
 }
 <form method="post">
-    <p>Name:</p>
-    <input type="text" asp-for="Restaurant.Name" />
-    <p>DeliveryPriceId:</p>
-    <input type="text" asp-for="Restaurant.DeliveryPriceId" />
+  <p>
+    <label for="name">Name:</label>
+    <input type="text" id="name" asp-for="Restaurant.Name"/>
+  </p>
 
-    <button type="submit">Add</button>
+  <p>
+    <label for="deliveryPriceId">DeliveryPriceId:</label>
+    <input type="text" id="deliveryPriceId" asp-for="Restaurant.DeliveryPriceId" value="1"/>
+  </p>
+
+  <button type="submit">Add</button>
 </form>

@@ -8,7 +8,9 @@ namespace FoodDelivery.FE.Pages.Forms
     public class AddRestaurantModel : PageModel
     {
         private readonly IRestaurantFacade _restaurantFacade;
-        [BindProperty] public RestaurantCreateDto Restaurant { get; set; }
+
+        [BindProperty]
+        public RestaurantCreateDto Restaurant { get; set; }
 
         public AddRestaurantModel(IRestaurantFacade restaurantFacade)
         {
