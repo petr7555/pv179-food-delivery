@@ -8,7 +8,7 @@ namespace FoodDelivery.BL.Test;
 
 public class QueryObjectTest
 {
-    private readonly Mapper _mapper;
+    private readonly IMapper _mapper;
     private readonly QueryObject<TestDto, TestEntity> _queryObject;
 
     private readonly TestEntity _entityZ;
