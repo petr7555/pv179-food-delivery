@@ -15,10 +15,12 @@ public class EfUnitOfWork : IUnitOfWork
     public IRepository<User, int> UserRepository { get; }
     public IRepository<Order, int> OrderRepository { get; }
     public IRepository<Restaurant, int> RestaurantRepository { get; }
+    public IRepository<Product, int> ProductRepository { get; }
 
     public IQuery<User> UserQuery { get; }
     public IQuery<Order> OrderQuery { get; }
     public IQuery<Restaurant> RestaurantQuery { get; }
+    public IQuery<Product> ProductQuery { get; }
 
     public EfUnitOfWork(DbContext context)
     {
@@ -27,6 +29,7 @@ public class EfUnitOfWork : IUnitOfWork
         UserRepository = new EfRepository<User, int>(_context);
         OrderRepository = new EfRepository<Order, int>(_context);
         RestaurantRepository = new EfRepository<Restaurant, int>(_context);
+        ProductRepository = new EfRepository<Product, int>(_context);
 
         UserQuery = new EfQuery<User>(_context);
         OrderQuery = new EfQuery<Order>(_context);

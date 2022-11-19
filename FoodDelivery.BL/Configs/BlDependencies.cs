@@ -23,6 +23,8 @@ public static class BlDependencies
         services.AddScoped<IRestaurantService, RestaurantService>();
         services.AddScoped<IRestaurantFacade, RestaurantFacade>();
 
+        services.AddScoped<IProductService, ProductService>();
+        
         return services;
     }
 }

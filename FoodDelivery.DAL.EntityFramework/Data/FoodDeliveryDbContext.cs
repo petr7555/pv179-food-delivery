@@ -18,7 +18,15 @@ public class FoodDeliveryDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Seed();
-
+        
+        modelBuilder.Entity<Product>()
+            .Navigation(p => p.Price)
+            .AutoInclude();
+        
+        modelBuilder.Entity<Price>()
+            .Navigation(p => p.Currency)
+            .AutoInclude();
+        
         base.OnModelCreating(modelBuilder);
     }
 }
