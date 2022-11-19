@@ -33,6 +33,7 @@ public class Checkout : PageModel
     /**
      * Use credit card number 4242 4242 4242 4242 for testing.
      */
+    // TODO move logic to OrderService
     public async Task<IActionResult> OnPost()
     {
         var sessionLineItemOptions = new List<SessionLineItemOptions>();
