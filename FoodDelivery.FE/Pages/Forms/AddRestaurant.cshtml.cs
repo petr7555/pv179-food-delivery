@@ -5,14 +5,14 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FoodDelivery.FE.Pages.Forms
 {
-    public class AddRestaurantModel : PageModel
+    public class AddRestaurant : PageModel
     {
         private readonly IRestaurantFacade _restaurantFacade;
 
         [BindProperty]
         public RestaurantCreateDto Restaurant { get; set; }
 
-        public AddRestaurantModel(IRestaurantFacade restaurantFacade)
+        public AddRestaurant(IRestaurantFacade restaurantFacade)
         {
             _restaurantFacade = restaurantFacade;
         }

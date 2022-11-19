@@ -1,0 +1,29 @@
+@page
+@model FoodDelivery.FE.Pages.Payment.Checkout
+
+@{
+  ViewData["Title"] = "Checkout";
+}
+
+@section Styles {
+  <link href="@Url.Content("~/css/Checkout.css")" rel="stylesheet" type="text/css"/>
+}
+
+@section Scripts {
+  <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
+  <script src="https://js.stripe.com/v3/"></script>
+}
+
+<section>
+  <div class="product">
+    <img src="https://assets.epicurious.com/photos/57c5c6d9cf9e9ad43de2d96e/master/pass/the-ultimate-hamburger.jpg"
+         alt="Hamburger"/>
+    <div class="description">
+      <h3>Hamburger</h3>
+      <h5>200 CZK</h5>
+    </div>
+  </div>
+  <form method="POST">
+    <button type="submit" id="checkout-button">Checkout</button>
+  </form>
+</section>

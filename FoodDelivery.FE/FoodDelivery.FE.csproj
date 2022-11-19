@@ -10,4 +10,12 @@
       <ProjectReference Include="..\FoodDelivery.BL\FoodDelivery.BL.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Stripe.net" Version="41.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="wwwroot\css\Checkout.css" />
+    </ItemGroup>
+
 </Project>
