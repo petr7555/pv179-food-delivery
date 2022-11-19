@@ -121,7 +121,7 @@ public class QueryTests
             new() { Id = 3, Name = "Pizza Hut", DeliveryPriceId = price.Id, DeliveryPrice = price },
             new() { Id = 6, Name = "POE POE", DeliveryPriceId = price.Id, DeliveryPrice = price },
             new() { Id = 4, Name = "Steak House K1", DeliveryPriceId = price.Id, DeliveryPrice = price },
-        });
+        }, c => c.WithStrictOrdering());
     }
 
     [Fact]
@@ -139,14 +139,14 @@ public class QueryTests
             new() { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = price.Id, DeliveryPrice = price },
             new() { Id = 2, Name = "Pizza Domino's", DeliveryPriceId = price.Id, DeliveryPrice = price },
             new() { Id = 5, Name = "Jean Paul's", DeliveryPriceId = price.Id, DeliveryPrice = price },
-        });
+        }, c => c.WithStrictOrdering());
     }
 
     [Fact]
     public async Task ItOrdersByIdDescending()
     {
         var query = new EfQuery<Restaurant>(_dbContext);
-        query.OrderBy(r => r.Id);
+        query.OrderBy(r => r.Id, true);
         var result = (await query.ExecuteAsync()).ToList();
 
         result.Should().BeEquivalentTo(new List<Restaurant>
@@ -157,7 +157,7 @@ public class QueryTests
             new() { Id = 3, Name = "Pizza Hut", DeliveryPriceId = price.Id, DeliveryPrice = price },
             new() { Id = 2, Name = "Pizza Domino's", DeliveryPriceId = price.Id, DeliveryPrice = price },
             new() { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = price.Id, DeliveryPrice = price },
-        });
+        }, c => c.WithStrictOrdering());
     }
 
 
@@ -177,7 +177,7 @@ public class QueryTests
             new() { Id = 3, Name = "Pizza Hut", DeliveryPriceId = price.Id, DeliveryPrice = price },
             new() { Id = 6, Name = "POE POE", DeliveryPriceId = price.Id, DeliveryPrice = price },
             new() { Id = 4, Name = "Steak House K1", DeliveryPriceId = price.Id, DeliveryPrice = price },
-        });
+        }, c => c.WithStrictOrdering());
     }
 
 
@@ -265,7 +265,7 @@ public class QueryTests
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
             new() { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = price.Id, DeliveryPrice = price },
-        });
+        }, c => c.WithStrictOrdering());
     }
 
     [Fact]
@@ -281,6 +281,6 @@ public class QueryTests
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
             new() { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = price.Id, DeliveryPrice = price },
-        });
+        }, c => c.WithStrictOrdering());
     }
 }

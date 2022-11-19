@@ -34,6 +34,7 @@ public class EfUnitOfWork : IUnitOfWork
         UserQuery = new EfQuery<User>(_context);
         OrderQuery = new EfQuery<Order>(_context);
         RestaurantQuery = new EfQuery<Restaurant>(_context);
+        ProductQuery = new EfQuery<Product>(_context);
     }
 
     public async Task CommitAsync()
