@@ -1,0 +1,20 @@
+﻿@page
+@model FoodDelivery.FE.Pages.Forms.AddRestaurant
+
+@{
+  ViewData["Title"] = "Add Restaurant";
+}
+
+<form method="post">
+  <p>
+    <label for="name">Name:</label>
+    <input type="text" id="name" asp-for="Restaurant.Name"/>
+  </p>
+
+  <p>
+    <label for="deliveryPriceId">DeliveryPriceId:</label>
+    <input type="text" id="deliveryPriceId" asp-for="Restaurant.DeliveryPriceId" value="1"/>
+  </p>
+
+  <button type="submit">Add</button>
+</form>

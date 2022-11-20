@@ -8,6 +8,7 @@ riderModule.iml
 *.vpp.vbak
 .vs/
 .vscode/
+.idea/
 *.DotSettings.user
 
 appsettings.Production.json

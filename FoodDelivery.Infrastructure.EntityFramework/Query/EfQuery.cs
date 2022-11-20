@@ -7,9 +7,9 @@ public class EfQuery<TEntity> : Query<TEntity> where TEntity : class
 {
     private DbContext Context { get; }
 
-    public EfQuery(DbContext dbContext)
+    public EfQuery(DbContext context)
     {
-        Context = dbContext;
+        Context = context;
     }
 
     public override async Task<IEnumerable<TEntity>> ExecuteAsync()

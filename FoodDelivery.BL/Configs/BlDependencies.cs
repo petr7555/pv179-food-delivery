@@ -11,17 +11,20 @@ namespace FoodDelivery.BL.Configs;
 
 public static class BlDependencies
 {
-    public static IServiceCollection AddBlDependencies(this IServiceCollection services)
+    public static IServiceCollection AddBlDependencies(this IServiceCollection services, string connectionString)
     {
         services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(MappingConfig.ConfigureMapping)));
-        services.AddSingleton<DbContext, FoodDeliveryDbContext>();
+        services.AddDbContext<DbContext, FoodDeliveryDbContext>(options =>
+            options.UseNpgsql(connectionString));
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();
-        
+
         services.AddScoped<IDbUtilsService, DbUtilsService>();
-        
+
         services.AddScoped<IRestaurantService, RestaurantService>();
         services.AddScoped<IRestaurantFacade, RestaurantFacade>();
 
+        services.AddScoped<IProductService, ProductService>();
+        
         return services;
     }
 }

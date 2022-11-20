@@ -1,5 +1,6 @@
 using FoodDelivery.BL.Configs;
 using FoodDelivery.BL.Services;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 // Dependency injection
-builder.Services.AddBlDependencies();
+builder.Services.AddBlDependencies(builder.Configuration.GetConnectionString("DefaultConnection"));
+
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe")["SecretApiKey"];
 
 var app = builder.Build();
 
@@ -15,7 +18,7 @@ if (app.Environment.IsDevelopment())
 {
     using (var scope = app.Services.CreateScope())
     {
-       scope.ServiceProvider.GetRequiredService<IDbUtilsService>().ResetDatabase();
+        scope.ServiceProvider.GetRequiredService<IDbUtilsService>().ResetDatabase();
     }
 }
 

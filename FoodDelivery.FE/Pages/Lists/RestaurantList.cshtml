@@ -2,11 +2,12 @@
 @model FoodDelivery.FE.Pages.Lists.RestaurantList
 
 @{
+  ViewData["Title"] = "Restaurants";
 }
 
 <ul>
-    @foreach (var restaurant in Model.Restaurants)
-    {
-        <li>@restaurant.Name</li>
-    }
+  @foreach (var restaurant in Model.Restaurants)
+  {
+    <li>@restaurant.Name</li>
+  }
 </ul>

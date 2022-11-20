@@ -1,0 +1,19 @@
+@page
+@model FoodDelivery.FE.Pages.Payment.Checkout
+
+@{
+  ViewData["Title"] = "Checkout";
+}
+
+@* TODO remove *@
+@* @section Styles { *@
+  @* <link href="@Url.Content("~/css/Checkout.css")" rel="stylesheet" type="text/css"/> *@
+@* } *@
+
+<section>
+  @* TODO Later something like: for each product in user's cart show that product and quantity  *@
+  
+  <form method="POST">
+    <button type="submit" id="checkout-button">Checkout</button>
+  </form>
+</section>

@@ -1,4 +1,3 @@
-using FoodDelivery.DAL.EntityFramework.Data;
 using FoodDelivery.DAL.EntityFramework.Models;
 using FoodDelivery.Infrastructure.EntityFramework.Query;
 using FoodDelivery.Infrastructure.EntityFramework.Repositories;
@@ -16,10 +15,12 @@ public class EfUnitOfWork : IUnitOfWork
     public IRepository<User, int> UserRepository { get; }
     public IRepository<Order, int> OrderRepository { get; }
     public IRepository<Restaurant, int> RestaurantRepository { get; }
+    public IRepository<Product, int> ProductRepository { get; }
 
     public IQuery<User> UserQuery { get; }
     public IQuery<Order> OrderQuery { get; }
     public IQuery<Restaurant> RestaurantQuery { get; }
+    public IQuery<Product> ProductQuery { get; }
 
     public EfUnitOfWork(DbContext context)
     {
@@ -28,10 +29,12 @@ public class EfUnitOfWork : IUnitOfWork
         UserRepository = new EfRepository<User, int>(_context);
         OrderRepository = new EfRepository<Order, int>(_context);
         RestaurantRepository = new EfRepository<Restaurant, int>(_context);
+        ProductRepository = new EfRepository<Product, int>(_context);
 
         UserQuery = new EfQuery<User>(_context);
         OrderQuery = new EfQuery<Order>(_context);
         RestaurantQuery = new EfQuery<Restaurant>(_context);
+        ProductQuery = new EfQuery<Product>(_context);
     }
 
     public async Task CommitAsync()
@@ -39,8 +42,8 @@ public class EfUnitOfWork : IUnitOfWork
         await _context.SaveChangesAsync();
     }
 
-    // public async ValueTask DisposeAsync()
-    // {
-        // await _context.DisposeAsync();
-    // }
+    public async ValueTask DisposeAsync()
+    {
+        await _context.DisposeAsync();
+    }
 }

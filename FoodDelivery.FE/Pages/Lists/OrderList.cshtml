@@ -2,11 +2,12 @@
 @model FoodDelivery.FE.Pages.Lists.OrderList
 
 @{
+  ViewData["Title"] = "Orders";
 }
 
 <ul>
-    @foreach (var order in Model.Orders)
-    {
-        <li>@order.Id</li>
-    }
+  @foreach (var order in Model.Orders)
+  {
+    <li>@order.Id</li>
+  }
 </ul>
