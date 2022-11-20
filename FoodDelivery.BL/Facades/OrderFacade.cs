@@ -10,6 +10,12 @@ namespace FoodDelivery.BL.Facades
     public class OrderFacade
     {
         private readonly IMapper _mapper = new Mapper(new MapperConfiguration(MappingConfig.ConfigureMapping));
+        private readonly IOrderService _orderService;
+
+        public OrderFacade(IOrderService iOrderService) 
+        {
+            _orderService = iOrderService;
+        }
 
         public async Task<IEnumerable<OrderGetDto>> GetAllAsync()
         {
