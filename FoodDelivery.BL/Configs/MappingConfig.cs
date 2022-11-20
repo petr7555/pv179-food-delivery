@@ -3,6 +3,7 @@ using AutoMapper.Extensions.ExpressionMapping;
 using FoodDelivery.BL.DTOs.Category;
 using FoodDelivery.BL.DTOs.Currency;
 using FoodDelivery.BL.DTOs.CustomerDetails;
+using FoodDelivery.BL.DTOs.Order;
 using FoodDelivery.BL.DTOs.Price;
 using FoodDelivery.BL.DTOs.Product;
 using FoodDelivery.BL.DTOs.Restaurant;
