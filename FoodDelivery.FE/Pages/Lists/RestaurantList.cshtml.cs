@@ -1,4 +1,3 @@
-using FoodDelivery.BL.DTOs;
 using FoodDelivery.BL.DTOs.Restaurant;
 using FoodDelivery.BL.Facades;
 using Microsoft.AspNetCore.Mvc.RazorPages;
