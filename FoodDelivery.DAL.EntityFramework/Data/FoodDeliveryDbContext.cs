@@ -10,6 +10,8 @@ public class FoodDeliveryDbContext : DbContext
     public DbSet<Restaurant> Restaurants { get; set; }
     public DbSet<Price> Prices { get; set; }
     public DbSet<Currency> Currencies { get; set; }
+    
+    public DbSet<Category> Categories { get; set; }
 
     public FoodDeliveryDbContext(DbContextOptions<FoodDeliveryDbContext> options) : base(options)
     {
@@ -25,6 +27,10 @@ public class FoodDeliveryDbContext : DbContext
         
         modelBuilder.Entity<Price>()
             .Navigation(p => p.Currency)
+            .AutoInclude();
+        
+        modelBuilder.Entity<Category>()
+            .Navigation(c => c.Products)
             .AutoInclude();
         
         base.OnModelCreating(modelBuilder);
