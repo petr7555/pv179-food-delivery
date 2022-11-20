@@ -1,6 +1,7 @@
 using AutoMapper;
 using AutoMapper.Extensions.ExpressionMapping;
 using FoodDelivery.BL.DTOs.Currency;
+using FoodDelivery.BL.DTOs.Order;
 using FoodDelivery.BL.DTOs.Price;
 using FoodDelivery.BL.DTOs.Product;
 using FoodDelivery.BL.DTOs.Restaurant;
@@ -22,5 +23,7 @@ public static class MappingConfig
         config.CreateMap<Price, PriceGetDto>().ReverseMap();
 
         config.CreateMap<Currency, CurrencyGetDto>().ReverseMap();
+
+        config.CreateMap<Order, OrderGetDto>().ReverseMap();
     }
 }
