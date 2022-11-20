@@ -46,5 +46,27 @@ namespace FoodDelivery.BL.Services
 
             _unitOfWork.UserRepository.Update(user);
         }
+
+        public async void BanUser(int userId)
+        {
+            // Will be reworked based on authentication and authorization
+
+            // check privileges
+
+            var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
+            user.Banned = true;
+            _unitOfWork.UserRepository.Update(user);
+        }
+
+        public async void UnbanUser(int userId)
+        {
+            // Will be reworked based on authentication and authorization
+
+            // check privileges
+
+            var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
+            user.Banned = false;
+            _unitOfWork.UserRepository.Update(user);
+        }
     }
 }

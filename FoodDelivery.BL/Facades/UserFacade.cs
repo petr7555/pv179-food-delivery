@@ -33,6 +33,14 @@ namespace FoodDelivery.BL.Facades
             _userService.UpdateAddress(userId, addressId, addressUpdateDto);
         }
 
-        
+        public void BanUser(int userId)
+        {
+            _userService.BanUser(userId);
+        }
+
+        public void UnbanUser(int userId)
+        {
+            _userService.UnbanUser(userId);
+        }
     }
 }

@@ -11,5 +11,7 @@ namespace FoodDelivery.BL.Facades
         public Task<IEnumerable<UserGetDto>> QueryAsync(QueryDto<UserGetDto> queryDto);
         public void UpdateCustomerDetails(int userId, CustomerDetailsUpdateDto customerDetailsUpdateDto);
         public void UpdateAddress(int userId, int addressId, AddressUpdateDto addressUpdateDto);
+        public void BanUser(int userId);
+        public void UnbanUser(int userId);
     }
 }

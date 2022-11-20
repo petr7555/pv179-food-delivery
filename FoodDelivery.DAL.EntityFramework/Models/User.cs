@@ -10,6 +10,8 @@ public class User : BaseEntity
     [MaxLength(255)]
     public string Username { get; set; }
 
+    public bool Banned { get; set; }
+
     // TODO use some proper authentication
     public string PasswordHash { get; set; }
     public string Salt { get; set; }

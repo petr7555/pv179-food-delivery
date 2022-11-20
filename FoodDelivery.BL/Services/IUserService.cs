@@ -12,5 +12,8 @@ namespace FoodDelivery.BL.Services
 
         public void UpdateCustomerDetails(int userId, CustomerDetailsUpdateDto customerDetailsUpdateDto);
         public void UpdateAddress(int userId, int addressId, AddressUpdateDto addressUpdateDto);
+
+        public void BanUser(int userId);
+        public void UnbanUser(int userId);
     }
 }
