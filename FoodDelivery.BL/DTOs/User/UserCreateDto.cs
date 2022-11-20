@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace FoodDelivery.BL.DTOs.User
+﻿namespace FoodDelivery.BL.DTOs.User
 {
     public class UserCreateDto
     {
@@ -10,6 +8,5 @@ namespace FoodDelivery.BL.DTOs.User
 
         public string PasswordHash { get; set; }
         public string Salt { get; set; }
-
     }
 }

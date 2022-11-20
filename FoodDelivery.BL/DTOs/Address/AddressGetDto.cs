@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-namespace FoodDelivery.BL.DTOs.Address
+﻿namespace FoodDelivery.BL.DTOs.Address
 {
     public class AddressGetDto
     {

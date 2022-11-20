@@ -39,7 +39,8 @@ namespace FoodDelivery.BL.Services
             if (user.CustomerDetails.BillingAddressId == addressId)
             {
                 user.CustomerDetails.BillingAddress = Mapper.Map<Address>(addressUpdateDto);
-            } else if (user.CustomerDetails.DeliveryAddressId == addressId)
+            }
+            else if (user.CustomerDetails.DeliveryAddressId == addressId)
             {
                 user.CustomerDetails.DeliveryAddress = Mapper.Map<Address>(addressUpdateDto);
             }

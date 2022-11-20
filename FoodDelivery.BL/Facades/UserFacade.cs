@@ -3,7 +3,7 @@ using FoodDelivery.BL.DTOs.Address;
 using FoodDelivery.BL.DTOs.CustomerDetails;
 using FoodDelivery.BL.DTOs.User;
 using FoodDelivery.BL.Services;
-using System;
+
 namespace FoodDelivery.BL.Facades
 {
     public class UserFacade : IUserFacade
@@ -14,6 +14,7 @@ namespace FoodDelivery.BL.Facades
         {
             _userService = userService;
         }
+
         public async Task<IEnumerable<UserGetDto>> GetAllAsync()
         {
             return await _userService.GetAllAsync();
@@ -23,6 +24,7 @@ namespace FoodDelivery.BL.Facades
         {
             return await _userService.QueryAsync(queryDto);
         }
+
         public void UpdateCustomerDetails(int userId, CustomerDetailsUpdateDto customerDetailsUpdateDto)
         {
             _userService.UpdateCustomerDetails(userId, customerDetailsUpdateDto);
