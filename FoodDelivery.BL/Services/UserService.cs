@@ -24,7 +24,7 @@ namespace FoodDelivery.BL.Services
             return await queryObject.ExecuteAsync(queryDto);
         }
 
-        public async void UpdateCustomerDetails(int userId, CustomerDetailsUpdateDto customerDetailsUpdateDto)
+        public async Task UpdateCustomerDetailsAsync(int userId, CustomerDetailsUpdateDto customerDetailsUpdateDto)
         {
             var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
 
@@ -32,7 +32,7 @@ namespace FoodDelivery.BL.Services
             _unitOfWork.UserRepository.Update(user);
         }
 
-        public async void UpdateAddress(int userId, int addressId, AddressUpdateDto addressUpdateDto)
+        public async Task UpdateAddressAsync(int userId, int addressId, AddressUpdateDto addressUpdateDto)
         {
             var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
 
@@ -48,22 +48,22 @@ namespace FoodDelivery.BL.Services
             _unitOfWork.UserRepository.Update(user);
         }
 
-        public async void BanUser(int userId)
+        public async Task BanUserAsync(int userId)
         {
-            // Will be reworked based on authentication and authorization
+            // TODO Will be reworked based on authentication and authorization
 
-            // check privileges
+            // TODO check privileges
 
             var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
             user.Banned = true;
             _unitOfWork.UserRepository.Update(user);
         }
 
-        public async void UnbanUser(int userId)
+        public async Task UnbanUserAsync(int userId)
         {
-            // Will be reworked based on authentication and authorization
+            // TODO Will be reworked based on authentication and authorization
 
-            // check privileges
+            // TODO check privileges
 
             var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
             user.Banned = false;

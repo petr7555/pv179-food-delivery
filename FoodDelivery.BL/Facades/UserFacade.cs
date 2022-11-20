@@ -25,24 +25,24 @@ namespace FoodDelivery.BL.Facades
             return await _userService.QueryAsync(queryDto);
         }
 
-        public void UpdateCustomerDetails(int userId, CustomerDetailsUpdateDto customerDetailsUpdateDto)
+        public async Task UpdateCustomerDetailsAsync(int userId, CustomerDetailsUpdateDto customerDetailsUpdateDto)
         {
-            _userService.UpdateCustomerDetails(userId, customerDetailsUpdateDto);
+            await _userService.UpdateCustomerDetailsAsync(userId, customerDetailsUpdateDto);
         }
 
-        public void UpdateAddress(int userId, int addressId, AddressUpdateDto addressUpdateDto)
+        public async Task UpdateAddressAsync(int userId, int addressId, AddressUpdateDto addressUpdateDto)
         {
-            _userService.UpdateAddress(userId, addressId, addressUpdateDto);
+            _userService.UpdateAddressAsync(userId, addressId, addressUpdateDto);
         }
 
-        public void BanUser(int userId)
+        public async Task BanUserAsync(int userId)
         {
-            _userService.BanUser(userId);
+            _userService.BanUserAsync(userId);
         }
 
-        public void UnbanUser(int userId)
+        public async Task UnbanUserAsync(int userId)
         {
-            _userService.UnbanUser(userId);
+            await _userService.UnbanUserAsync(userId);
         }
     }
 }

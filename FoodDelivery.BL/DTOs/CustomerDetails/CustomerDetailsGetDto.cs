@@ -1,7 +1,6 @@
-﻿namespace FoodDelivery.BL.DTOs.CustomerDetails
+﻿namespace FoodDelivery.BL.DTOs.CustomerDetails;
+
+public class CustomerDetailsGetDto
 {
-    public class CustomerDetailsGetDto
-    {
-        public string Email { get; set; }
-    }
+    public string Email { get; set; }
 }

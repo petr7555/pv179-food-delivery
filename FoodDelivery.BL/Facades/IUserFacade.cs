@@ -9,9 +9,9 @@ namespace FoodDelivery.BL.Facades
     {
         public Task<IEnumerable<UserGetDto>> GetAllAsync();
         public Task<IEnumerable<UserGetDto>> QueryAsync(QueryDto<UserGetDto> queryDto);
-        public void UpdateCustomerDetails(int userId, CustomerDetailsUpdateDto customerDetailsUpdateDto);
-        public void UpdateAddress(int userId, int addressId, AddressUpdateDto addressUpdateDto);
-        public void BanUser(int userId);
-        public void UnbanUser(int userId);
+        public Task UpdateCustomerDetailsAsync(int userId, CustomerDetailsUpdateDto customerDetailsUpdateDto);
+        public Task UpdateAddressAsync(int userId, int addressId, AddressUpdateDto addressUpdateDto);
+        public Task BanUserAsync(int userId);
+        public Task UnbanUserAsync(int userId);
     }
 }
