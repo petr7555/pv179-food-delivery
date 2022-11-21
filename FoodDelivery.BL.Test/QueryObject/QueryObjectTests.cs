@@ -4,7 +4,7 @@ using FoodDelivery.BL.DTOs;
 using FoodDelivery.BL.QueryObject;
 using FoodDelivery.Infrastructure.Query;
 
-namespace FoodDelivery.BL.Test;
+namespace FoodDelivery.BL.Test.QueryObject;
 
 public class QueryObjectTest
 {

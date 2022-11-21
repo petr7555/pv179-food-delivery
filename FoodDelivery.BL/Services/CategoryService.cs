@@ -26,7 +26,8 @@ public class CategoryService : CrudService<Category, int, CategoryGetDto, Catego
 
     public async Task<IEnumerable<RestaurantGetDto>> GetRestaurantsForCategory(CategoryGetDto category)
     {
-        return (await GetAllAsync())
+        var categories = await GetAllAsync();
+        return categories
             .Where(c => c.Name == category.Name)
             .SelectMany(c => c.Products)
             .Select(p => p.Restaurant)

@@ -18,6 +18,5 @@ public interface IUnitOfWork : IAsyncDisposable
     public IQuery<Product> ProductQuery { get; }
     public IQuery<Category> CategoryQuery { get; }
 
-
     public Task CommitAsync();
 }

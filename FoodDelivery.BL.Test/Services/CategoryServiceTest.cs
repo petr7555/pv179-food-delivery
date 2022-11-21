@@ -8,7 +8,7 @@ using FoodDelivery.Infrastructure.Repository;
 using FoodDelivery.Infrastructure.UnitOfWork;
 using Moq;
 
-namespace FoodDelivery.BL.Test;
+namespace FoodDelivery.BL.Test.Services;
 
 public class CategoryServiceTest
 {

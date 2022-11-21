@@ -4,7 +4,7 @@ using FoodDelivery.BL.Services;
 using FoodDelivery.Infrastructure.Repository;
 using Moq;
 
-namespace FoodDelivery.BL.Test;
+namespace FoodDelivery.BL.Test.Services;
 
 public class CrudServiceTest
 {
