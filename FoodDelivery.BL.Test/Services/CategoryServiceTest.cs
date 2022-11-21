@@ -46,7 +46,7 @@ public class CategoryServiceTest
         _repositoryMock.Setup(r => r.GetAllAsync())
             .ReturnsAsync(new List<Category> { category1, category2 });
         
-        var result = await _service.GetAllRestaurants(_mapper.Map<CategoryGetDto>(category1));
+        var result = await _service.GetRestaurantsForCategory(_mapper.Map<CategoryGetDto>(category1));
         result.Should()
             .BeEquivalentTo((new List<Restaurant> { restaurant1 }).Select(r => _mapper.Map<RestaurantGetDto>(r)));
     }
@@ -69,7 +69,7 @@ public class CategoryServiceTest
         _repositoryMock.Setup(r => r.GetAllAsync())
             .ReturnsAsync(new List<Category> { category1, category2 });
         
-        var result = await _service.GetAllRestaurants(_mapper.Map<CategoryGetDto>(category2));
+        var result = await _service.GetRestaurantsForCategory(_mapper.Map<CategoryGetDto>(category2));
         result.Should()
             .BeEquivalentTo((new List<Restaurant> { restaurant2 }).Select(r => _mapper.Map<RestaurantGetDto>(r)));
     }

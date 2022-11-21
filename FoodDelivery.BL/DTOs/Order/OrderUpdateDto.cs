@@ -1,6 +1,5 @@
-﻿namespace FoodDelivery.BL.DTOs.Order
+﻿namespace FoodDelivery.BL.DTOs.Order;
+
+public class OrderUpdateDto
 {
-    public class OrderUpdateDto
-    {
-    }
 }

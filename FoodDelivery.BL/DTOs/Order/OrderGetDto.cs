@@ -1,8 +1,6 @@
-﻿namespace FoodDelivery.BL.DTOs.Order
+﻿namespace FoodDelivery.BL.DTOs.Order;
+
+public class OrderGetDto
 {
-    public class OrderGetDto
-    {
-        public int CustomerId { get; set; }
-        public int PaymentMethodId { get; set; }
-    }
+    public int CustomerId { get; set; }
 }

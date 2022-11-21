@@ -8,5 +8,6 @@ namespace FoodDelivery.BL.Services;
 public interface ICategoryService : ICrudService<Category, int, CategoryGetDto, CategoryCreateDto, CategoryUpdateDto>
 {
     public Task<IEnumerable<CategoryGetDto>> QueryAsync(QueryDto<CategoryGetDto> queryDto);
-    public Task<IEnumerable<RestaurantGetDto>> GetAllRestaurants(CategoryGetDto category);
+
+    public Task<IEnumerable<RestaurantGetDto>> GetRestaurantsForCategory(CategoryGetDto category);
 }

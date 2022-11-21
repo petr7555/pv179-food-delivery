@@ -1,4 +1,3 @@
-
 namespace FoodDelivery.BL.DTOs.Category;
 
 public class CategoryGetDto

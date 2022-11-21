@@ -7,67 +7,66 @@ using FoodDelivery.BL.QueryObject;
 using FoodDelivery.DAL.EntityFramework.Models;
 using FoodDelivery.Infrastructure.UnitOfWork;
 
-namespace FoodDelivery.BL.Services
+namespace FoodDelivery.BL.Services;
+
+public class UserService : CrudService<User, int, UserGetDto, UserCreateDto, UserUpdateDto>, IUserService
 {
-    public class UserService : CrudService<User, int, UserGetDto, UserCreateDto, UserUpdateDto>, IUserService
+    private readonly IUnitOfWork _unitOfWork;
+
+    public UserService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork.UserRepository, mapper)
     {
-        private readonly IUnitOfWork _unitOfWork;
+        _unitOfWork = unitOfWork;
+    }
 
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork.UserRepository, mapper)
+    public async Task<IEnumerable<UserGetDto>> QueryAsync(QueryDto<UserGetDto> queryDto)
+    {
+        var queryObject = new QueryObject<UserGetDto, User>(Mapper, _unitOfWork.UserQuery);
+        return await queryObject.ExecuteAsync(queryDto);
+    }
+
+    public async Task UpdateCustomerDetailsAsync(int userId, CustomerDetailsUpdateDto customerDetailsUpdateDto)
+    {
+        var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
+
+        user.CustomerDetails = Mapper.Map<CustomerDetails>(customerDetailsUpdateDto);
+        _unitOfWork.UserRepository.Update(user);
+    }
+
+    public async Task UpdateAddressAsync(int userId, int addressId, AddressUpdateDto addressUpdateDto)
+    {
+        var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
+
+        if (user.CustomerDetails.BillingAddressId == addressId)
         {
-            _unitOfWork = unitOfWork;
+            user.CustomerDetails.BillingAddress = Mapper.Map<Address>(addressUpdateDto);
+        }
+        else if (user.CustomerDetails.DeliveryAddressId == addressId)
+        {
+            user.CustomerDetails.DeliveryAddress = Mapper.Map<Address>(addressUpdateDto);
         }
 
-        public async Task<IEnumerable<UserGetDto>> QueryAsync(QueryDto<UserGetDto> queryDto)
-        {
-            var queryObject = new QueryObject<UserGetDto, User>(Mapper, _unitOfWork.UserQuery);
-            return await queryObject.ExecuteAsync(queryDto);
-        }
+        _unitOfWork.UserRepository.Update(user);
+    }
 
-        public async Task UpdateCustomerDetailsAsync(int userId, CustomerDetailsUpdateDto customerDetailsUpdateDto)
-        {
-            var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
+    public async Task BanUserAsync(int userId)
+    {
+        // TODO Will be reworked based on authentication and authorization
 
-            user.CustomerDetails = Mapper.Map<CustomerDetails>(customerDetailsUpdateDto);
-            _unitOfWork.UserRepository.Update(user);
-        }
+        // TODO check privileges
 
-        public async Task UpdateAddressAsync(int userId, int addressId, AddressUpdateDto addressUpdateDto)
-        {
-            var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
+        var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
+        user.Banned = true;
+        _unitOfWork.UserRepository.Update(user);
+    }
 
-            if (user.CustomerDetails.BillingAddressId == addressId)
-            {
-                user.CustomerDetails.BillingAddress = Mapper.Map<Address>(addressUpdateDto);
-            }
-            else if (user.CustomerDetails.DeliveryAddressId == addressId)
-            {
-                user.CustomerDetails.DeliveryAddress = Mapper.Map<Address>(addressUpdateDto);
-            }
+    public async Task UnbanUserAsync(int userId)
+    {
+        // TODO Will be reworked based on authentication and authorization
 
-            _unitOfWork.UserRepository.Update(user);
-        }
+        // TODO check privileges
 
-        public async Task BanUserAsync(int userId)
-        {
-            // TODO Will be reworked based on authentication and authorization
-
-            // TODO check privileges
-
-            var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
-            user.Banned = true;
-            _unitOfWork.UserRepository.Update(user);
-        }
-
-        public async Task UnbanUserAsync(int userId)
-        {
-            // TODO Will be reworked based on authentication and authorization
-
-            // TODO check privileges
-
-            var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
-            user.Banned = false;
-            _unitOfWork.UserRepository.Update(user);
-        }
+        var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
+        user.Banned = false;
+        _unitOfWork.UserRepository.Update(user);
     }
 }

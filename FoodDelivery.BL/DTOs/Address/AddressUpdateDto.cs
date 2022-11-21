@@ -1,12 +1,11 @@
-﻿namespace FoodDelivery.BL.DTOs.Address
+﻿namespace FoodDelivery.BL.DTOs.Address;
+
+public class AddressUpdateDto
 {
-    public class AddressUpdateDto
-    {
-        public string FullName { get; set; }
-        public string StreetAddress { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string ZipCode { get; set; }
-        public string PhoneNumber { get; set; }
-    }
+    public string FullName { get; set; }
+    public string StreetAddress { get; set; }
+    public string City { get; set; }
+    public string State { get; set; }
+    public string ZipCode { get; set; }
+    public string PhoneNumber { get; set; }
 }
