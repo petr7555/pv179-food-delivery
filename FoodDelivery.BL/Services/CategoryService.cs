@@ -24,12 +24,12 @@ public class CategoryService : CrudService<Category, int, CategoryGetDto, Catego
         return await queryObject.ExecuteAsync(queryDto);
     }
 
-    public async Task<IEnumerable<RestaurantGetDto>> GetRestaurantsForCategory(CategoryGetDto category)
+    public async Task<IEnumerable<RestaurantGetDto>> GetRestaurantsForCategory(int categoryId)
     {
         var categories = await GetAllAsync();
         return categories
-            .Where(c => c.Name == category.Name)
-            .SelectMany(c => c.Products)
+            .Single(c => c.Id == categoryId)
+            .Products
             .Select(p => p.Restaurant)
             .GroupBy(r => r.Id)
             .Select(g => Mapper.Map<RestaurantGetDto>(g.First()));

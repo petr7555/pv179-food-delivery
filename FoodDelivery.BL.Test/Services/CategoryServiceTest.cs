@@ -39,48 +39,28 @@ public class CategoryServiceTest
     }
 
     [Fact]
-    public async Task ItGetsAllRestaurants()
+    public async Task ItGetsUniqueRestaurantsForCategory()
     {
         var category1 = new Category { Id = 1, Name = "Category 1"};
         var category2 = new Category { Id = 2, Name = "Category 2"};
         
         var restaurant1 = new Restaurant { Id = 1, Name = "Restaurant 1" };
         var restaurant2 = new Restaurant { Id = 2, Name = "Restaurant 2" };
+        var restaurant3 = new Restaurant { Id = 2, Name = "Restaurant 3" };
 
-        var product1 = new Product { Id = 1, Category = category1, Restaurant = restaurant1 };
-        var product2 = new Product { Id = 2, Category = category2, Restaurant = restaurant2 };
+        var product1 = new Product { Id = 1, Restaurant = restaurant1 };
+        var product2 = new Product { Id = 2, Restaurant = restaurant2 };
+        var product3 = new Product { Id = 3, Restaurant = restaurant1 };
+        var product4 = new Product { Id = 4, Restaurant = restaurant3 };
 
-        category1.Products = new() {product1};
-        category2.Products = new() {product2};
-
-        _repositoryMock.Setup(r => r.GetAllAsync())
-            .ReturnsAsync(new List<Category> { category1, category2 });
-        
-        var result = await _service.GetRestaurantsForCategory(_mapper.Map<CategoryGetDto>(category1));
-        result.Should()
-            .BeEquivalentTo((new List<Restaurant> { restaurant1 }).Select(r => _mapper.Map<RestaurantGetDto>(r)));
-    }
-    
-    [Fact]
-    public async Task ItGetsAllRestaurantsOther()
-    {
-        var category1 = new Category { Id = 1, Name = "Category 1"};
-        var category2 = new Category { Id = 2, Name = "Category 2"};
-        
-        var restaurant1 = new Restaurant { Id = 1, Name = "Restaurant 1" };
-        var restaurant2 = new Restaurant { Id = 2, Name = "Restaurant 2" };
-
-        var product1 = new Product { Id = 1, Category = category1, Restaurant = restaurant1 };
-        var product2 = new Product { Id = 2, Category = category2, Restaurant = restaurant2 };
-
-        category1.Products = new() {product1};
-        category2.Products = new() {product2};
+        category1.Products = new List<Product> {product1, product3, product4};
+        category2.Products = new List<Product> {product2};
 
         _repositoryMock.Setup(r => r.GetAllAsync())
             .ReturnsAsync(new List<Category> { category1, category2 });
         
-        var result = await _service.GetRestaurantsForCategory(_mapper.Map<CategoryGetDto>(category2));
+        var result = await _service.GetRestaurantsForCategory(category1.Id);
         result.Should()
-            .BeEquivalentTo((new List<Restaurant> { restaurant2 }).Select(r => _mapper.Map<RestaurantGetDto>(r)));
+            .BeEquivalentTo(new List<Restaurant> { restaurant1, restaurant3 }.Select(_mapper.Map<RestaurantGetDto>));
     }
 }
