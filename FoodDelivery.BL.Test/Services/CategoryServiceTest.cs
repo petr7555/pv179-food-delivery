@@ -1,6 +1,7 @@
 using AutoMapper;
 using FluentAssertions;
 using FoodDelivery.BL.DTOs.Category;
+using FoodDelivery.BL.DTOs.Product;
 using FoodDelivery.BL.DTOs.Restaurant;
 using FoodDelivery.BL.Services;
 using FoodDelivery.DAL.EntityFramework.Models;
@@ -12,20 +13,29 @@ namespace FoodDelivery.BL.Test.Services;
 
 public class CategoryServiceTest
 {
+    private static class TestMappingConfig
+    {
+        public static void ConfigureMapping(IMapperConfigurationExpression config)
+        {
+            config.CreateMap<Category, CategoryGetDto>().ReverseMap();
+            config.CreateMap<Product, ProductGetDto>().ReverseMap();
+            config.CreateMap<Restaurant, RestaurantGetDto>().ReverseMap();
+        }
+    }
+
     private readonly IMapper _mapper;
     private readonly Mock<IRepository<Category, int>> _repositoryMock;
-    private readonly Mock<IUnitOfWork> _unitOfWork;
     private readonly CategoryService _service;
 
     public CategoryServiceTest()
     {
         _mapper = new Mapper(new MapperConfiguration(TestMappingConfig.ConfigureMapping));
         _repositoryMock = new Mock<IRepository<Category, int>>();
-        _unitOfWork = new Mock<IUnitOfWork>();
-        _unitOfWork.Setup(u => u.CategoryRepository)
+        var unitOfWork = new Mock<IUnitOfWork>();
+        unitOfWork.Setup(u => u.CategoryRepository)
             .Returns(_repositoryMock.Object);
         
-        _service = new CategoryService(_unitOfWork.Object, _mapper);
+        _service = new CategoryService(unitOfWork.Object, _mapper);
     }
 
     [Fact]

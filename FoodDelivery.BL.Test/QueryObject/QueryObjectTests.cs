@@ -1,4 +1,5 @@
 using AutoMapper;
+using AutoMapper.Extensions.ExpressionMapping;
 using FluentAssertions;
 using FoodDelivery.BL.DTOs;
 using FoodDelivery.BL.QueryObject;
@@ -51,6 +52,15 @@ public class QueryObjectTest
 
             var (pageToFetch, pageSize) = PageConfig.Value;
             return query.Skip((pageToFetch - 1) * pageSize).Take(pageSize);
+        }
+    }
+    
+    private static class TestMappingConfig
+    {
+        public static void ConfigureMapping(IMapperConfigurationExpression config)
+        {
+            config.AddExpressionMapping();
+            config.CreateMap<TestEntity, TestDto>().ReverseMap();
         }
     }
     

@@ -15,6 +15,14 @@ public class CrudServiceTest
         }
     }
 
+    private static class TestMappingConfig
+    {
+        public static void ConfigureMapping(IMapperConfigurationExpression config)
+        {
+            config.CreateMap<TestEntity, TestDto>().ReverseMap();
+        }
+    }
+
     private readonly IMapper _mapper;
     private readonly Mock<IRepository<TestEntity, int>> _repositoryMock;
 
