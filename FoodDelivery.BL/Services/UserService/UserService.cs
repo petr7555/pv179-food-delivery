@@ -4,10 +4,11 @@ using FoodDelivery.BL.DTOs.Address;
 using FoodDelivery.BL.DTOs.CustomerDetails;
 using FoodDelivery.BL.DTOs.User;
 using FoodDelivery.BL.QueryObject;
+using FoodDelivery.BL.Services.CrudService;
 using FoodDelivery.DAL.EntityFramework.Models;
 using FoodDelivery.Infrastructure.UnitOfWork;
 
-namespace FoodDelivery.BL.Services;
+namespace FoodDelivery.BL.Services.UserService;
 
 public class UserService : CrudService<User, int, UserGetDto, UserCreateDto, UserUpdateDto>, IUserService
 {

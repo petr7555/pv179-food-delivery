@@ -1,4 +1,4 @@
-namespace FoodDelivery.BL.Services;
+namespace FoodDelivery.BL.Services.CrudService;
 
 public interface ICrudService<TEntity, TKey, TGetDto, TCreateDto, TUpdateDto> where TEntity : class where TKey : struct
 {

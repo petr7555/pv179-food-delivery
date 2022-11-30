@@ -1,4 +1,4 @@
-namespace FoodDelivery.BL.Services;
+namespace FoodDelivery.BL.Services.DbUtilsService;
 
 public interface IDbUtilsService
 {

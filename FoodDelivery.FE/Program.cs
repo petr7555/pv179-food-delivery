@@ -1,5 +1,5 @@
 using FoodDelivery.BL.Configs;
-using FoodDelivery.BL.Services;
+using FoodDelivery.BL.Services.DbUtilsService;
 using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);

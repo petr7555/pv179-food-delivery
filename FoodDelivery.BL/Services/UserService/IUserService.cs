@@ -2,9 +2,10 @@
 using FoodDelivery.BL.DTOs.Address;
 using FoodDelivery.BL.DTOs.CustomerDetails;
 using FoodDelivery.BL.DTOs.User;
+using FoodDelivery.BL.Services.CrudService;
 using FoodDelivery.DAL.EntityFramework.Models;
 
-namespace FoodDelivery.BL.Services;
+namespace FoodDelivery.BL.Services.UserService;
 
 public interface IUserService : ICrudService<User, int, UserGetDto, UserCreateDto, UserUpdateDto>
 {

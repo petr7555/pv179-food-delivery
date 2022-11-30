@@ -1,7 +1,7 @@
 using AutoMapper;
 using FoodDelivery.Infrastructure.Repository;
 
-namespace FoodDelivery.BL.Services;
+namespace FoodDelivery.BL.Services.CrudService;
 
 public class
     CrudService<TEntity, TKey, TGetDto, TCreateDto, TUpdateDto> :

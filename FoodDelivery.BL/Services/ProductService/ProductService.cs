@@ -2,10 +2,11 @@ using AutoMapper;
 using FoodDelivery.BL.DTOs;
 using FoodDelivery.BL.DTOs.Product;
 using FoodDelivery.BL.QueryObject;
+using FoodDelivery.BL.Services.CrudService;
 using FoodDelivery.DAL.EntityFramework.Models;
 using FoodDelivery.Infrastructure.UnitOfWork;
 
-namespace FoodDelivery.BL.Services;
+namespace FoodDelivery.BL.Services.ProductService;
 
 public class ProductService : CrudService<Product, int, ProductGetDto, ProductCreateDto, ProductUpdateDto>,
     IProductService

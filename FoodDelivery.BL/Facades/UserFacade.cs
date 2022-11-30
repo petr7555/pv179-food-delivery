@@ -2,7 +2,7 @@
 using FoodDelivery.BL.DTOs.Address;
 using FoodDelivery.BL.DTOs.CustomerDetails;
 using FoodDelivery.BL.DTOs.User;
-using FoodDelivery.BL.Services;
+using FoodDelivery.BL.Services.UserService;
 
 namespace FoodDelivery.BL.Facades;
 

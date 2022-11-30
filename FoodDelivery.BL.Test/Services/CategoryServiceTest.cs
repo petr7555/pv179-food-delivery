@@ -3,7 +3,7 @@ using FluentAssertions;
 using FoodDelivery.BL.DTOs.Category;
 using FoodDelivery.BL.DTOs.Product;
 using FoodDelivery.BL.DTOs.Restaurant;
-using FoodDelivery.BL.Services;
+using FoodDelivery.BL.Services.CategoryService;
 using FoodDelivery.DAL.EntityFramework.Models;
 using FoodDelivery.Infrastructure.Repository;
 using FoodDelivery.Infrastructure.UnitOfWork;

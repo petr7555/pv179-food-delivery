@@ -1,6 +1,7 @@
 using FoodDelivery.BL.DTOs;
 using FoodDelivery.BL.DTOs.Product;
 using FoodDelivery.BL.Services;
+using FoodDelivery.BL.Services.ProductService;
 
 namespace FoodDelivery.BL.Facades;
 

@@ -1,8 +1,9 @@
 ﻿using FoodDelivery.BL.DTOs;
 using FoodDelivery.BL.DTOs.Order;
+using FoodDelivery.BL.Services.CrudService;
 using FoodDelivery.DAL.EntityFramework.Models;
 
-namespace FoodDelivery.BL.Services;
+namespace FoodDelivery.BL.Services.OrderService;
 
 public interface IOrderService : ICrudService<Order, int, OrderGetDto, OrderCreateDto, OrderUpdateDto>
 {

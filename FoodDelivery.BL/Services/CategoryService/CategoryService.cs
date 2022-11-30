@@ -3,10 +3,11 @@ using FoodDelivery.BL.DTOs;
 using FoodDelivery.BL.DTOs.Category;
 using FoodDelivery.BL.DTOs.Restaurant;
 using FoodDelivery.BL.QueryObject;
+using FoodDelivery.BL.Services.CrudService;
 using FoodDelivery.DAL.EntityFramework.Models;
 using FoodDelivery.Infrastructure.UnitOfWork;
 
-namespace FoodDelivery.BL.Services;
+namespace FoodDelivery.BL.Services.CategoryService;
 
 public class CategoryService : CrudService<Category, int, CategoryGetDto, CategoryCreateDto, CategoryUpdateDto>,
     ICategoryService

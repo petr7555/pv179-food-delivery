@@ -1,9 +1,10 @@
 using FoodDelivery.BL.DTOs;
 using FoodDelivery.BL.DTOs.Category;
 using FoodDelivery.BL.DTOs.Restaurant;
+using FoodDelivery.BL.Services.CrudService;
 using FoodDelivery.DAL.EntityFramework.Models;
 
-namespace FoodDelivery.BL.Services;
+namespace FoodDelivery.BL.Services.CategoryService;
 
 public interface ICategoryService : ICrudService<Category, int, CategoryGetDto, CategoryCreateDto, CategoryUpdateDto>
 {

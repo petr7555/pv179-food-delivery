@@ -2,10 +2,11 @@
 using FoodDelivery.BL.DTOs;
 using FoodDelivery.BL.DTOs.Order;
 using FoodDelivery.BL.QueryObject;
+using FoodDelivery.BL.Services.CrudService;
 using FoodDelivery.DAL.EntityFramework.Models;
 using FoodDelivery.Infrastructure.UnitOfWork;
 
-namespace FoodDelivery.BL.Services;
+namespace FoodDelivery.BL.Services.OrderService;
 
 public class OrderService : CrudService<Order, int, OrderGetDto, OrderCreateDto, OrderUpdateDto>, IOrderService
 {

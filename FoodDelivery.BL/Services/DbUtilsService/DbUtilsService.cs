@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace FoodDelivery.BL.Services;
+namespace FoodDelivery.BL.Services.DbUtilsService;
 
 public class DbUtilsService : IDbUtilsService
 {
