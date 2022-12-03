@@ -77,7 +77,9 @@ static void ConfigureIdentity(IServiceCollection services, string identityConnec
 
     services.ConfigureApplicationCookie(options =>
     {
+        // where users are redirected when they try to access authorized action and are not logged in
         options.LoginPath = "/Identity/Login";
+        // where users are redirected when they are not authorized to access a page
         options.AccessDeniedPath = "/Identity/AccessDenied";
     });
 
