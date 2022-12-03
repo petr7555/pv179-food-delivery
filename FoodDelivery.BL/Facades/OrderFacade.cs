@@ -1,11 +1,10 @@
 ﻿using FoodDelivery.BL.DTOs;
 using FoodDelivery.BL.DTOs.Order;
-using FoodDelivery.BL.Services;
 using FoodDelivery.BL.Services.OrderService;
 
 namespace FoodDelivery.BL.Facades;
 
-public class OrderFacade
+public class OrderFacade : IOrderFacade
 {
     private readonly IOrderService _orderService;
 

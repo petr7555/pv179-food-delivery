@@ -1,13 +1,21 @@
+using FoodDelivery.BL.Facades;
 using FoodDelivery.DAL.EntityFramework.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FoodDelivery.FE.Pages.Lists;
 
-[Authorize]
+[Authorize(Roles = "User")]
 public class OrderList : PageModel
 {
     public IEnumerable<Order> Orders { get; set; }
+
+    private readonly IOrderFacade _orderFacade;
+
+    public OrderList(IOrderFacade orderFacade)
+    {
+        _orderFacade = orderFacade;
+    }
 
     public async Task OnGet()
     {

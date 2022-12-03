@@ -1,9 +1,11 @@
 using FoodDelivery.BL.DTOs.Restaurant;
 using FoodDelivery.BL.Facades;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FoodDelivery.FE.Pages.Lists;
 
+[Authorize(Roles = "User, ContentManager")]
 public class RestaurantList : PageModel
 {
     public IEnumerable<RestaurantGetDto> Restaurants { get; set; }

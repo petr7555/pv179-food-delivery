@@ -1,12 +1,14 @@
 using FoodDelivery.BL.DTOs.Order;
 using FoodDelivery.BL.Services;
 using FoodDelivery.BL.Services.ProductService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Stripe.Checkout;
 
 namespace FoodDelivery.FE.Pages.Payment;
 
+[Authorize(Roles = "User")]
 public class Checkout : PageModel
 {
     // TODO hardcode Order for now

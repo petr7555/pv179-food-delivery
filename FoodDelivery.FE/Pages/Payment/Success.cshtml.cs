@@ -6,6 +6,5 @@ public class Success : PageModel
 {
     public void OnGet()
     {
-        
     }
 }

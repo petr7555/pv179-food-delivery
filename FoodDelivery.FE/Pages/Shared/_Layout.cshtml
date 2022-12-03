@@ -12,7 +12,7 @@
 <header>
   <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
     <div class="container">
-      <a class="navbar-brand" asp-area="" asp-page="/Index">FoodDeliveryFE</a>
+      <a class="navbar-brand" asp-page="/Index">FoodDeliveryFE</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
               aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -20,23 +20,41 @@
       <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
         <ul class="navbar-nav flex-grow-1">
           <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+            <a class="nav-link text-dark" asp-page="/Index">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-page="/Lists/OrderList">Orders</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-page="/Lists/RestaurantList">Restaurants</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-page="/Forms/AddRestaurant">Add restaurant</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-page="/Payment/Checkout">Checkout</a>
-          </li>
+          @if (User.IsInRole("User") || User.IsInRole("ContentManager"))
+          {
+            <li class="nav-item">
+              <a class="nav-link text-dark" asp-page="/Lists/RestaurantList">Restaurants</a>
+            </li>
+          }
+          @if (User.IsInRole("User"))
+          {
+            <li class="nav-item">
+              <a class="nav-link text-dark" asp-page="/Lists/OrderList">My orders</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark" asp-page="TODO">Edit account</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark" asp-page="/Payment/Checkout">Checkout</a>
+            </li>
+          }
+          @if (User.IsInRole("Admin"))
+          {
+            <li class="nav-item">
+              <a class="nav-link text-dark" asp-page="/Forms/AddContentManager">Add content manager</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark" asp-page="TODO">Ban user</a>
+            </li>
+          }
+          @if (User.IsInRole("ContentManager"))
+          {
+            <li class="nav-item">
+              <a class="nav-link text-dark" asp-page="/Forms/AddRestaurant">Manage restaurants</a>
+            </li>
+          }
         </ul>
         <partial name="_LoginPartial"/>
       </div>
@@ -51,7 +69,7 @@
 
 <footer class="border-top footer text-muted">
   <div class="container">
-    &copy; 2022 - FoodDeliveryFE - <a asp-area="" asp-page="/Privacy">Privacy</a>
+    &copy; 2022 - FoodDeliveryFE - <a asp-page="/Privacy">Privacy</a>
   </div>
 </footer>
 
