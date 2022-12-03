@@ -12,12 +12,11 @@ public class Logout : PageModel
     {
         _signInManager = signInManager;
     }
-    
+
     public void OnGet()
     {
-        var foo = 1;
     }
-    
+
     public async Task<IActionResult> OnPost()
     {
         await _signInManager.SignOutAsync();

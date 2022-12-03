@@ -18,13 +18,11 @@ public class Login : PageModel
     [Display(Name = "Password")]
     public string? Password { get; set; }
 
-    public string ReturnUrl { get; set; } = "/";
-
-    private readonly ILogger<Register> _logger;
+    private readonly ILogger<Login> _logger;
     private readonly UserManager<IdentityUser> _userManager;
     private readonly SignInManager<IdentityUser> _signInManager;
     
-    public Login(ILogger<Register> logger, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+    public Login(ILogger<Login> logger, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
     {
         _logger = logger;
         _userManager = userManager;
@@ -33,10 +31,9 @@ public class Login : PageModel
     
     public void OnGet()
     {
+    }
         
-    }    
-    
-    public async Task<IActionResult> OnPost()
+    public async Task<IActionResult> OnPost([FromQuery] string? returnUrl)
     {
         if (!ModelState.IsValid)
         {
@@ -56,7 +53,7 @@ public class Login : PageModel
 
         if (loggedIn.Succeeded)
         {
-            return Redirect(ReturnUrl);
+            return Redirect(returnUrl ?? "/");
         }
 
         // This is not really the case, but we do not want the user to know the specifics of the error

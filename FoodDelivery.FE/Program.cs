@@ -22,25 +22,25 @@ using (var scope = app.Services.CreateScope())
 {
     var defaultDatabase = scope.ServiceProvider.GetRequiredService<FoodDeliveryDbContext>().Database;
     var identityDatabase = scope.ServiceProvider.GetRequiredService<BasicIdentityDbContext>().Database;
-    
+
     if (app.Environment.IsDevelopment())
     {
         // Comment out if you don't want to delete the database on each run
-        await defaultDatabase.EnsureDeletedAsync();
-        await identityDatabase.EnsureDeletedAsync();
+        // await defaultDatabase.EnsureDeletedAsync();
+        // await identityDatabase.EnsureDeletedAsync();
     }
 
     await defaultDatabase.EnsureCreatedAsync();
     await identityDatabase.EnsureCreatedAsync();
 }
 
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    // Displays errors in the browser
     app.UseDeveloperExceptionPage();
 }
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+else
 {
     app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
@@ -66,7 +66,7 @@ static void ConfigureIdentity(IServiceCollection services, string identityConnec
         {
             options.User.RequireUniqueEmail = true;
             options.SignIn.RequireConfirmedAccount = false;
-            
+
             options.Password.RequiredLength = 4;
             options.Password.RequireDigit = false;
             options.Password.RequireNonAlphanumeric = false;
@@ -77,9 +77,9 @@ static void ConfigureIdentity(IServiceCollection services, string identityConnec
 
     services.ConfigureApplicationCookie(options =>
     {
-        options.LogoutPath = "/Identity/Logout";
         options.LoginPath = "/Identity/Login";
+        options.AccessDeniedPath = "/Identity/AccessDenied";
     });
-    
+
     services.AddDbContext<BasicIdentityDbContext>(options => options.UseNpgsql(identityConnectionString));
 }

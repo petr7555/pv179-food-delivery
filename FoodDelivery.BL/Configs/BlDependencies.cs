@@ -1,7 +1,5 @@
 using AutoMapper;
 using FoodDelivery.BL.Facades;
-using FoodDelivery.BL.Services;
-using FoodDelivery.BL.Services.DbUtilsService;
 using FoodDelivery.BL.Services.ProductService;
 using FoodDelivery.BL.Services.RestaurantService;
 using FoodDelivery.DAL.EntityFramework.Data;
@@ -20,8 +18,6 @@ public static class BlDependencies
         services.AddDbContext<DbContext, FoodDeliveryDbContext>(options =>
             options.UseNpgsql(connectionString));
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();
-
-        services.AddScoped<IDbUtilsService, DbUtilsService>();
 
         services.AddScoped<IRestaurantService, RestaurantService>();
         services.AddScoped<IRestaurantFacade, RestaurantFacade>();

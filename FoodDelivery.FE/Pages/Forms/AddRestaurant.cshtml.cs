@@ -1,36 +1,37 @@
 using FoodDelivery.BL.DTOs.Restaurant;
 using FoodDelivery.BL.Facades;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace FoodDelivery.FE.Pages.Forms
+namespace FoodDelivery.FE.Pages.Forms;
+
+[Authorize(Roles = "Admin")]
+public class AddRestaurant : PageModel
 {
-    public class AddRestaurant : PageModel
-    {
-        [BindProperty]
-        public RestaurantCreateDto Restaurant { get; set; }
+    [BindProperty]
+    public RestaurantCreateDto Restaurant { get; set; }
         
-        private readonly IRestaurantFacade _restaurantFacade;
+    private readonly IRestaurantFacade _restaurantFacade;
 
-        public AddRestaurant(IRestaurantFacade restaurantFacade)
+    public AddRestaurant(IRestaurantFacade restaurantFacade)
+    {
+        _restaurantFacade = restaurantFacade;
+    }
+
+    public void OnGet()
+    {
+    }
+
+    public async Task<IActionResult> OnPost()
+    {
+        if (!ModelState.IsValid)
         {
-            _restaurantFacade = restaurantFacade;
+            return Page();
         }
 
-        public void OnGet()
-        {
-        }
+        await _restaurantFacade.Create(Restaurant);
 
-        public async Task<IActionResult> OnPost()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            await _restaurantFacade.Create(Restaurant);
-
-            return RedirectToPage("../Lists/RestaurantList");
-        }
+        return RedirectToPage("../Lists/RestaurantList");
     }
 }

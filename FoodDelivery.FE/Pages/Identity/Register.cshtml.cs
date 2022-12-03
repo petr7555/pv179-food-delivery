@@ -40,7 +40,6 @@ public class Register : PageModel
     
     public void OnGet()
     {
-        
     }
     
     public async Task<IActionResult> OnPost()
@@ -74,7 +73,7 @@ public class Register : PageModel
             return Redirect("/");
         }
 
-        foreach (var error in createResult.Errors)
+        foreach (var error in createResult.Errors.Where(e => e.Code != "DuplicateUserName"))
         {
             ModelState.AddModelError(string.Empty, error.Description);
         }
