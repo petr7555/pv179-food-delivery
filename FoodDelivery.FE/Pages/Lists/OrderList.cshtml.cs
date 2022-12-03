@@ -1,8 +1,10 @@
 using FoodDelivery.DAL.EntityFramework.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FoodDelivery.FE.Pages.Lists;
 
+[Authorize]
 public class OrderList : PageModel
 {
     public IEnumerable<Order> Orders { get; set; }

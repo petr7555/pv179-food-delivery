@@ -29,8 +29,14 @@ public class Login : PageModel
         _signInManager = signInManager;
     }
     
-    public void OnGet()
+    public IActionResult OnGet([FromQuery] string? returnUrl)
     {
+        if (User.Identity?.IsAuthenticated == true)
+        {
+            return Redirect(returnUrl ?? "/");
+        }
+        
+        return Page();
     }
         
     public async Task<IActionResult> OnPost([FromQuery] string? returnUrl)
