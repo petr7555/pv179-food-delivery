@@ -19,14 +19,6 @@ public class Register : PageModel
     [Display(Name = "Password")]
     public string? Password { get; set; }
 
-    [Required]
-    [DataType(DataType.Password)]
-    [Display(Name = "Confirm password")]
-    [Compare(nameof(Password))]
-    public string? ConfirmPassword { get; set; }
-
-    public bool IsAdmin { get; set; }
-
     private readonly ILogger<Register> _logger;
     private readonly UserManager<IdentityUser> _userManager;
     private readonly SignInManager<IdentityUser> _signInManager;
@@ -56,17 +48,12 @@ public class Register : PageModel
         };
 
         var createResult = await _userManager.CreateAsync(newUser, Password);
-
         if (createResult.Succeeded)
         {
             var user = await _userManager.FindByEmailAsync(Email);
             _logger.LogInformation("Successfully created a new user account: {Email}", Email);
 
             await _userManager.AddToRoleAsync(user, "User");
-            if (IsAdmin)
-            {
-                await _userManager.AddToRoleAsync(user, "Admin");
-            }
 
             await _signInManager.SignInAsync(user, true);
             
@@ -75,7 +62,7 @@ public class Register : PageModel
 
         foreach (var error in createResult.Errors.Where(e => e.Code != "DuplicateUserName"))
         {
-            ModelState.AddModelError(string.Empty, error.Description);
+            ModelState.AddModelError("RegistrationFailed", error.Description);
         }
 
         return Page();
