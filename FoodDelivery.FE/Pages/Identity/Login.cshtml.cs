@@ -21,51 +21,53 @@ public class Login : PageModel
     private readonly ILogger<Login> _logger;
     private readonly UserManager<IdentityUser> _userManager;
     private readonly SignInManager<IdentityUser> _signInManager;
-    
-    public Login(ILogger<Login> logger, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+
+    public Login(ILogger<Login> logger, UserManager<IdentityUser> userManager,
+        SignInManager<IdentityUser> signInManager)
     {
         _logger = logger;
         _userManager = userManager;
         _signInManager = signInManager;
     }
-    
+
     public IActionResult OnGet([FromQuery] string? returnUrl)
     {
         if (User.Identity?.IsAuthenticated == true)
         {
             return Redirect(returnUrl ?? "/");
         }
-        
+
         return Page();
     }
-        
+
     public async Task<IActionResult> OnPost([FromQuery] string? returnUrl)
     {
         if (!ModelState.IsValid)
         {
             return Page();
         }
-            
-        var user = await _userManager.FindByEmailAsync(Email);
 
-        if (user is null || await _userManager.CheckPasswordAsync(user, Password) == false)
+        var user = await _userManager.FindByEmailAsync(Email);
+        if (user is null)
         {
-            ModelState.AddModelError(string.Empty, "Invalid credentials");
+            ModelState.AddModelError("LoginFailed", "Account with this email does not exist");
             return Page();
         }
 
-        await _signInManager.SignOutAsync();
-        var loggedIn = await _signInManager.PasswordSignInAsync(Email, Password, true, false);
+        if (!await _userManager.CheckPasswordAsync(user, Password))
+        {
+            ModelState.AddModelError("LoginFailed", "Incorrect password");
+            return Page();
+        }
 
-        if (loggedIn.Succeeded)
+        var singInResult = await _signInManager.PasswordSignInAsync(Email, Password, true, false);
+        if (singInResult.Succeeded)
         {
             return Redirect(returnUrl ?? "/");
         }
 
-        // This is not really the case, but we do not want the user to know the specifics of the error
-        ModelState.AddModelError(string.Empty, "Invalid credentials");
+        ModelState.AddModelError("LoginFailed", "Login failed");
         _logger.LogWarning("Error logging in user {Email}", Email);
-        
         return Page();
     }
 }
