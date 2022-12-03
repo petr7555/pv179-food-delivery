@@ -1,5 +1,7 @@
 using FoodDelivery.BL.Configs;
-using FoodDelivery.BL.Services.DbUtilsService;
+using FoodDelivery.DAL.EntityFramework.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,19 +9,34 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-// Dependency injection
+// BL dependency injection
 builder.Services.AddBlDependencies(builder.Configuration.GetConnectionString("DefaultConnection"));
+
+ConfigureIdentity(builder.Services, builder.Configuration.GetConnectionString("IdentityConnection"));
 
 StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe")["SecretApiKey"];
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var defaultDatabase = scope.ServiceProvider.GetRequiredService<FoodDeliveryDbContext>().Database;
+    var identityDatabase = scope.ServiceProvider.GetRequiredService<BasicIdentityDbContext>().Database;
+    
+    if (app.Environment.IsDevelopment())
+    {
+        // Comment out if you don't want to delete the database on each run
+        await defaultDatabase.EnsureDeletedAsync();
+        await identityDatabase.EnsureDeletedAsync();
+    }
+
+    await defaultDatabase.EnsureCreatedAsync();
+    await identityDatabase.EnsureCreatedAsync();
+}
+
 if (app.Environment.IsDevelopment())
 {
-    using (var scope = app.Services.CreateScope())
-    {
-        scope.ServiceProvider.GetRequiredService<IDbUtilsService>().ResetDatabase();
-    }
+    app.UseDeveloperExceptionPage();
 }
 
 // Configure the HTTP request pipeline.
@@ -35,8 +52,34 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
 
 app.Run();
+
+
+static void ConfigureIdentity(IServiceCollection services, string identityConnectionString)
+{
+    services.AddIdentity<IdentityUser, IdentityRole>(options =>
+        {
+            options.User.RequireUniqueEmail = true;
+            options.SignIn.RequireConfirmedAccount = false;
+            
+            options.Password.RequiredLength = 4;
+            options.Password.RequireDigit = false;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireLowercase = false;
+            options.Password.RequireUppercase = false;
+        })
+        .AddEntityFrameworkStores<BasicIdentityDbContext>();
+
+    services.ConfigureApplicationCookie(options =>
+    {
+        options.LogoutPath = "/Identity/Logout";
+        options.LoginPath = "/Identity/Login";
+    });
+    
+    services.AddDbContext<BasicIdentityDbContext>(options => options.UseNpgsql(identityConnectionString));
+}
