@@ -34,7 +34,7 @@
               <a class="nav-link text-dark" asp-page="/Lists/OrderList">My orders</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-dark" asp-page="TODO">Edit account</a>
+              <a class="nav-link text-dark" asp-page="/Forms/EditAccount">Edit account</a>
             </li>
             <li class="nav-item">
               <a class="nav-link text-dark" asp-page="/Payment/Checkout">Checkout</a>
@@ -46,7 +46,7 @@
               <a class="nav-link text-dark" asp-page="/Forms/AddContentManager">Add content manager</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-dark" asp-page="TODO">Ban user</a>
+              <a class="nav-link text-dark" asp-page="/Lists/UserList">Ban user</a>
             </li>
           }
           @if (User.IsInRole("ContentManager"))
