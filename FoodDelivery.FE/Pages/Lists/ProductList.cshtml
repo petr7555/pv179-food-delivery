@@ -1,0 +1,21 @@
+@page
+@model FoodDelivery.FE.Pages.Lists.ProductList
+
+@{
+  ViewData["Title"] = "Products";
+}
+
+
+<ul>
+  @foreach (var product in Model.Products)
+  {
+    <li>
+      <form method="post">
+        <p>@product.Name</p>
+        <p>@product.Price.Amount @product.Price.Currency.Name</p>
+        <input type="hidden" name="id" value="@product.Id">
+        <input type="submit" value="Add to cart"/>
+      </form>
+    </li>
+  }
+</ul>
