@@ -8,13 +8,13 @@ namespace FoodDelivery.BL.Facades;
 
 public class RestaurantFacade : IRestaurantFacade
 {
-    private readonly IRestaurantService _restaurantService;
     private readonly IUnitOfWork _uow;
+    private readonly IRestaurantService _restaurantService;
 
     public RestaurantFacade(IUnitOfWork uow, IRestaurantService restaurantService)
     {
-        _restaurantService = restaurantService;
         _uow = uow;
+        _restaurantService = restaurantService;
     }
 
     public async Task<IEnumerable<RestaurantGetDto>> GetAllAsync()
