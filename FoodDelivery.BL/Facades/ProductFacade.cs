@@ -5,7 +5,7 @@ using FoodDelivery.BL.Services.ProductService;
 
 namespace FoodDelivery.BL.Facades;
 
-public class ProductFacade
+public class ProductFacade: IProductFacade
 {
     private readonly IProductService _productService;
 
