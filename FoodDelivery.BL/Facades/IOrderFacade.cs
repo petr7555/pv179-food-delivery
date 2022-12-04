@@ -8,4 +8,6 @@ public interface IOrderFacade
     public Task<IEnumerable<OrderGetDto>> GetAllAsync();
 
     public Task<IEnumerable<OrderGetDto>> QueryAsync(QueryDto<OrderGetDto> queryDto);
+    
+    public Task<IEnumerable<OrderGetDto>> GetOrdersForUserAsync(string username);
 }

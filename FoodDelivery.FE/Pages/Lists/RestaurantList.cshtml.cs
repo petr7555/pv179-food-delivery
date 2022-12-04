@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FoodDelivery.FE.Pages.Lists;
 
-[Authorize(Roles = "User, ContentManager")]
+[Authorize(Roles = "Customer, ContentManager")]
 public class RestaurantList : PageModel
 {
     public IEnumerable<RestaurantGetDto> Restaurants { get; set; }

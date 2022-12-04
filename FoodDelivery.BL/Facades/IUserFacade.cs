@@ -18,4 +18,6 @@ public interface IUserFacade
     public Task BanUserAsync(int userId);
 
     public Task UnbanUserAsync(int userId);
+    
+    public Task CreateUserAsync(UserCreateDto userCreateDto);
 }

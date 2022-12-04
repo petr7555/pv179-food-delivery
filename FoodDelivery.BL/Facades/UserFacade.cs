@@ -3,15 +3,18 @@ using FoodDelivery.BL.DTOs.Address;
 using FoodDelivery.BL.DTOs.CustomerDetails;
 using FoodDelivery.BL.DTOs.User;
 using FoodDelivery.BL.Services.UserService;
+using FoodDelivery.Infrastructure.UnitOfWork;
 
 namespace FoodDelivery.BL.Facades;
 
 public class UserFacade : IUserFacade
 {
+    private readonly IUnitOfWork _uow;
     private readonly IUserService _userService;
 
-    public UserFacade(IUserService userService)
+    public UserFacade(IUnitOfWork uow, IUserService userService)
     {
+        _uow = uow;
         _userService = userService;
     }
 
@@ -43,5 +46,11 @@ public class UserFacade : IUserFacade
     public async Task UnbanUserAsync(int userId)
     {
         await _userService.UnbanUserAsync(userId);
+    }
+
+    public async Task CreateUserAsync(UserCreateDto userCreateDto)
+    {
+        _userService.Create(userCreateDto);
+        await _uow.CommitAsync();
     }
 }

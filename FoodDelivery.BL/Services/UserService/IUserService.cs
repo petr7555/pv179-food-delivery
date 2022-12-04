@@ -18,4 +18,6 @@ public interface IUserService : ICrudService<User, int, UserGetDto, UserCreateDt
     public Task BanUserAsync(int userId);
 
     public Task UnbanUserAsync(int userId);
+    
+    public Task<UserGetDto> GetByUsernameAsync(string username);
 }

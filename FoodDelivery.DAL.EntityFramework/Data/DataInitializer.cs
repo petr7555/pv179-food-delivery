@@ -7,23 +7,12 @@ public static class DataInitializer
 {
     public static void Seed(this ModelBuilder modelBuilder)
     {
-        /***************
-         **   ROLES   **
-         ***************/
-
-        modelBuilder.Entity<Role>().HasData(
-            new Role { Id = 1, Name = "Admin" },
-            new Role { Id = 2, Name = "Content Manager" },
-            new Role { Id = 3, Name = "Customer" }
-        );
-
         /**********************
          **   COMPANY INFO   **
          **********************/
 
         modelBuilder.Entity<CompanyInfo>().HasData(
-            new CompanyInfo { Id = 1, CompanyName = "Inkluzívna spoločnosť s.r.o.", Vat = "SK2156O" },
-            new CompanyInfo { Id = 2, CompanyName = "Trio a.s.", Vat = "CZ6373S" }
+            new CompanyInfo { Id = 1, CompanyName = "Inkluzívna spoločnosť s.r.o.", Vat = "SK2156O" }
         );
 
         /*****************
@@ -34,22 +23,12 @@ public static class DataInitializer
             new Address
             {
                 Id = 1, FullName = "Jozef Straka", StreetAddress = "SNP 42", City = "Bratislava", State = "Slovakia",
-                ZipCode = "821 04", PhoneNumber = "+421914123456"
+                ZipCode = "821 04", PhoneNumber = "+421914123456",
             },
             new Address
             {
-                Id = 2, FullName = "Michal Vrbovský", StreetAddress = "Klácelova 4", City = "Brno",
-                State = "Czech Republic", ZipCode = "60 200", PhoneNumber = "+420905765934"
-            },
-            new Address
-            {
-                Id = 3, FullName = "Bohumil Sedláček", StreetAddress = "Dornych 7", City = "Brno",
-                State = "Czech Republic", ZipCode = "60 200", PhoneNumber = "+420911974664"
-            },
-            new Address
-            {
-                Id = 4, FullName = "Jozef Straka", StreetAddress = "Môťová 69", City = "Zvolen", State = "Slovakia",
-                ZipCode = "960 01", PhoneNumber = "+421914123456"
+                Id = 2, FullName = "Jozef Straka", StreetAddress = "Môťová 69", City = "Zvolen", State = "Slovakia",
+                ZipCode = "960 01", PhoneNumber = "+421914123456",
             }
         );
 
@@ -57,41 +36,31 @@ public static class DataInitializer
          **   CUSTOMER DETAILS   **
          **************************/
 
-        modelBuilder.Entity<CustomerDetails>().HasData(
-            new CustomerDetails
-            {
-                Id = 1, Email = "jozef.straka@funkcnymail.sk", BillingAddressId = 4, DeliveryAddressId = 1,
-                CompanyInfoId = 1
-            },
-            new CustomerDetails
-            {
-                Id = 2, Email = "michal.vrbovsky@funkcnymail.sk", BillingAddressId = 1,
-                CompanyInfoId = 1
-            },
-            new CustomerDetails
-            {
-                Id = 3, Email = "bohumil.sedlacek@funkcnymail.sk", BillingAddressId = 1,
-                CompanyInfoId = 1
-            }
-        );
+        var customerDetails = new CustomerDetails
+        {
+            Id = 1, Email = "jozef.straka@funkcnymail.sk", BillingAddressId = 2, DeliveryAddressId = 1,
+            CompanyInfoId = 1,
+        };
+
+        modelBuilder.Entity<CustomerDetails>().HasData(customerDetails);
 
         /***************
          **   USERS   **
          ***************/
 
-        var customer = new User
-            { Id = 3, Username = "customer", PasswordHash = "customer", Salt = "3", RoleId = 3, CustomerDetailsId = 3 };
-
         modelBuilder.Entity<User>().HasData(
             new User
             {
-                Id = 1, Username = "admin", PasswordHash = "admin", Salt = "1", RoleId = 1, CustomerDetailsId = 1
+                Id = 1, Username = "admin@example.com",
             },
             new User
             {
-                Id = 2, Username = "manager", PasswordHash = "manager", Salt = "2", RoleId = 2, CustomerDetailsId = 2
+                Id = 2, Username = "cm@example.com",
             },
-            customer
+            new User
+            {
+                Id = 3, Username = "customer@example.com", CustomerDetailsId = customerDetails.Id,
+            }
         );
 
         /********************
@@ -125,7 +94,6 @@ public static class DataInitializer
             pastaCategory, saladCategory, burgerCategory, steakCategory, sushiCategory, wineCategory,
             beerCategory, whiskeyCategory, softDrinksCategory, coffeeCategory, teaCategory
         );
-
 
         /********************
          **   CURRENCIES   **
@@ -192,7 +160,7 @@ public static class DataInitializer
             Name = "Salami",
             Description = "Tomato salsa, Ham, Spicy salami, Mozzarella",
             RestaurantId = pizzeriaGuiseppe.Id,
-            PriceId = pizzaPrice.Id
+            PriceId = pizzaPrice.Id,
         };
 
         var californiaSalmonEightRolls = new Product
@@ -202,7 +170,7 @@ public static class DataInitializer
             Name = "California Salmon Eight",
             Description = "California rolls with salmon",
             RestaurantId = happySushi.Id,
-            PriceId = californiaSalmonEightRollsPrice.Id
+            PriceId = californiaSalmonEightRollsPrice.Id,
         };
 
         var salmonTunaPrawnEightMakiEach = new Product
@@ -212,7 +180,7 @@ public static class DataInitializer
             Name = "24 Salmon, tuna and prawn maki mix",
             Description = "Salmon, tuna and prawn maki with 8 pieces each.",
             RestaurantId = happySushi.Id,
-            PriceId = salmonTunaPrawnEightMakiEachPrice.Id
+            PriceId = salmonTunaPrawnEightMakiEachPrice.Id,
         };
 
         var barbecueBurger = new Product
@@ -223,7 +191,7 @@ public static class DataInitializer
             Description =
                 "Special homemade bun, 200g beef meat, cheddar, onion rings, lettuce, tomato, barbecue sauce, fries",
             RestaurantId = burgerino.Id,
-            PriceId = barbecueBurgerPrice.Id
+            PriceId = barbecueBurgerPrice.Id,
         };
 
         var chickenBurger = new Product
@@ -233,7 +201,7 @@ public static class DataInitializer
             Name = "Chicken Burger",
             Description = "Special homemade bun, 150g chicken, lettuce, tomato, homemade mayo with herbs, fries",
             RestaurantId = burgerino.Id,
-            PriceId = chickenBurgerPrice.Id
+            PriceId = chickenBurgerPrice.Id,
         };
 
         var royalBurger = new Product
@@ -244,7 +212,7 @@ public static class DataInitializer
             Description =
                 "Special homemade bun, 200g beef meat, cheddar, roasted smoked bacon, egg, caramelized onion, lettuce, tomato, fries",
             RestaurantId = burgerino.Id,
-            PriceId = royalBurgerPrice.Id
+            PriceId = royalBurgerPrice.Id,
         };
 
         var devilBurger = new Product
@@ -255,7 +223,7 @@ public static class DataInitializer
             Description =
                 "Special homemade bun, 200g beef meat, cheddar, roasted smoked bacon, red habanero mayo, lettuce, tomato, fries",
             RestaurantId = burgerino.Id,
-            PriceId = devilBurgerPrice.Id
+            PriceId = devilBurgerPrice.Id,
         };
 
         modelBuilder.Entity<Product>().HasData(
@@ -272,7 +240,7 @@ public static class DataInitializer
         {
             Id = 1,
             CreatedAt = DateTime.UtcNow,
-            CustomerId = customer.Id,
+            CustomerDetailsId = customerDetails.Id,
             PaymentMethodId = cardPaymentMethod.Id,
         };
 
@@ -280,27 +248,27 @@ public static class DataInitializer
         {
             Id = 2,
             CreatedAt = DateTime.UtcNow.AddDays(-1),
-            CustomerId = customer.Id,
-            PaymentMethodId = cardPaymentMethod.Id
+            CustomerDetailsId = customerDetails.Id,
+            PaymentMethodId = cardPaymentMethod.Id,
         };
 
         modelBuilder.Entity<Order>().HasData(pizzaSalamiOrder, royalBurgerOrder);
-
+        
         /*****************************
          **   ORDER-PRODUCT TABLE   **
          *****************************/
-
+        
         modelBuilder
             .Entity<Order>()
             .HasMany(o => o.Products)
             .WithMany(p => p.Orders)
             .UsingEntity(etb =>
                 etb.HasData(new { OrdersId = 1, ProductsId = 1 }, new { OrdersId = 2, ProductsId = 6 }));
-
+        
         /*****************
          **   RATINGS   **
          *****************/
-
+        
         var pizzeriaGiuseppeRating = new Rating
         {
             Id = 1,
@@ -308,9 +276,9 @@ public static class DataInitializer
             OrderId = pizzaSalamiOrder.Id,
             Comment = "Delicious and crusty pizza.",
             CreatedAt = DateTime.UtcNow,
-            Stars = 5
+            Stars = 4,
         };
-
+        
         modelBuilder.Entity<Rating>().HasData(pizzeriaGiuseppeRating);
     }
 }

@@ -6,10 +6,10 @@ public class Order : BaseEntity
 {
     public DateTime CreatedAt { get; set; }
 
-    public int CustomerId { get; set; }
+    public int CustomerDetailsId { get; set; }
 
-    [ForeignKey(nameof(CustomerId))]
-    public virtual CustomerDetails Customer { get; set; }
+    [ForeignKey(nameof(CustomerDetailsId))]
+    public virtual CustomerDetails CustomerDetails { get; set; }
 
     public int PaymentMethodId { get; set; }
 

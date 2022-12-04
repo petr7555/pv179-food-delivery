@@ -12,15 +12,6 @@ public class User : BaseEntity
 
     public bool Banned { get; set; }
 
-    // TODO use some proper authentication
-    public string PasswordHash { get; set; }
-    public string Salt { get; set; }
-
-    public int RoleId { get; set; }
-
-    [ForeignKey(nameof(RoleId))]
-    public virtual Role Role { get; set; }
-
     public int? CustomerDetailsId { get; set; }
 
     [ForeignKey(nameof(CustomerDetailsId))]

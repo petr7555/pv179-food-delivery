@@ -1,4 +1,7 @@
 using System.ComponentModel.DataAnnotations;
+using FoodDelivery.BL.DTOs.User;
+using FoodDelivery.BL.Facades;
+using FoodDelivery.BL.Services.UserService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -22,12 +25,15 @@ public class Register : PageModel
     private readonly ILogger<Register> _logger;
     private readonly UserManager<IdentityUser> _userManager;
     private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly IUserFacade _userFacade;
     
-    public Register(ILogger<Register> logger, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+    
+    public Register(ILogger<Register> logger, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IUserFacade userFacade)
     {
         _logger = logger;
         _userManager = userManager;
         _signInManager = signInManager;
+        _userFacade = userFacade;
     }
     
     public void OnGet()
@@ -50,10 +56,14 @@ public class Register : PageModel
         var createResult = await _userManager.CreateAsync(newUser, Password);
         if (createResult.Succeeded)
         {
+            await _userFacade.CreateUserAsync(new UserCreateDto
+            {
+                Username = Email,
+            });
             var user = await _userManager.FindByEmailAsync(Email);
-            _logger.LogInformation("Successfully created a new user account: {Email}", Email);
+            _logger.LogInformation("Successfully created a new customer account: {Email}", Email);
 
-            await _userManager.AddToRoleAsync(user, "User");
+            await _userManager.AddToRoleAsync(user, "Customer");
 
             await _signInManager.SignInAsync(user, true);
             

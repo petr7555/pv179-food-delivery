@@ -8,6 +8,6 @@
 <ul>
   @foreach (var order in Model.Orders)
   {
-    <li>@order.Id</li>
+    <li>@order.Id @order.CreatedAt</li>
   }
 </ul>

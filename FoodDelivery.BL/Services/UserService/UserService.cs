@@ -70,4 +70,10 @@ public class UserService : CrudService<User, int, UserGetDto, UserCreateDto, Use
         user.Banned = false;
         _unitOfWork.UserRepository.Update(user);
     }
+
+    public async Task<UserGetDto> GetByUsernameAsync(string username)
+    {
+        var user = (await QueryAsync(new QueryDto<UserGetDto>().Where(u => u.Username == username))).Single();
+        return user;
+    }
 }

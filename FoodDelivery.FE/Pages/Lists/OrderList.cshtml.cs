@@ -1,14 +1,14 @@
+using FoodDelivery.BL.DTOs.Order;
 using FoodDelivery.BL.Facades;
-using FoodDelivery.DAL.EntityFramework.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FoodDelivery.FE.Pages.Lists;
 
-[Authorize(Roles = "User")]
+[Authorize(Roles = "Customer")]
 public class OrderList : PageModel
 {
-    public IEnumerable<Order> Orders { get; set; }
+    public IEnumerable<OrderGetDto> Orders { get; set; }
 
     private readonly IOrderFacade _orderFacade;
 
@@ -19,11 +19,6 @@ public class OrderList : PageModel
 
     public async Task OnGet()
     {
-        Orders = new List<Order>();
-        // await using (var uow = new EfUnitOfWork())
-        // {
-        // Orders = await uow.OrderRepository.GetAllAsync();
-        // Orders = new EfQuery<Order>().Where(o => o.Id > -1).Execute();
-        // }
+        Orders = await _orderFacade.GetOrdersForUserAsync(User.Identity.Name);
     }
 }

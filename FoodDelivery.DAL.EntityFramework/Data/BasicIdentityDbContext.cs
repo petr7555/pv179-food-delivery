@@ -15,6 +15,7 @@ public class BasicIdentityDbContext : IdentityDbContext
         base.OnModelCreating(modelBuilder);
 
         var adminRoleId = Guid.NewGuid().ToString();
+        var customerRoleId = Guid.NewGuid().ToString();
         var contentManagerRoleId = Guid.NewGuid().ToString();
 
         modelBuilder.Entity<IdentityRole>().HasData(
@@ -23,9 +24,10 @@ public class BasicIdentityDbContext : IdentityDbContext
                 Id = adminRoleId,
                 NormalizedName = "ADMIN",
             },
-            new IdentityRole("User")
+            new IdentityRole("Customer")
             {
-                NormalizedName = "USER",
+                Id = customerRoleId,
+                NormalizedName = "CUSTOMER",
             },
             new IdentityRole("ContentManager")
             {
@@ -41,10 +43,10 @@ public class BasicIdentityDbContext : IdentityDbContext
         modelBuilder.Entity<IdentityUser>().HasData(new IdentityUser
         {
             Id = adminId,
-            UserName = "admin@localhost",
-            NormalizedUserName = "ADMIN@LOCALHOST",
-            Email = "admin@localhost",
-            NormalizedEmail = "ADMIN@LOCALHOST",
+            UserName = "admin@example.com",
+            NormalizedUserName = "ADMIN@EXAMPLE.COM",
+            Email = "admin@example.com",
+            NormalizedEmail = "ADMIN@EXAMPLE.COM",
             PasswordHash = hasher.HashPassword(null, "pass"),
         });
 
@@ -55,16 +57,36 @@ public class BasicIdentityDbContext : IdentityDbContext
                 RoleId = adminRoleId,
             }
         );
+        
+        // create customer
+        var customerId = Guid.NewGuid().ToString();
+        modelBuilder.Entity<IdentityUser>().HasData(new IdentityUser
+        {
+            Id = customerId,
+            UserName = "customer@example.com",
+            NormalizedUserName = "CUSTOMER@EXAMPLE.COM",
+            Email = "customer@example.com",
+            NormalizedEmail = "CUSTOMER@EXAMPLE.COM",
+            PasswordHash = hasher.HashPassword(null, "pass"),
+        });
+
+        modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+            new IdentityUserRole<string>
+            {
+                UserId = customerId,
+                RoleId = customerRoleId,
+            }
+        );
 
         // create content manager
         var contentManagerId = Guid.NewGuid().ToString();
         modelBuilder.Entity<IdentityUser>().HasData(new IdentityUser
         {
             Id = contentManagerId,
-            UserName = "cm@localhost",
-            NormalizedUserName = "CM@LOCALHOST",
-            Email = "cm@localhost",
-            NormalizedEmail = "CM@LOCALHOST",
+            UserName = "cm@example.com",
+            NormalizedUserName = "CM@EXAMPLE.COM",
+            Email = "cm@example.com",
+            NormalizedEmail = "CM@EXAMPLE.COM",
             PasswordHash = hasher.HashPassword(null, "pass"),
         });
 

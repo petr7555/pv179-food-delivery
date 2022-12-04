@@ -8,7 +8,7 @@ using Stripe.Checkout;
 
 namespace FoodDelivery.FE.Pages.Payment;
 
-[Authorize(Roles = "User")]
+[Authorize(Roles = "Customer")]
 public class Checkout : PageModel
 {
     // TODO hardcode Order for now

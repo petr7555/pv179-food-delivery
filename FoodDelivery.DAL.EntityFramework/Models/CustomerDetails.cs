@@ -5,6 +5,8 @@ namespace FoodDelivery.DAL.EntityFramework.Models;
 
 public class CustomerDetails : BaseEntity
 {
+    public User Customer  { get; set; }
+    
     [MaxLength(255)]
     public string Email { get; set; }
 
