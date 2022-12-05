@@ -1,4 +1,3 @@
-using FoodDelivery.BL.DTOs.Order;
 using FoodDelivery.BL.DTOs.Product;
 using FoodDelivery.BL.Facades;
 using FoodDelivery.BL.Services.ProductService;
@@ -13,21 +12,21 @@ namespace FoodDelivery.FE.Pages.Payment;
 public class Checkout : PageModel
 {
     public IEnumerable<ProductGetDto> ProductsInBasket { get; set; }
-    
+
     private readonly IOrderFacade _orderFacade;
     private readonly IProductService _productService;
-    
+
     public Checkout(IOrderFacade orderFacade, IProductService productService)
     {
         _orderFacade = orderFacade;
         _productService = productService;
     }
-    
+
     public async Task OnGet()
     {
-       ProductsInBasket = await _orderFacade.GetProductsInBasketAsync(User.Identity.Name);
+        ProductsInBasket = await _orderFacade.GetProductsInBasketAsync(User.Identity.Name);
     }
-    
+
     /**
      * Use credit card number 4242 4242 4242 4242 for testing.
      */
@@ -54,7 +53,7 @@ public class Checkout : PageModel
                 Quantity = 1,
             });
         }
-    
+
         var domain = Request.Scheme + "://" + Request.Host.Value;
         var options = new SessionCreateOptions
         {
@@ -63,10 +62,10 @@ public class Checkout : PageModel
             SuccessUrl = domain + "/Payment/Success",
             CancelUrl = domain + "/Payment/Cancel",
         };
-    
+
         var service = new SessionService();
         var session = await service.CreateAsync(options);
-    
+
         Response.Headers.Add("Location", session.Url);
         return new StatusCodeResult(303);
     }

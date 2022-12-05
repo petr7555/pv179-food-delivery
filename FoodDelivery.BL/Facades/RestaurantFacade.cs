@@ -1,6 +1,5 @@
 using FoodDelivery.BL.DTOs;
 using FoodDelivery.BL.DTOs.Restaurant;
-using FoodDelivery.BL.Services;
 using FoodDelivery.BL.Services.RestaurantService;
 using FoodDelivery.Infrastructure.UnitOfWork;
 

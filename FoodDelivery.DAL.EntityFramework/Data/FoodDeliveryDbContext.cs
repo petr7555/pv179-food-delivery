@@ -21,27 +21,27 @@ public class FoodDeliveryDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Seed();
-        
+
         modelBuilder.Entity<Product>()
             .Navigation(p => p.Price)
             .AutoInclude();
-        
+
         modelBuilder.Entity<Price>()
             .Navigation(p => p.Currency)
             .AutoInclude();
-        
+
         modelBuilder.Entity<Category>()
             .Navigation(c => c.Products)
             .AutoInclude();
-        
+
         modelBuilder.Entity<Product>()
             .Navigation(p => p.Restaurant)
             .AutoInclude();
-              
+
         modelBuilder.Entity<Order>()
-        .Navigation(o => o.OrderProducts)
-        .AutoInclude();
-        
+            .Navigation(o => o.OrderProducts)
+            .AutoInclude();
+
         base.OnModelCreating(modelBuilder);
     }
 }

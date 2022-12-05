@@ -57,7 +57,7 @@ public class BasicIdentityDbContext : IdentityDbContext
                 RoleId = adminRoleId,
             }
         );
-        
+
         // create customer
         var customerId = Guid.NewGuid().ToString();
         modelBuilder.Entity<IdentityUser>().HasData(new IdentityUser

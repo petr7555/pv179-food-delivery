@@ -19,7 +19,8 @@ public class OrderFacade : IOrderFacade
     private readonly IProductService _productService;
     private readonly IUserService _userService;
 
-    public OrderFacade(IUnitOfWork uow, IOrderService orderService, IOrderProductService orderProductService, IProductService productService,
+    public OrderFacade(IUnitOfWork uow, IOrderService orderService, IOrderProductService orderProductService,
+        IProductService productService,
         IUserService userService)
     {
         _uow = uow;
@@ -53,7 +54,7 @@ public class OrderFacade : IOrderFacade
         var user = await _userService.GetByUsernameAsync(username);
         var orders = await GetOrdersForUserAsync(username);
         var activeOrder = orders.SingleOrDefault(o => o.OrderStatus == OrderStatus.Active);
-        
+
         Guid orderId;
         if (activeOrder != null)
         {

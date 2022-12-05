@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FoodDelivery.DAL.EntityFramework.Models;
 
-public class OrderProduct: BaseEntity
+public class OrderProduct : BaseEntity
 {
     public Guid OrderId { get; set; }
 

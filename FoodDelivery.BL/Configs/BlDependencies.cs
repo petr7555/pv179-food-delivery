@@ -27,12 +27,12 @@ public static class BlDependencies
 
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IProductFacade, ProductFacade>();
-        
+
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IOrderFacade, OrderFacade>();
-        
+
         services.AddScoped<IOrderProductService, OrderProductService>();
-        
+
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUserFacade, UserFacade>();
 

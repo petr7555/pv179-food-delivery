@@ -54,7 +54,7 @@ public class QueryObjectTest
             return query.Skip((pageToFetch - 1) * pageSize).Take(pageSize);
         }
     }
-    
+
     private static class TestMappingConfig
     {
         public static void ConfigureMapping(IMapperConfigurationExpression config)
@@ -63,7 +63,7 @@ public class QueryObjectTest
             config.CreateMap<TestEntity, TestDto>().ReverseMap();
         }
     }
-    
+
     private readonly IMapper _mapper;
     private readonly QueryObject<TestDto, TestEntity> _queryObject;
 
@@ -78,7 +78,7 @@ public class QueryObjectTest
         _entityZ = new TestEntity { Id = 2, Name = "Entity Z" };
         _oneOfEntities = new TestEntity { Id = 3, Name = "One of test entities" };
         _anotherOne = new TestEntity { Id = 4, Name = "Another one" };
-        
+
         var allEntities = new List<TestEntity>
         {
             _entityA,
@@ -135,18 +135,18 @@ public class QueryObjectTest
             .OrderBy(e => e.Name);
 
         var result = await _queryObject.ExecuteAsync(dto);
-        
+
         result.Should()
             .BeEquivalentTo(new List<TestEntity>
-            {
-                _anotherOne,
-                _entityA,
-                _entityZ,
-                _oneOfEntities,
-            }.Select(e => _mapper.Map<TestDto>(e)),
-                c=>c.WithStrictOrdering());
-    }    
-    
+                {
+                    _anotherOne,
+                    _entityA,
+                    _entityZ,
+                    _oneOfEntities,
+                }.Select(e => _mapper.Map<TestDto>(e)),
+                c => c.WithStrictOrdering());
+    }
+
     [Fact]
     public async Task ItOrdersByIdAscending()
     {
@@ -154,16 +154,16 @@ public class QueryObjectTest
             .OrderBy(e => e.Id);
 
         var result = await _queryObject.ExecuteAsync(dto);
-        
+
         result.Should()
             .BeEquivalentTo(new List<TestEntity>
-            {
-                _entityA,
-                _entityZ,
-                _oneOfEntities,
-                _anotherOne,
-            }.Select(e => _mapper.Map<TestDto>(e)),
-                c=>c.WithStrictOrdering());
+                {
+                    _entityA,
+                    _entityZ,
+                    _oneOfEntities,
+                    _anotherOne,
+                }.Select(e => _mapper.Map<TestDto>(e)),
+                c => c.WithStrictOrdering());
     }
 
     [Fact]

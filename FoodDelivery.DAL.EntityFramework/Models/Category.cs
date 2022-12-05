@@ -12,6 +12,6 @@ public class Category : BaseEntity
 
     [ForeignKey(nameof(ParentCategoryId))]
     public virtual Category? ParentCategory { get; set; }
-    
+
     public List<Product> Products { get; set; }
 }

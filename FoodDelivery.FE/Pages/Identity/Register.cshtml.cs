@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using FoodDelivery.BL.DTOs.User;
 using FoodDelivery.BL.Facades;
-using FoodDelivery.BL.Services.UserService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -26,27 +25,28 @@ public class Register : PageModel
     private readonly UserManager<IdentityUser> _userManager;
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly IUserFacade _userFacade;
-    
-    
-    public Register(ILogger<Register> logger, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IUserFacade userFacade)
+
+
+    public Register(ILogger<Register> logger, UserManager<IdentityUser> userManager,
+        SignInManager<IdentityUser> signInManager, IUserFacade userFacade)
     {
         _logger = logger;
         _userManager = userManager;
         _signInManager = signInManager;
         _userFacade = userFacade;
     }
-    
+
     public void OnGet()
     {
     }
-    
+
     public async Task<IActionResult> OnPost()
     {
         if (!ModelState.IsValid)
         {
             return Page();
         }
-            
+
         var newUser = new IdentityUser
         {
             UserName = Email,
@@ -66,7 +66,7 @@ public class Register : PageModel
             await _userManager.AddToRoleAsync(user, "Customer");
 
             await _signInManager.SignInAsync(user, true);
-            
+
             return Redirect("/");
         }
 
