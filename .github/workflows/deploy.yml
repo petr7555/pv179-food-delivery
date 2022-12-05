@@ -58,7 +58,8 @@ jobs:
         run: |
           echo '{'> $APP_SETTINGS
           echo '  "ConnectionStrings": {' >> $APP_SETTINGS
-          echo '    "DefaultConnection": "${{ secrets.CONNECTION_STRING }}"' >> $APP_SETTINGS
+          echo '    "DefaultConnection": "${{ secrets.DEFAULT_CONNECTION_STRING }}",' >> $APP_SETTINGS
+          echo '    "IdentityConnection": "${{ secrets.IDENTITY_CONNECTION_STRING }}"' >> $APP_SETTINGS
           echo '  }' >> $APP_SETTINGS
           echo '}' >> $APP_SETTINGS
 
