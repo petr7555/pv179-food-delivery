@@ -9,7 +9,7 @@ using FoodDelivery.BL.Services.UserService;
 using FoodDelivery.DAL.EntityFramework.Models;
 using FoodDelivery.Infrastructure.UnitOfWork;
 
-namespace FoodDelivery.BL.Facades;
+namespace FoodDelivery.BL.Facades.OrderFacade;
 
 public class OrderFacade : IOrderFacade
 {

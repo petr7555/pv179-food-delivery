@@ -1,7 +1,7 @@
 using FoodDelivery.BL.DTOs;
 using FoodDelivery.BL.DTOs.Restaurant;
 
-namespace FoodDelivery.BL.Facades;
+namespace FoodDelivery.BL.Facades.RestaurantFacade;
 
 public interface IRestaurantFacade
 {

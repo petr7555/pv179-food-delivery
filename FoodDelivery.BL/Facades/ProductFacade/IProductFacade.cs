@@ -1,7 +1,7 @@
 using FoodDelivery.BL.DTOs;
 using FoodDelivery.BL.DTOs.Product;
 
-namespace FoodDelivery.BL.Facades;
+namespace FoodDelivery.BL.Facades.ProductFacade;
 
 public interface IProductFacade
 {

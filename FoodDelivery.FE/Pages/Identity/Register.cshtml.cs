@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using FoodDelivery.BL.DTOs.User;
-using FoodDelivery.BL.Facades;
+using FoodDelivery.BL.Facades.UserFacade;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

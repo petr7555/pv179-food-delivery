@@ -5,7 +5,7 @@ using FoodDelivery.BL.DTOs.User;
 using FoodDelivery.BL.Services.UserService;
 using FoodDelivery.Infrastructure.UnitOfWork;
 
-namespace FoodDelivery.BL.Facades;
+namespace FoodDelivery.BL.Facades.UserFacade;
 
 public class UserFacade : IUserFacade
 {

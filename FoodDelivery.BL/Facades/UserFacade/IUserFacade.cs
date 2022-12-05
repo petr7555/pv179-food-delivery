@@ -3,7 +3,7 @@ using FoodDelivery.BL.DTOs.Address;
 using FoodDelivery.BL.DTOs.CustomerDetails;
 using FoodDelivery.BL.DTOs.User;
 
-namespace FoodDelivery.BL.Facades;
+namespace FoodDelivery.BL.Facades.UserFacade;
 
 public interface IUserFacade
 {
