@@ -1,5 +1,6 @@
 using FoodDelivery.BL.DTOs.Order;
-using FoodDelivery.BL.Services;
+using FoodDelivery.BL.DTOs.Product;
+using FoodDelivery.BL.Facades;
 using FoodDelivery.BL.Services.ProductService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,26 +12,20 @@ namespace FoodDelivery.FE.Pages.Payment;
 [Authorize(Roles = "Customer")]
 public class Checkout : PageModel
 {
-    // TODO hardcode Order for now
-    // [BindProperty]
-    public OrderCreateDto Order { get; set; } = new()
-    {
-        Products = new List<OrderCreateDto.ProductDto>
-        {
-            new() { Id = 1, Quantity = 1 },
-            new() { Id = 2, Quantity = 5 },
-        },
-    };
-
+    public IEnumerable<ProductGetDto> ProductsInBasket { get; set; }
+    
+    private readonly IOrderFacade _orderFacade;
     private readonly IProductService _productService;
-
-    public Checkout(IProductService productService)
+    
+    public Checkout(IOrderFacade orderFacade, IProductService productService)
     {
+        _orderFacade = orderFacade;
         _productService = productService;
     }
-
-    public void OnGet()
+    
+    public async Task OnGet()
     {
+       ProductsInBasket = await _orderFacade.GetProductsInBasketAsync(User.Identity.Name);
     }
     
     /**
@@ -39,8 +34,10 @@ public class Checkout : PageModel
     // TODO move logic to OrderService
     public async Task<IActionResult> OnPost()
     {
+        var products = await _orderFacade.GetProductsInBasketAsync(User.Identity.Name);
+
         var sessionLineItemOptions = new List<SessionLineItemOptions>();
-        foreach (var p in Order.Products)
+        foreach (var p in products)
         {
             var product = await _productService.GetByIdAsync(p.Id);
             sessionLineItemOptions.Add(new SessionLineItemOptions
@@ -54,10 +51,10 @@ public class Checkout : PageModel
                         Name = product.Name,
                     },
                 },
-                Quantity = p.Quantity,
+                Quantity = 1,
             });
         }
-
+    
         var domain = Request.Scheme + "://" + Request.Host.Value;
         var options = new SessionCreateOptions
         {
@@ -66,10 +63,10 @@ public class Checkout : PageModel
             SuccessUrl = domain + "/Payment/Success",
             CancelUrl = domain + "/Payment/Cancel",
         };
-
+    
         var service = new SessionService();
         var session = await service.CreateAsync(options);
-
+    
         Response.Headers.Add("Location", session.Url);
         return new StatusCodeResult(303);
     }

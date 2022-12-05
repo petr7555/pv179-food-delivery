@@ -1,11 +1,11 @@
 using AutoMapper;
 using FoodDelivery.BL.Facades;
+using FoodDelivery.BL.Services.OrderProductService;
 using FoodDelivery.BL.Services.OrderService;
 using FoodDelivery.BL.Services.ProductService;
 using FoodDelivery.BL.Services.RestaurantService;
 using FoodDelivery.BL.Services.UserService;
 using FoodDelivery.DAL.EntityFramework.Data;
-using FoodDelivery.DAL.EntityFramework.Models;
 using FoodDelivery.Infrastructure.EntityFramework.UnitOfWork;
 using FoodDelivery.Infrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +30,8 @@ public static class BlDependencies
         
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<IOrderFacade, OrderFacade>();
+        
+        services.AddScoped<IOrderProductService, OrderProductService>();
         
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUserFacade, UserFacade>();

@@ -12,7 +12,7 @@ public class User : BaseEntity
 
     public bool Banned { get; set; }
 
-    public int? CustomerDetailsId { get; set; }
+    public Guid? CustomerDetailsId { get; set; }
 
     [ForeignKey(nameof(CustomerDetailsId))]
     public virtual CustomerDetails? CustomerDetails { get; set; }

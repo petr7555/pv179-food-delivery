@@ -10,7 +10,7 @@ using FoodDelivery.Infrastructure.UnitOfWork;
 
 namespace FoodDelivery.BL.Services.UserService;
 
-public class UserService : CrudService<User, int, UserGetDto, UserCreateDto, UserUpdateDto>, IUserService
+public class UserService : CrudService<User, Guid, UserGetDto, UserCreateDto, UserUpdateDto>, IUserService
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -25,7 +25,7 @@ public class UserService : CrudService<User, int, UserGetDto, UserCreateDto, Use
         return await queryObject.ExecuteAsync(queryDto);
     }
 
-    public async Task UpdateCustomerDetailsAsync(int userId, CustomerDetailsUpdateDto customerDetailsUpdateDto)
+    public async Task UpdateCustomerDetailsAsync(Guid userId, CustomerDetailsUpdateDto customerDetailsUpdateDto)
     {
         var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
 
@@ -33,7 +33,7 @@ public class UserService : CrudService<User, int, UserGetDto, UserCreateDto, Use
         _unitOfWork.UserRepository.Update(user);
     }
 
-    public async Task UpdateAddressAsync(int userId, int addressId, AddressUpdateDto addressUpdateDto)
+    public async Task UpdateAddressAsync(Guid userId, Guid addressId, AddressUpdateDto addressUpdateDto)
     {
         var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
 
@@ -49,7 +49,7 @@ public class UserService : CrudService<User, int, UserGetDto, UserCreateDto, Use
         _unitOfWork.UserRepository.Update(user);
     }
 
-    public async Task BanUserAsync(int userId)
+    public async Task BanUserAsync(Guid userId)
     {
         // TODO Will be reworked based on authentication and authorization
 
@@ -60,7 +60,7 @@ public class UserService : CrudService<User, int, UserGetDto, UserCreateDto, Use
         _unitOfWork.UserRepository.Update(user);
     }
 
-    public async Task UnbanUserAsync(int userId)
+    public async Task UnbanUserAsync(Guid userId)
     {
         // TODO Will be reworked based on authentication and authorization
 

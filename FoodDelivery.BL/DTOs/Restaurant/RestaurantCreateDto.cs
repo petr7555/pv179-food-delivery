@@ -7,5 +7,5 @@ public class RestaurantCreateDto
     [StringLength(255)]
     public string Name { get; set; }
 
-    public int DeliveryPriceId { get; set; }
+    public Guid DeliveryPriceId { get; set; }
 }

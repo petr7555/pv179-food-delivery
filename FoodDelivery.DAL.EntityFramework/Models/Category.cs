@@ -8,7 +8,7 @@ public class Category : BaseEntity
     [MaxLength(255)]
     public string Name { get; set; }
 
-    public int? ParentCategoryId { get; set; }
+    public Guid? ParentCategoryId { get; set; }
 
     [ForeignKey(nameof(ParentCategoryId))]
     public virtual Category? ParentCategory { get; set; }

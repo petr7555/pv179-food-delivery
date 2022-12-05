@@ -26,8 +26,8 @@ using (var scope = app.Services.CreateScope())
     if (app.Environment.IsDevelopment())
     {
         // Comment out if you don't want to delete the database on each run
-        // await defaultDatabase.EnsureDeletedAsync();
-        // await identityDatabase.EnsureDeletedAsync();
+        await defaultDatabase.EnsureDeletedAsync();
+        await identityDatabase.EnsureDeletedAsync();
     }
 
     await defaultDatabase.EnsureCreatedAsync();

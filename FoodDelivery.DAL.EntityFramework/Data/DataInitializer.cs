@@ -11,26 +11,29 @@ public static class DataInitializer
          **   COMPANY INFO   **
          **********************/
 
-        modelBuilder.Entity<CompanyInfo>().HasData(
-            new CompanyInfo { Id = 1, CompanyName = "Inkluzívna spoločnosť s.r.o.", Vat = "SK2156O" }
-        );
+        var companyInfo = new CompanyInfo
+            { Id = Guid.NewGuid(), CompanyName = "Inkluzívna spoločnosť s.r.o.", Vat = "SK2156O" };
+
+        modelBuilder.Entity<CompanyInfo>().HasData(companyInfo);
 
         /*****************
          **   ADDRESS   **
          *****************/
 
-        modelBuilder.Entity<Address>().HasData(
-            new Address
-            {
-                Id = 1, FullName = "Jozef Straka", StreetAddress = "SNP 42", City = "Bratislava", State = "Slovakia",
-                ZipCode = "821 04", PhoneNumber = "+421914123456",
-            },
-            new Address
-            {
-                Id = 2, FullName = "Jozef Straka", StreetAddress = "Môťová 69", City = "Zvolen", State = "Slovakia",
-                ZipCode = "960 01", PhoneNumber = "+421914123456",
-            }
-        );
+        var firstAddress = new Address
+        {
+            Id = Guid.NewGuid(), FullName = "Jozef Straka", StreetAddress = "SNP 42", City = "Bratislava",
+            State = "Slovakia",
+            ZipCode = "821 04", PhoneNumber = "+421914123456",
+        };
+        var secondAddress = new Address
+        {
+            Id = Guid.NewGuid(), FullName = "Jozef Straka", StreetAddress = "Môťová 69", City = "Zvolen",
+            State = "Slovakia",
+            ZipCode = "960 01", PhoneNumber = "+421914123456",
+        };
+
+        modelBuilder.Entity<Address>().HasData(firstAddress, secondAddress);
 
         /**************************
          **   CUSTOMER DETAILS   **
@@ -38,8 +41,9 @@ public static class DataInitializer
 
         var customerDetails = new CustomerDetails
         {
-            Id = 1, Email = "jozef.straka@funkcnymail.sk", BillingAddressId = 2, DeliveryAddressId = 1,
-            CompanyInfoId = 1,
+            Id = Guid.NewGuid(), Email = "jozef.straka@funkcnymail.sk", BillingAddressId = secondAddress.Id,
+            DeliveryAddressId = firstAddress.Id,
+            CompanyInfoId = companyInfo.Id,
         };
 
         modelBuilder.Entity<CustomerDetails>().HasData(customerDetails);
@@ -48,46 +52,43 @@ public static class DataInitializer
          **   USERS   **
          ***************/
 
-        modelBuilder.Entity<User>().HasData(
-            new User
-            {
-                Id = 1, Username = "admin@example.com",
-            },
-            new User
-            {
-                Id = 2, Username = "cm@example.com",
-            },
-            new User
-            {
-                Id = 3, Username = "customer@example.com", CustomerDetailsId = customerDetails.Id,
-            }
-        );
+        var firstUser = new User { Id = Guid.NewGuid(), Username = "admin@example.com" };
+        var secondUser = new User { Id = Guid.NewGuid(), Username = "cm@example.com" };
+        var thirdUser = new User
+            { Id = Guid.NewGuid(), Username = "customer@example.com", CustomerDetailsId = customerDetails.Id };
+
+        modelBuilder.Entity<User>().HasData(firstUser, secondUser, thirdUser);
 
         /********************
          **   CATEGORIES   **
          ********************/
 
-        var allCategory = new Category { Id = 1, Name = "All" };
+        var allCategory = new Category { Id = Guid.NewGuid(), Name = "All" };
 
-        var foodCategory = new Category { Id = 2, Name = "Food", ParentCategoryId = allCategory.Id };
-        var drinkCategory = new Category { Id = 3, Name = "Drink", ParentCategoryId = allCategory.Id };
+        var foodCategory = new Category { Id = Guid.NewGuid(), Name = "Food", ParentCategoryId = allCategory.Id };
+        var drinkCategory = new Category { Id = Guid.NewGuid(), Name = "Drink", ParentCategoryId = allCategory.Id };
 
-        var alcoholicCategory = new Category { Id = 4, Name = "Alcoholic", ParentCategoryId = drinkCategory.Id };
-        var nonAlcoholicCategory = new Category { Id = 5, Name = "Non-alcoholic", ParentCategoryId = drinkCategory.Id };
+        var alcoholicCategory = new Category
+            { Id = Guid.NewGuid(), Name = "Alcoholic", ParentCategoryId = drinkCategory.Id };
+        var nonAlcoholicCategory = new Category
+            { Id = Guid.NewGuid(), Name = "Non-alcoholic", ParentCategoryId = drinkCategory.Id };
 
-        var pizzaCategory = new Category { Id = 6, Name = "Pizza", ParentCategoryId = foodCategory.Id };
-        var pastaCategory = new Category { Id = 7, Name = "Pasta", ParentCategoryId = foodCategory.Id };
-        var saladCategory = new Category { Id = 8, Name = "Salad", ParentCategoryId = foodCategory.Id };
-        var burgerCategory = new Category { Id = 9, Name = "Burger", ParentCategoryId = foodCategory.Id };
-        var steakCategory = new Category { Id = 10, Name = "Steak", ParentCategoryId = foodCategory.Id };
-        var sushiCategory = new Category { Id = 11, Name = "Sushi", ParentCategoryId = foodCategory.Id };
-        var wineCategory = new Category { Id = 12, Name = "Wine", ParentCategoryId = alcoholicCategory.Id };
-        var beerCategory = new Category { Id = 13, Name = "Beer", ParentCategoryId = alcoholicCategory.Id };
-        var whiskeyCategory = new Category { Id = 14, Name = "Whiskey", ParentCategoryId = alcoholicCategory.Id };
+        var pizzaCategory = new Category { Id = Guid.NewGuid(), Name = "Pizza", ParentCategoryId = foodCategory.Id };
+        var pastaCategory = new Category { Id = Guid.NewGuid(), Name = "Pasta", ParentCategoryId = foodCategory.Id };
+        var saladCategory = new Category { Id = Guid.NewGuid(), Name = "Salad", ParentCategoryId = foodCategory.Id };
+        var burgerCategory = new Category { Id = Guid.NewGuid(), Name = "Burger", ParentCategoryId = foodCategory.Id };
+        var steakCategory = new Category { Id = Guid.NewGuid(), Name = "Steak", ParentCategoryId = foodCategory.Id };
+        var sushiCategory = new Category { Id = Guid.NewGuid(), Name = "Sushi", ParentCategoryId = foodCategory.Id };
+        var wineCategory = new Category { Id = Guid.NewGuid(), Name = "Wine", ParentCategoryId = alcoholicCategory.Id };
+        var beerCategory = new Category { Id = Guid.NewGuid(), Name = "Beer", ParentCategoryId = alcoholicCategory.Id };
+        var whiskeyCategory = new Category
+            { Id = Guid.NewGuid(), Name = "Whiskey", ParentCategoryId = alcoholicCategory.Id };
         var softDrinksCategory = new Category
-            { Id = 15, Name = "Soft Drinks", ParentCategoryId = nonAlcoholicCategory.Id };
-        var coffeeCategory = new Category { Id = 16, Name = "Coffee", ParentCategoryId = nonAlcoholicCategory.Id };
-        var teaCategory = new Category { Id = 17, Name = "Tea", ParentCategoryId = nonAlcoholicCategory.Id };
+            { Id = Guid.NewGuid(), Name = "Soft Drinks", ParentCategoryId = nonAlcoholicCategory.Id };
+        var coffeeCategory = new Category
+            { Id = Guid.NewGuid(), Name = "Coffee", ParentCategoryId = nonAlcoholicCategory.Id };
+        var teaCategory = new Category
+            { Id = Guid.NewGuid(), Name = "Tea", ParentCategoryId = nonAlcoholicCategory.Id };
 
         modelBuilder.Entity<Category>().HasData(
             allCategory, foodCategory, drinkCategory, alcoholicCategory, nonAlcoholicCategory, pizzaCategory,
@@ -99,7 +100,7 @@ public static class DataInitializer
          **   CURRENCIES   **
          ********************/
 
-        var czkCurrency = new Currency { Id = 1, Name = "CZK" };
+        var czkCurrency = new Currency { Id = Guid.NewGuid(), Name = "CZK" };
 
         modelBuilder.Entity<Currency>().HasData(czkCurrency);
 
@@ -107,18 +108,20 @@ public static class DataInitializer
          **   PRICES   **
          ****************/
 
-        var pizzaPrice = new Price { Id = 1, Amount = 199, CurrencyId = czkCurrency.Id };
-        var pizzeriaGiuseppeDeliveryPrice = new Price { Id = 2, Amount = 29, CurrencyId = czkCurrency.Id };
+        var pizzaPrice = new Price { Id = Guid.NewGuid(), Amount = 199, CurrencyId = czkCurrency.Id };
+        var pizzeriaGiuseppeDeliveryPrice = new Price { Id = Guid.NewGuid(), Amount = 29, CurrencyId = czkCurrency.Id };
 
-        var californiaSalmonEightRollsPrice = new Price { Id = 3, Amount = 169, CurrencyId = czkCurrency.Id };
-        var salmonTunaPrawnEightMakiEachPrice = new Price { Id = 4, Amount = 199, CurrencyId = czkCurrency.Id };
-        var happySushiDeliveryPrice = new Price { Id = 5, Amount = 39, CurrencyId = czkCurrency.Id };
+        var californiaSalmonEightRollsPrice = new Price
+            { Id = Guid.NewGuid(), Amount = 169, CurrencyId = czkCurrency.Id };
+        var salmonTunaPrawnEightMakiEachPrice = new Price
+            { Id = Guid.NewGuid(), Amount = 199, CurrencyId = czkCurrency.Id };
+        var happySushiDeliveryPrice = new Price { Id = Guid.NewGuid(), Amount = 39, CurrencyId = czkCurrency.Id };
 
-        var barbecueBurgerPrice = new Price { Id = 6, Amount = 239, CurrencyId = czkCurrency.Id };
-        var chickenBurgerPrice = new Price { Id = 7, Amount = 199, CurrencyId = czkCurrency.Id };
-        var royalBurgerPrice = new Price { Id = 8, Amount = 269, CurrencyId = czkCurrency.Id };
-        var devilBurgerPrice = new Price { Id = 9, Amount = 249, CurrencyId = czkCurrency.Id };
-        var burgerinoDeliveryPrice = new Price { Id = 10, Amount = 25, CurrencyId = czkCurrency.Id };
+        var barbecueBurgerPrice = new Price { Id = Guid.NewGuid(), Amount = 239, CurrencyId = czkCurrency.Id };
+        var chickenBurgerPrice = new Price { Id = Guid.NewGuid(), Amount = 199, CurrencyId = czkCurrency.Id };
+        var royalBurgerPrice = new Price { Id = Guid.NewGuid(), Amount = 269, CurrencyId = czkCurrency.Id };
+        var devilBurgerPrice = new Price { Id = Guid.NewGuid(), Amount = 249, CurrencyId = czkCurrency.Id };
+        var burgerinoDeliveryPrice = new Price { Id = Guid.NewGuid(), Amount = 25, CurrencyId = czkCurrency.Id };
 
         modelBuilder.Entity<Price>().HasData(
             pizzaPrice, pizzeriaGiuseppeDeliveryPrice,
@@ -130,7 +133,7 @@ public static class DataInitializer
          **   PAYMENT METHODS   **
          *************************/
 
-        var cardPaymentMethod = new PaymentMethod { Id = 1, Type = "Card" };
+        var cardPaymentMethod = new PaymentMethod { Id = Guid.NewGuid(), Type = "Card" };
 
         modelBuilder.Entity<PaymentMethod>().HasData(cardPaymentMethod);
 
@@ -139,9 +142,11 @@ public static class DataInitializer
          *********************/
 
         var pizzeriaGuiseppe = new Restaurant
-            { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = pizzeriaGiuseppeDeliveryPrice.Id };
-        var happySushi = new Restaurant { Id = 2, Name = "Happy Sushi", DeliveryPriceId = happySushiDeliveryPrice.Id };
-        var burgerino = new Restaurant { Id = 3, Name = "Burgerino", DeliveryPriceId = burgerinoDeliveryPrice.Id };
+            { Id = Guid.NewGuid(), Name = "Pizza Guiseppe", DeliveryPriceId = pizzeriaGiuseppeDeliveryPrice.Id };
+        var happySushi = new Restaurant
+            { Id = Guid.NewGuid(), Name = "Happy Sushi", DeliveryPriceId = happySushiDeliveryPrice.Id };
+        var burgerino = new Restaurant
+            { Id = Guid.NewGuid(), Name = "Burgerino", DeliveryPriceId = burgerinoDeliveryPrice.Id };
 
         modelBuilder.Entity<Restaurant>().HasData(
             pizzeriaGuiseppe,
@@ -155,7 +160,7 @@ public static class DataInitializer
 
         var pizzaSalami = new Product
         {
-            Id = 1,
+            Id = Guid.NewGuid(),
             CategoryId = pizzaCategory.Id,
             Name = "Salami",
             Description = "Tomato salsa, Ham, Spicy salami, Mozzarella",
@@ -165,7 +170,7 @@ public static class DataInitializer
 
         var californiaSalmonEightRolls = new Product
         {
-            Id = 2,
+            Id = Guid.NewGuid(),
             CategoryId = sushiCategory.Id,
             Name = "California Salmon Eight",
             Description = "California rolls with salmon",
@@ -175,7 +180,7 @@ public static class DataInitializer
 
         var salmonTunaPrawnEightMakiEach = new Product
         {
-            Id = 3,
+            Id = Guid.NewGuid(),
             CategoryId = sushiCategory.Id,
             Name = "24 Salmon, tuna and prawn maki mix",
             Description = "Salmon, tuna and prawn maki with 8 pieces each.",
@@ -185,7 +190,7 @@ public static class DataInitializer
 
         var barbecueBurger = new Product
         {
-            Id = 4,
+            Id = Guid.NewGuid(),
             CategoryId = burgerCategory.Id,
             Name = "Barbecue Burger",
             Description =
@@ -196,7 +201,7 @@ public static class DataInitializer
 
         var chickenBurger = new Product
         {
-            Id = 5,
+            Id = Guid.NewGuid(),
             CategoryId = burgerCategory.Id,
             Name = "Chicken Burger",
             Description = "Special homemade bun, 150g chicken, lettuce, tomato, homemade mayo with herbs, fries",
@@ -206,7 +211,7 @@ public static class DataInitializer
 
         var royalBurger = new Product
         {
-            Id = 6,
+            Id = Guid.NewGuid(),
             CategoryId = burgerCategory.Id,
             Name = "Royal Burger",
             Description =
@@ -217,7 +222,7 @@ public static class DataInitializer
 
         var devilBurger = new Product
         {
-            Id = 7,
+            Id = Guid.NewGuid(),
             CategoryId = burgerCategory.Id,
             Name = "Devil Burger",
             Description =
@@ -236,49 +241,60 @@ public static class DataInitializer
          **   ORDERS   **
          ****************/
 
-        var pizzaSalamiOrder = new Order
+        var pizzaSalamiAndCaliforniaSalmonEightRollsOrder = new Order
         {
-            Id = 1,
+            Id = Guid.NewGuid(),
             CreatedAt = DateTime.UtcNow,
             CustomerDetailsId = customerDetails.Id,
-            PaymentMethodId = cardPaymentMethod.Id,
+            OrderStatus = OrderStatus.Paid,
+            // PaymentMethodId = cardPaymentMethod.Id,
         };
 
         var royalBurgerOrder = new Order
         {
-            Id = 2,
+            Id = Guid.NewGuid(),
             CreatedAt = DateTime.UtcNow.AddDays(-1),
             CustomerDetailsId = customerDetails.Id,
-            PaymentMethodId = cardPaymentMethod.Id,
+            OrderStatus = OrderStatus.Paid,
+            // PaymentMethodId = cardPaymentMethod.Id,
         };
 
-        modelBuilder.Entity<Order>().HasData(pizzaSalamiOrder, royalBurgerOrder);
-        
+        modelBuilder.Entity<Order>().HasData(pizzaSalamiAndCaliforniaSalmonEightRollsOrder, royalBurgerOrder);
+
         /*****************************
          **   ORDER-PRODUCT TABLE   **
          *****************************/
-        
+
         modelBuilder
-            .Entity<Order>()
-            .HasMany(o => o.Products)
-            .WithMany(p => p.Orders)
-            .UsingEntity(etb =>
-                etb.HasData(new { OrdersId = 1, ProductsId = 1 }, new { OrdersId = 2, ProductsId = 6 }));
-        
+            .Entity<OrderProduct>()
+            .HasData(
+                new
+                {
+                    Id = Guid.NewGuid(), OrderId = pizzaSalamiAndCaliforniaSalmonEightRollsOrder.Id,
+                    ProductId = pizzaSalami.Id
+                },
+                new
+                {
+                    Id = Guid.NewGuid(), OrderId = pizzaSalamiAndCaliforniaSalmonEightRollsOrder.Id,
+                    ProductId = californiaSalmonEightRolls.Id
+                },
+                new { Id = Guid.NewGuid(), OrderId = royalBurgerOrder.Id, ProductId = royalBurger.Id }
+            );
+
         /*****************
          **   RATINGS   **
          *****************/
-        
+
         var pizzeriaGiuseppeRating = new Rating
         {
-            Id = 1,
+            Id = Guid.NewGuid(),
             RestaurantId = pizzeriaGuiseppe.Id,
-            OrderId = pizzaSalamiOrder.Id,
+            OrderId = pizzaSalamiAndCaliforniaSalmonEightRollsOrder.Id,
             Comment = "Delicious and crusty pizza.",
             CreatedAt = DateTime.UtcNow,
             Stars = 4,
         };
-        
+
         modelBuilder.Entity<Rating>().HasData(pizzeriaGiuseppeRating);
     }
 }

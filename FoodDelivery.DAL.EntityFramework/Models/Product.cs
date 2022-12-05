@@ -13,20 +13,20 @@ public class Product : BaseEntity
     [MaxLength(255)]
     public string? ImageUrl { get; set; }
 
-    public int CategoryId { get; set; }
+    public Guid CategoryId { get; set; }
 
     [ForeignKey(nameof(CategoryId))]
     public virtual Category Category { get; set; }
 
-    public int RestaurantId { get; set; }
+    public Guid RestaurantId { get; set; }
 
     [ForeignKey(nameof(RestaurantId))]
     public virtual Restaurant Restaurant { get; set; }
 
-    public int PriceId { get; set; }
+    public Guid PriceId { get; set; }
 
     [ForeignKey(nameof(PriceId))]
     public virtual Price Price { get; set; }
 
-    public virtual List<Order> Orders { get; set; }
+    public virtual List<OrderProduct> OrderProducts { get; set; }
 }

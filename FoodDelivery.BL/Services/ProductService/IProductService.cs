@@ -5,7 +5,7 @@ using FoodDelivery.DAL.EntityFramework.Models;
 
 namespace FoodDelivery.BL.Services.ProductService;
 
-public interface IProductService : ICrudService<Product, int, ProductGetDto, ProductCreateDto, ProductUpdateDto>
+public interface IProductService : ICrudService<Product, Guid, ProductGetDto, ProductCreateDto, ProductUpdateDto>
 {
     public Task<IEnumerable<ProductGetDto>> QueryAsync(QueryDto<ProductGetDto> queryDto);
 }

@@ -6,9 +6,9 @@ using FoodDelivery.DAL.EntityFramework.Models;
 
 namespace FoodDelivery.BL.Services.CategoryService;
 
-public interface ICategoryService : ICrudService<Category, int, CategoryGetDto, CategoryCreateDto, CategoryUpdateDto>
+public interface ICategoryService : ICrudService<Category, Guid, CategoryGetDto, CategoryCreateDto, CategoryUpdateDto>
 {
     public Task<IEnumerable<CategoryGetDto>> QueryAsync(QueryDto<CategoryGetDto> queryDto);
 
-    public Task<IEnumerable<RestaurantGetDto>> GetRestaurantsForCategory(int categoryId);
+    public Task<IEnumerable<RestaurantGetDto>> GetRestaurantsForCategory(Guid categoryId);
 }

@@ -10,17 +10,17 @@ public class CustomerDetails : BaseEntity
     [MaxLength(255)]
     public string Email { get; set; }
 
-    public int BillingAddressId { get; set; }
+    public Guid BillingAddressId { get; set; }
 
     [ForeignKey(nameof(BillingAddressId))]
     public virtual Address BillingAddress { get; set; }
 
-    public int? DeliveryAddressId { get; set; }
+    public Guid? DeliveryAddressId { get; set; }
 
     [ForeignKey(nameof(DeliveryAddressId))]
     public virtual Address? DeliveryAddress { get; set; }
 
-    public int? CompanyInfoId { get; set; }
+    public Guid? CompanyInfoId { get; set; }
 
     [ForeignKey(nameof(CompanyInfoId))]
     public virtual CompanyInfo? CompanyInfo { get; set; }

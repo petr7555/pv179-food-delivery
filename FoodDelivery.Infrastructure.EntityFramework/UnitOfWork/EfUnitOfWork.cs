@@ -12,11 +12,12 @@ public class EfUnitOfWork : IUnitOfWork
 {
     private readonly DbContext _context;
 
-    public IRepository<User, int> UserRepository { get; }
-    public IRepository<Order, int> OrderRepository { get; }
-    public IRepository<Restaurant, int> RestaurantRepository { get; }
-    public IRepository<Product, int> ProductRepository { get; }
-    public IRepository<Category, int> CategoryRepository { get; }
+    public IRepository<User, Guid> UserRepository { get; }
+    public IRepository<Order, Guid> OrderRepository { get; }
+    public IRepository<Product, Guid> ProductRepository { get; }
+    public IRepository<OrderProduct, Guid> OrderProductRepository { get; }
+    public IRepository<Restaurant, Guid> RestaurantRepository { get; }
+    public IRepository<Category, Guid> CategoryRepository { get; }
 
     public IQuery<User> UserQuery { get; }
     public IQuery<Order> OrderQuery { get; }
@@ -28,11 +29,12 @@ public class EfUnitOfWork : IUnitOfWork
     {
         _context = context;
 
-        UserRepository = new EfRepository<User, int>(_context);
-        OrderRepository = new EfRepository<Order, int>(_context);
-        RestaurantRepository = new EfRepository<Restaurant, int>(_context);
-        ProductRepository = new EfRepository<Product, int>(_context);
-        CategoryRepository = new EfRepository<Category, int>(_context);
+        UserRepository = new EfRepository<User, Guid>(_context);
+        OrderRepository = new EfRepository<Order, Guid>(_context);
+        ProductRepository = new EfRepository<Product, Guid>(_context);
+        OrderProductRepository = new EfRepository<OrderProduct, Guid>(_context);
+        RestaurantRepository = new EfRepository<Restaurant, Guid>(_context);
+        CategoryRepository = new EfRepository<Category, Guid>(_context);
 
         UserQuery = new EfQuery<User>(_context);
         OrderQuery = new EfQuery<Order>(_context);

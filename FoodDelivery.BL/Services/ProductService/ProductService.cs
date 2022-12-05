@@ -8,7 +8,7 @@ using FoodDelivery.Infrastructure.UnitOfWork;
 
 namespace FoodDelivery.BL.Services.ProductService;
 
-public class ProductService : CrudService<Product, int, ProductGetDto, ProductCreateDto, ProductUpdateDto>,
+public class ProductService : CrudService<Product, Guid, ProductGetDto, ProductCreateDto, ProductUpdateDto>,
     IProductService
 {
     private readonly IUnitOfWork _unitOfWork;

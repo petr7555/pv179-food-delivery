@@ -9,7 +9,7 @@ using FoodDelivery.Infrastructure.UnitOfWork;
 
 namespace FoodDelivery.BL.Services.CategoryService;
 
-public class CategoryService : CrudService<Category, int, CategoryGetDto, CategoryCreateDto, CategoryUpdateDto>,
+public class CategoryService : CrudService<Category, Guid, CategoryGetDto, CategoryCreateDto, CategoryUpdateDto>,
     ICategoryService
 {
     private readonly IUnitOfWork _unitOfWork;
@@ -25,7 +25,7 @@ public class CategoryService : CrudService<Category, int, CategoryGetDto, Catego
         return await queryObject.ExecuteAsync(queryDto);
     }
 
-    public async Task<IEnumerable<RestaurantGetDto>> GetRestaurantsForCategory(int categoryId)
+    public async Task<IEnumerable<RestaurantGetDto>> GetRestaurantsForCategory(Guid categoryId)
     {
         var categories = await GetAllAsync();
         return categories

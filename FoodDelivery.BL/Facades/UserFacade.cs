@@ -28,22 +28,22 @@ public class UserFacade : IUserFacade
         return await _userService.QueryAsync(queryDto);
     }
 
-    public async Task UpdateCustomerDetailsAsync(int userId, CustomerDetailsUpdateDto customerDetailsUpdateDto)
+    public async Task UpdateCustomerDetailsAsync(Guid userId, CustomerDetailsUpdateDto customerDetailsUpdateDto)
     {
         await _userService.UpdateCustomerDetailsAsync(userId, customerDetailsUpdateDto);
     }
 
-    public async Task UpdateAddressAsync(int userId, int addressId, AddressUpdateDto addressUpdateDto)
+    public async Task UpdateAddressAsync(Guid userId, Guid addressId, AddressUpdateDto addressUpdateDto)
     {
         await _userService.UpdateAddressAsync(userId, addressId, addressUpdateDto);
     }
 
-    public async Task BanUserAsync(int userId)
+    public async Task BanUserAsync(Guid userId)
     {
         await _userService.BanUserAsync(userId);
     }
 
-    public async Task UnbanUserAsync(int userId)
+    public async Task UnbanUserAsync(Guid userId)
     {
         await _userService.UnbanUserAsync(userId);
     }

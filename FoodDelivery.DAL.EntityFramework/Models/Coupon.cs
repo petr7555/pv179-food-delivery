@@ -13,7 +13,7 @@ public class Coupon : BaseEntity
     public DateTime ValidUntil { get; set; }
     public bool Valid { get; set; }
 
-    public int AmountId { get; set; }
+    public Guid AmountId { get; set; }
 
     [ForeignKey(nameof(AmountId))]
     public virtual Price Amount { get; set; }

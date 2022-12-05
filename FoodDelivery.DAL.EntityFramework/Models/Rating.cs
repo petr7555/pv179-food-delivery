@@ -5,12 +5,12 @@ namespace FoodDelivery.DAL.EntityFramework.Models;
 
 public class Rating : BaseEntity
 {
-    public int RestaurantId { get; set; }
+    public Guid RestaurantId { get; set; }
 
     [ForeignKey(nameof(RestaurantId))]
     public virtual Restaurant Restaurant { get; set; }
 
-    public int OrderId { get; set; }
+    public Guid OrderId { get; set; }
 
     [ForeignKey(nameof(OrderId))]
     public virtual Order Order { get; set; }

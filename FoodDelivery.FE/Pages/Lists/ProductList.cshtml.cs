@@ -10,8 +10,9 @@ namespace FoodDelivery.FE.Pages.Lists;
 public class ProductList : PageModel
 {
     public IEnumerable<ProductGetDto> Products { get; set; }
+
     private readonly IProductFacade _productFacade;
-    private readonly  IOrderFacade _orderFacade;
+    private readonly IOrderFacade _orderFacade;
 
     public ProductList(IProductFacade productFacade, IOrderFacade orderFacade)
     {
@@ -23,12 +24,11 @@ public class ProductList : PageModel
     {
         Products = await _productFacade.GetAllAsync();
     }
-    
-    public async Task<IActionResult> OnPost(int id)
+
+    public async Task<IActionResult> OnPost(Guid id)
     {
-        // TODO
-        // await _orderFacade.AddToCartAsync(User.Identity.Name, id);
-        
+        await _orderFacade.AddToCartAsync(User.Identity.Name, id);
+
         return RedirectToPage("../Lists/ProductList");
     }
 }

@@ -8,7 +8,7 @@ public class PaymentMethod : BaseEntity
     [MaxLength(255)]
     public string Type { get; set; }
 
-    public int? CouponId { get; set; }
+    public Guid? CouponId { get; set; }
 
     [ForeignKey(nameof(CouponId))]
     public virtual Coupon? Coupon { get; set; }

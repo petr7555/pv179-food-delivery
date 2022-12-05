@@ -14,6 +14,8 @@ public class FoodDeliveryDbContext : DbContext
 
     public FoodDeliveryDbContext(DbContextOptions<FoodDeliveryDbContext> options) : base(options)
     {
+        // TODO remove
+        Console.WriteLine("FoodDeliveryDbContext created" + DateTime.Now);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,6 +37,10 @@ public class FoodDeliveryDbContext : DbContext
         modelBuilder.Entity<Product>()
             .Navigation(p => p.Restaurant)
             .AutoInclude();
+              
+        modelBuilder.Entity<Order>()
+        .Navigation(o => o.OrderProducts)
+        .AutoInclude();
         
         base.OnModelCreating(modelBuilder);
     }
