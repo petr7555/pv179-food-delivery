@@ -23,7 +23,8 @@ using (var scope = app.Services.CreateScope())
     var defaultDatabase = scope.ServiceProvider.GetRequiredService<FoodDeliveryDbContext>().Database;
     var identityDatabase = scope.ServiceProvider.GetRequiredService<BasicIdentityDbContext>().Database;
 
-    if (app.Environment.IsDevelopment())
+    // TODO remove true
+    if (app.Environment.IsDevelopment() || true)
     {
         // Comment out if you don't want to delete the database on each run
         await defaultDatabase.EnsureDeletedAsync();
