@@ -24,13 +24,13 @@ public class CategoryServiceTest
     }
 
     private readonly IMapper _mapper;
-    private readonly Mock<IRepository<Category, int>> _repositoryMock;
+    private readonly Mock<IRepository<Category, Guid>> _repositoryMock;
     private readonly CategoryService _service;
 
     public CategoryServiceTest()
     {
         _mapper = new Mapper(new MapperConfiguration(TestMappingConfig.ConfigureMapping));
-        _repositoryMock = new Mock<IRepository<Category, int>>();
+        _repositoryMock = new Mock<IRepository<Category, Guid>>();
         var unitOfWork = new Mock<IUnitOfWork>();
         unitOfWork.Setup(u => u.CategoryRepository)
             .Returns(_repositoryMock.Object);
@@ -41,17 +41,17 @@ public class CategoryServiceTest
     [Fact]
     public async Task ItGetsUniqueRestaurantsForCategory()
     {
-        var category1 = new Category { Id = 1, Name = "Category 1" };
-        var category2 = new Category { Id = 2, Name = "Category 2" };
+        var category1 = new Category { Id = Guid.NewGuid(), Name = "Category 1" };
+        var category2 = new Category { Id = Guid.NewGuid(), Name = "Category 2" };
 
-        var restaurant1 = new Restaurant { Id = 1, Name = "Restaurant 1" };
-        var restaurant2 = new Restaurant { Id = 2, Name = "Restaurant 2" };
-        var restaurant3 = new Restaurant { Id = 2, Name = "Restaurant 3" };
+        var restaurant1 = new Restaurant { Id = Guid.NewGuid(), Name = "Restaurant 1" };
+        var restaurant2 = new Restaurant { Id = Guid.NewGuid(), Name = "Restaurant 2" };
+        var restaurant3 = new Restaurant { Id = Guid.NewGuid(), Name = "Restaurant 3" };
 
-        var product1 = new Product { Id = 1, Restaurant = restaurant1 };
-        var product2 = new Product { Id = 2, Restaurant = restaurant2 };
-        var product3 = new Product { Id = 3, Restaurant = restaurant1 };
-        var product4 = new Product { Id = 4, Restaurant = restaurant3 };
+        var product1 = new Product { Id = Guid.NewGuid(), Restaurant = restaurant1 };
+        var product2 = new Product { Id = Guid.NewGuid(), Restaurant = restaurant2 };
+        var product3 = new Product { Id = Guid.NewGuid(), Restaurant = restaurant1 };
+        var product4 = new Product { Id = Guid.NewGuid(), Restaurant = restaurant3 };
 
         category1.Products = new List<Product> { product1, product3, product4 };
         category2.Products = new List<Product> { product2 };

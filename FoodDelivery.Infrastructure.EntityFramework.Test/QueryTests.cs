@@ -9,7 +9,13 @@ namespace FoodDelivery.Infrastructure.EntityFramework.Test;
 public class QueryTests
 {
     private readonly FoodDeliveryDbContext _context;
-    private readonly Price price;
+
+    private readonly Restaurant _pizzaGiuseppe;
+    private readonly Restaurant _pizzaDominos;
+    private readonly Restaurant _pizzaHut;
+    private readonly Restaurant _k1;
+    private readonly Restaurant _jeanPauls;
+    private readonly Restaurant _poePoe;
 
     public QueryTests()
     {
@@ -21,29 +27,43 @@ public class QueryTests
 
         _context = new FoodDeliveryDbContext(dbContextOptions);
 
-        var czkCurrency = new Currency { Id = 1, Name = "CZK" };
+        var czkCurrency = new Currency { Id = Guid.NewGuid(), Name = "CZK" };
         _context.Currencies.Add(czkCurrency);
-        price = new Price { Id = 1, Amount = 50, CurrencyId = czkCurrency.Id };
-        _context.Prices.Add(price);
 
-        _context.Restaurants.Add(new Restaurant
-            { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = price.Id }
-        );
-        _context.Restaurants.Add(new Restaurant
-            { Id = 2, Name = "Pizza Domino's", DeliveryPriceId = price.Id }
-        );
-        _context.Restaurants.Add(new Restaurant
-            { Id = 3, Name = "Pizza Hut", DeliveryPriceId = price.Id }
-        );
-        _context.Restaurants.Add(new Restaurant
-            { Id = 4, Name = "Steak House K1", DeliveryPriceId = price.Id }
-        );
-        _context.Restaurants.Add(new Restaurant
-            { Id = 5, Name = "Jean Paul's", DeliveryPriceId = price.Id }
-        );
-        _context.Restaurants.Add(new Restaurant
-            { Id = 6, Name = "POE POE", DeliveryPriceId = price.Id }
-        );
+        var priceFifty = new Price { Id = Guid.NewGuid(), Amount = 50, CurrencyId = czkCurrency.Id };
+        var priceEighty = new Price { Id = Guid.NewGuid(), Amount = 80, CurrencyId = czkCurrency.Id };
+        _context.Prices.AddRange(priceFifty, priceEighty);
+
+        _pizzaGiuseppe = new Restaurant
+        {
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000001"), Name = "Pizza Guiseppe",
+            DeliveryPriceId = priceFifty.Id
+        };
+        _pizzaDominos = new Restaurant
+        {
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000002"), Name = "Pizza Domino's",
+            DeliveryPriceId = priceFifty.Id
+        };
+        _pizzaHut = new Restaurant
+        {
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000003"), Name = "Pizza Hut",
+            DeliveryPriceId = priceEighty.Id
+        };
+        _k1 = new Restaurant
+        {
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000004"), Name = "Steak House K1",
+            DeliveryPriceId = priceEighty.Id
+        };
+        _jeanPauls = new Restaurant
+        {
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000005"), Name = "Jean Paul's",
+            DeliveryPriceId = priceEighty.Id
+        };
+        _poePoe = new Restaurant
+        {
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000006"), Name = "POE POE", DeliveryPriceId = priceEighty.Id
+        };
+        _context.Restaurants.AddRange(_pizzaGiuseppe, _pizzaDominos, _pizzaHut, _k1, _jeanPauls, _poePoe);
 
         _context.SaveChanges();
     }
@@ -57,7 +77,7 @@ public class QueryTests
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
-            new() { Id = 3, Name = "Pizza Hut", DeliveryPriceId = price.Id, DeliveryPrice = price },
+            _pizzaHut,
         });
     }
 
@@ -70,24 +90,24 @@ public class QueryTests
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
-            new() { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 2, Name = "Pizza Domino's", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 3, Name = "Pizza Hut", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 6, Name = "POE POE", DeliveryPriceId = price.Id, DeliveryPrice = price },
+            _pizzaGiuseppe,
+            _pizzaDominos,
+            _pizzaHut,
+            _poePoe,
         });
     }
 
     [Fact]
-    public async Task ItFiltersRestaurantsWithIdSmallerThanThree()
+    public async Task ItFiltersRestaurantsWithSmallerDeliveryPriceThanEighty()
     {
         var query = new EfQuery<Restaurant>(_context);
-        query.Where(r => r.Id < 3);
+        query.Where(r => r.DeliveryPrice.Amount < 80);
         var result = await query.ExecuteAsync();
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
-            new() { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 2, Name = "Pizza Domino's", DeliveryPriceId = price.Id, DeliveryPrice = price },
+            _pizzaGiuseppe,
+            _pizzaDominos,
         });
     }
 
@@ -96,13 +116,13 @@ public class QueryTests
     {
         var query = new EfQuery<Restaurant>(_context);
         query.Where(r => r.Name.StartsWith("P"))
-            .Where(r => r.Id > 2);
+            .Where(r => r.DeliveryPrice.Amount > 50);
         var result = await query.ExecuteAsync();
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
-            new() { Id = 3, Name = "Pizza Hut", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 6, Name = "POE POE", DeliveryPriceId = price.Id, DeliveryPrice = price },
+            _pizzaHut,
+            _poePoe,
         });
     }
 
@@ -115,12 +135,12 @@ public class QueryTests
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
-            new() { Id = 5, Name = "Jean Paul's", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 2, Name = "Pizza Domino's", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 3, Name = "Pizza Hut", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 6, Name = "POE POE", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 4, Name = "Steak House K1", DeliveryPriceId = price.Id, DeliveryPrice = price },
+            _jeanPauls,
+            _pizzaDominos,
+            _pizzaGiuseppe,
+            _pizzaHut,
+            _poePoe,
+            _k1,
         }, c => c.WithStrictOrdering());
     }
 
@@ -133,12 +153,12 @@ public class QueryTests
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
-            new() { Id = 4, Name = "Steak House K1", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 6, Name = "POE POE", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 3, Name = "Pizza Hut", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 2, Name = "Pizza Domino's", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 5, Name = "Jean Paul's", DeliveryPriceId = price.Id, DeliveryPrice = price },
+            _k1,
+            _poePoe,
+            _pizzaHut,
+            _pizzaGiuseppe,
+            _pizzaDominos,
+            _jeanPauls,
         }, c => c.WithStrictOrdering());
     }
 
@@ -151,12 +171,12 @@ public class QueryTests
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
-            new() { Id = 6, Name = "POE POE", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 5, Name = "Jean Paul's", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 4, Name = "Steak House K1", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 3, Name = "Pizza Hut", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 2, Name = "Pizza Domino's", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = price.Id, DeliveryPrice = price },
+            _poePoe,
+            _jeanPauls,
+            _k1,
+            _pizzaHut,
+            _pizzaDominos,
+            _pizzaGiuseppe,
         }, c => c.WithStrictOrdering());
     }
 
@@ -171,12 +191,12 @@ public class QueryTests
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
-            new() { Id = 5, Name = "Jean Paul's", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 2, Name = "Pizza Domino's", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 3, Name = "Pizza Hut", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 6, Name = "POE POE", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 4, Name = "Steak House K1", DeliveryPriceId = price.Id, DeliveryPrice = price },
+            _jeanPauls,
+            _pizzaDominos,
+            _pizzaGiuseppe,
+            _pizzaHut,
+            _poePoe,
+            _k1,
         }, c => c.WithStrictOrdering());
     }
 
@@ -190,9 +210,9 @@ public class QueryTests
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
-            new() { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 2, Name = "Pizza Domino's", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 3, Name = "Pizza Hut", DeliveryPriceId = price.Id, DeliveryPrice = price },
+            _pizzaGiuseppe,
+            _pizzaDominos,
+            _pizzaHut,
         });
     }
 
@@ -205,8 +225,8 @@ public class QueryTests
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
-            new() { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 2, Name = "Pizza Domino's", DeliveryPriceId = price.Id, DeliveryPrice = price },
+            _pizzaGiuseppe,
+            _pizzaDominos,
         });
     }
 
@@ -219,8 +239,8 @@ public class QueryTests
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
-            new() { Id = 3, Name = "Pizza Hut", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 4, Name = "Steak House K1", DeliveryPriceId = price.Id, DeliveryPrice = price },
+            _pizzaHut,
+            _k1,
         });
     }
 
@@ -233,8 +253,8 @@ public class QueryTests
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
-            new() { Id = 5, Name = "Jean Paul's", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 6, Name = "POE POE", DeliveryPriceId = price.Id, DeliveryPrice = price },
+            _jeanPauls,
+            _poePoe,
         });
     }
 
@@ -247,8 +267,8 @@ public class QueryTests
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
-            new() { Id = 5, Name = "Jean Paul's", DeliveryPriceId = price.Id, DeliveryPrice = price },
-            new() { Id = 6, Name = "POE POE", DeliveryPriceId = price.Id, DeliveryPrice = price },
+            _jeanPauls,
+            _poePoe,
         });
     }
 
@@ -264,7 +284,7 @@ public class QueryTests
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
-            new() { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = price.Id, DeliveryPrice = price },
+            _pizzaGiuseppe,
         }, c => c.WithStrictOrdering());
     }
 
@@ -280,7 +300,7 @@ public class QueryTests
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
-            new() { Id = 1, Name = "Pizza Guiseppe", DeliveryPriceId = price.Id, DeliveryPrice = price },
+            _pizzaGiuseppe,
         }, c => c.WithStrictOrdering());
     }
 }

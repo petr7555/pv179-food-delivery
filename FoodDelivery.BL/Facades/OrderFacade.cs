@@ -65,6 +65,7 @@ public class OrderFacade : IOrderFacade
             var newOrder = new OrderCreateDto
             {
                 Id = Guid.NewGuid(),
+                // TODO what if not found?
                 CustomerDetailsId = user.CustomerDetailsId ??
                                     throw new InvalidOperationException("Customer details not found"),
                 OrderStatus = OrderStatus.Active,

@@ -14,8 +14,6 @@ public class FoodDeliveryDbContext : DbContext
 
     public FoodDeliveryDbContext(DbContextOptions<FoodDeliveryDbContext> options) : base(options)
     {
-        // TODO remove
-        Console.WriteLine("FoodDeliveryDbContext created" + DateTime.Now);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
