@@ -22,4 +22,12 @@ public class OrderService : CrudService<Order, Guid, OrderGetDto, OrderCreateDto
         var queryObject = new QueryObject<OrderGetDto, Order>(Mapper, _unitOfWork.OrderQuery);
         return await queryObject.ExecuteAsync(queryDto);
     }
+
+    public async Task FulfillOrderAsync(Guid orderId)
+    {
+        var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderId);
+        order.OrderStatus = OrderStatus.Paid;
+        _unitOfWork.OrderRepository.Update(order);
+        await _unitOfWork.CommitAsync();
+    }
 }

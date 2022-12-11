@@ -11,17 +11,24 @@
 @* } *@
 
 @* TODO Later something like: for each product in user's cart show that product and quantity  *@
-<h1>Your products:</h1>
-<ul>
-  @foreach (var product in Model.ProductsInBasket)
-  {
-    <li>
-      <p>@product.Name</p>
-      <p>@product.Price.Amount @product.Price.Currency.Name</p>
-    </li>
-  }
-</ul>
+@if (!Model.ProductsInBasket.Any())
+{
+  <h2>There are no products in your basket</h2>
+}
+else
+{
+  <h1>Your products:</h1>
+  <ul>
+    @foreach (var product in Model.ProductsInBasket)
+    {
+      <li>
+        <p>@product.Name</p>
+        <p>@product.Price.Amount @product.Price.Currency.Name</p>
+      </li>
+    }
+  </ul>
 
-<form method="post">
-  <button type="submit" id="checkout-button">Checkout</button>
-</form>
+  <form method="post">
+    <button type="submit" id="checkout-button">Checkout</button>
+  </form>
+}

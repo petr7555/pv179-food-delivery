@@ -21,6 +21,7 @@ public class EfUnitOfWork : IUnitOfWork
 
     public IQuery<User> UserQuery { get; }
     public IQuery<Order> OrderQuery { get; }
+    public IQuery<OrderProduct> OrderProductQuery { get; }
     public IQuery<Restaurant> RestaurantQuery { get; }
     public IQuery<Product> ProductQuery { get; }
     public IQuery<Category> CategoryQuery { get; }
@@ -38,8 +39,9 @@ public class EfUnitOfWork : IUnitOfWork
 
         UserQuery = new EfQuery<User>(_context);
         OrderQuery = new EfQuery<Order>(_context);
-        RestaurantQuery = new EfQuery<Restaurant>(_context);
         ProductQuery = new EfQuery<Product>(_context);
+        OrderProductQuery = new EfQuery<OrderProduct>(_context);
+        RestaurantQuery = new EfQuery<Restaurant>(_context);
         CategoryQuery = new EfQuery<Category>(_context);
     }
 

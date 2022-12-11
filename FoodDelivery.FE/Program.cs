@@ -9,6 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
+// Add Web API
+builder.Services.AddControllers();
+
 // BL dependency injection
 builder.Services.AddBlDependencies(builder.Configuration.GetConnectionString("DefaultConnection"));
 
@@ -57,6 +60,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
+// Web API
+app.MapControllers();
 
 app.Run();
 

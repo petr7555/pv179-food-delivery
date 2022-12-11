@@ -1,7 +1,6 @@
 ﻿using FoodDelivery.BL.DTOs;
 using FoodDelivery.BL.DTOs.Order;
 using FoodDelivery.BL.DTOs.OrderProduct;
-using FoodDelivery.BL.DTOs.Product;
 using FoodDelivery.BL.Services.OrderProductService;
 using FoodDelivery.BL.Services.OrderService;
 using FoodDelivery.BL.Services.ProductService;
@@ -43,10 +42,9 @@ public class OrderFacade : IOrderFacade
     public async Task<IEnumerable<OrderGetDto>> GetOrdersForUserAsync(string username)
     {
         var user = await _userService.GetByUsernameAsync(username);
-        var orders =
-            await _orderService.QueryAsync(
-                new QueryDto<OrderGetDto>().Where(o => o.CustomerDetails.Customer.Id == user.Id));
-        return orders;
+        return await _orderService.QueryAsync(
+                new QueryDto<OrderGetDto>()
+                    .Where(o => o.CustomerDetails.Customer.Id == user.Id));
     }
 
     public async Task AddToCartAsync(string username, Guid productId)
@@ -83,16 +81,15 @@ public class OrderFacade : IOrderFacade
         await _uow.CommitAsync();
     }
 
-    public async Task<IEnumerable<ProductGetDto>> GetProductsInBasketAsync(string username)
+    public async Task<OrderGetDto?> GetActiveOrder(string username)
     {
         var orders = await GetOrdersForUserAsync(username);
         var activeOrder = orders.SingleOrDefault(o => o.OrderStatus == OrderStatus.Active);
         if (activeOrder == null)
         {
-            return new List<ProductGetDto>();
+            return null;
         }
-
-        var allProducts = await _productService.GetAllAsync();
-        return activeOrder.OrderProducts.Select(op => allProducts.Single(p => p.Id == op.ProductId));
+        activeOrder.Products = (await _orderProductService.GetProductsForOrderAsync(activeOrder.Id)).ToList();
+        return activeOrder;
     }
 }

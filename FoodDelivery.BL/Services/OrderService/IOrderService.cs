@@ -8,4 +8,6 @@ namespace FoodDelivery.BL.Services.OrderService;
 public interface IOrderService : ICrudService<Order, Guid, OrderGetDto, OrderCreateDto, OrderUpdateDto>
 {
     public Task<IEnumerable<OrderGetDto>> QueryAsync(QueryDto<OrderGetDto> queryDto);
+    
+    public Task FulfillOrderAsync(Guid orderId);
 }

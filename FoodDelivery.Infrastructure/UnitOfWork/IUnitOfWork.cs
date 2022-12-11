@@ -15,8 +15,9 @@ public interface IUnitOfWork : IAsyncDisposable
 
     public IQuery<User> UserQuery { get; }
     public IQuery<Order> OrderQuery { get; }
-    public IQuery<Restaurant> RestaurantQuery { get; }
     public IQuery<Product> ProductQuery { get; }
+    public IQuery<OrderProduct> OrderProductQuery { get; }
+    public IQuery<Restaurant> RestaurantQuery { get; }
     public IQuery<Category> CategoryQuery { get; }
 
     public Task CommitAsync();

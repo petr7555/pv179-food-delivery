@@ -1,6 +1,5 @@
 ﻿using FoodDelivery.BL.DTOs;
 using FoodDelivery.BL.DTOs.Order;
-using FoodDelivery.BL.DTOs.Product;
 
 namespace FoodDelivery.BL.Facades.OrderFacade;
 
@@ -14,5 +13,5 @@ public interface IOrderFacade
 
     public Task AddToCartAsync(string username, Guid productId);
 
-    public Task<IEnumerable<ProductGetDto>> GetProductsInBasketAsync(string username);
+    public Task<OrderGetDto?> GetActiveOrder(string username);
 }

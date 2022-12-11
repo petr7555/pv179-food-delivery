@@ -25,7 +25,8 @@ public class Checkout : PageModel
 
     public async Task OnGet()
     {
-        ProductsInBasket = await _orderFacade.GetProductsInBasketAsync(User.Identity.Name);
+        var activeOrder = await _orderFacade.GetActiveOrder(User.Identity.Name);
+        ProductsInBasket = activeOrder?.Products ?? new List<ProductGetDto>();
     }
 
     /**
@@ -34,10 +35,11 @@ public class Checkout : PageModel
     // TODO move logic to OrderService
     public async Task<IActionResult> OnPost()
     {
-        var products = await _orderFacade.GetProductsInBasketAsync(User.Identity.Name);
-
+        var activeOrder = await _orderFacade.GetActiveOrder(User.Identity.Name);
+        var productsInBasket = activeOrder?.Products ?? throw new InvalidOperationException("Cannot checkout, no active order found.");
+        
         var sessionLineItemOptions = new List<SessionLineItemOptions>();
-        foreach (var p in products)
+        foreach (var p in productsInBasket)
         {
             var product = await _productService.GetByIdAsync(p.Id);
             sessionLineItemOptions.Add(new SessionLineItemOptions
@@ -62,6 +64,7 @@ public class Checkout : PageModel
             Mode = "payment",
             SuccessUrl = domain + "/Payment/Success",
             CancelUrl = domain + "/Payment/Cancel",
+            ClientReferenceId = activeOrder.Id.ToString(),
         };
 
         var service = new SessionService();
