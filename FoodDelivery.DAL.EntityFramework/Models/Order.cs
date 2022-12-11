@@ -25,6 +25,5 @@ public class Order : BaseEntity
 public enum OrderStatus
 {
     Active,
-    Submitted,
     Paid,
 }
