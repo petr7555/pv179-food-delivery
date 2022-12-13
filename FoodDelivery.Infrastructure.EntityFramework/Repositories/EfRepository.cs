@@ -6,21 +6,23 @@ namespace FoodDelivery.Infrastructure.EntityFramework.Repositories;
 
 public class EfRepository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : BaseEntity where TKey : struct
 {
+    private readonly DbContext _context;
     private readonly DbSet<TEntity> _dbSet;
 
     public EfRepository(DbContext context)
     {
-        _dbSet = context.Set<TEntity>();
+        _context = context;
+        _dbSet = _context.Set<TEntity>();
     }
 
     public async Task<TEntity?> GetByIdAsync(TKey id)
     {
-        return await _dbSet.FindAsync(id);
+        return await _dbSet.AsNoTracking().SingleOrDefaultAsync(x => x.Id.Equals(id));
     }
 
     public async Task<IEnumerable<TEntity>> GetAllAsync()
     {
-        return await _dbSet.ToListAsync();
+        return await _dbSet.AsNoTracking().ToListAsync();
     }
 
     public void Create(TEntity entity)
@@ -30,7 +32,13 @@ public class EfRepository<TEntity, TKey> : IRepository<TEntity, TKey> where TEnt
 
     public void Update(TEntity entity)
     {
-        _dbSet.Update(entity);
+        var originalEntity = _dbSet.Find(entity.Id);
+        if (originalEntity == null)
+        {
+            throw new Exception("Cannot update entity, entity not found.");
+        }
+
+        _context.Entry(originalEntity).CurrentValues.SetValues(entity);
     }
 
     public void Delete(TKey id)

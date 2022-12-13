@@ -114,6 +114,8 @@ public class OrderFacade : IOrderFacade
         var updatedOrder = new OrderUpdateDto
         {
             Id = order.Id,
+            CreatedAt = order.CreatedAt,
+            CustomerDetailsId = order.CustomerDetailsId,
             Status = OrderStatus.Paid,
         };
         _orderService.Update(updatedOrder);
