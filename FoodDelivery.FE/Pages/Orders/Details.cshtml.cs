@@ -16,7 +16,7 @@ public class DetailsModel : PageModel
         _orderFacade = orderFacade;
     }
 
-    public async Task<IActionResult> OnGetAsync(Guid id)
+    public async Task<IActionResult> OnGet(Guid id)
     {
         var foundOrder = await _orderFacade.GetByIdAsync(id);
         if (foundOrder == null)
