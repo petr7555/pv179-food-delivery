@@ -1,5 +1,4 @@
 using FoodDelivery.BL.DTOs.Product;
-using FoodDelivery.BL.Facades;
 using FoodDelivery.BL.Facades.OrderFacade;
 using FoodDelivery.BL.Services.ProductService;
 using Microsoft.AspNetCore.Authorization;
@@ -25,7 +24,7 @@ public class Checkout : PageModel
 
     public async Task OnGet()
     {
-        var activeOrder = await _orderFacade.GetActiveOrder(User.Identity.Name);
+        var activeOrder = await _orderFacade.GetActiveOrderAsync(User.Identity.Name);
         ProductsInBasket = activeOrder?.Products ?? new List<ProductGetDto>();
     }
 
@@ -35,9 +34,10 @@ public class Checkout : PageModel
     // TODO move logic to OrderService
     public async Task<IActionResult> OnPost()
     {
-        var activeOrder = await _orderFacade.GetActiveOrder(User.Identity.Name);
-        var productsInBasket = activeOrder?.Products ?? throw new InvalidOperationException("Cannot checkout, no active order found.");
-        
+        var activeOrder = await _orderFacade.GetActiveOrderAsync(User.Identity.Name);
+        var productsInBasket = activeOrder?.Products ??
+                               throw new InvalidOperationException("Cannot checkout, no active order found.");
+
         var sessionLineItemOptions = new List<SessionLineItemOptions>();
         foreach (var p in productsInBasket)
         {

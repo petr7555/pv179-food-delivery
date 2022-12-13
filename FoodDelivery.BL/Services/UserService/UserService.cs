@@ -13,16 +13,18 @@ namespace FoodDelivery.BL.Services.UserService;
 public class UserService : CrudService<User, Guid, UserGetDto, UserCreateDto, UserUpdateDto>, IUserService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IQueryObject<UserGetDto, User> _queryObject;
 
-    public UserService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork.UserRepository, mapper)
+    public UserService(IUnitOfWork unitOfWork, IMapper mapper, IQueryObject<UserGetDto, User> queryObject) : base(
+        unitOfWork.UserRepository, mapper)
     {
         _unitOfWork = unitOfWork;
+        _queryObject = queryObject;
     }
 
     public async Task<IEnumerable<UserGetDto>> QueryAsync(QueryDto<UserGetDto> queryDto)
     {
-        var queryObject = new QueryObject<UserGetDto, User>(Mapper, _unitOfWork.UserQuery);
-        return await queryObject.ExecuteAsync(queryDto);
+        return await _queryObject.ExecuteAsync(queryDto);
     }
 
     public async Task UpdateCustomerDetailsAsync(Guid userId, CustomerDetailsUpdateDto customerDetailsUpdateDto)

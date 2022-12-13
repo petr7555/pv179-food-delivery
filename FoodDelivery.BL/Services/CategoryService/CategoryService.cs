@@ -12,17 +12,17 @@ namespace FoodDelivery.BL.Services.CategoryService;
 public class CategoryService : CrudService<Category, Guid, CategoryGetDto, CategoryCreateDto, CategoryUpdateDto>,
     ICategoryService
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IQueryObject<CategoryGetDto, Category> _queryObject;
 
-    public CategoryService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork.CategoryRepository, mapper)
+    public CategoryService(IUnitOfWork unitOfWork, IMapper mapper, IQueryObject<CategoryGetDto, Category> queryObject) :
+        base(unitOfWork.CategoryRepository, mapper)
     {
-        _unitOfWork = unitOfWork;
+        _queryObject = queryObject;
     }
 
     public async Task<IEnumerable<CategoryGetDto>> QueryAsync(QueryDto<CategoryGetDto> queryDto)
     {
-        var queryObject = new QueryObject<CategoryGetDto, Category>(Mapper, _unitOfWork.CategoryQuery);
-        return await queryObject.ExecuteAsync(queryDto);
+        return await _queryObject.ExecuteAsync(queryDto);
     }
 
     public async Task<IEnumerable<RestaurantGetDto>> GetRestaurantsForCategory(Guid categoryId)

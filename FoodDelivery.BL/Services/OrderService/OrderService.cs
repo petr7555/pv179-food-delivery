@@ -10,24 +10,16 @@ namespace FoodDelivery.BL.Services.OrderService;
 
 public class OrderService : CrudService<Order, Guid, OrderGetDto, OrderCreateDto, OrderUpdateDto>, IOrderService
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IQueryObject<OrderGetDto, Order> _queryObject;
 
-    public OrderService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork.OrderRepository, mapper)
+    public OrderService(IUnitOfWork unitOfWork, IMapper mapper, IQueryObject<OrderGetDto, Order> queryObject) : base(
+        unitOfWork.OrderRepository, mapper)
     {
-        _unitOfWork = unitOfWork;
+        _queryObject = queryObject;
     }
 
     public async Task<IEnumerable<OrderGetDto>> QueryAsync(QueryDto<OrderGetDto> queryDto)
     {
-        var queryObject = new QueryObject<OrderGetDto, Order>(Mapper, _unitOfWork.OrderQuery);
-        return await queryObject.ExecuteAsync(queryDto);
-    }
-
-    public async Task FulfillOrderAsync(Guid orderId)
-    {
-        var order = await _unitOfWork.OrderRepository.GetByIdAsync(orderId);
-        order.OrderStatus = OrderStatus.Paid;
-        _unitOfWork.OrderRepository.Update(order);
-        await _unitOfWork.CommitAsync();
+        return await _queryObject.ExecuteAsync(queryDto);
     }
 }

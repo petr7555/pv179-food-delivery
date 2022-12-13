@@ -1,0 +1,41 @@
+@page
+@model DetailsModel
+
+@{
+  ViewData["Title"] = "Order details";
+}
+
+<h1>Items</h1>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>
+      Image
+    </th>
+    <th>
+      @Html.DisplayNameFor(model => model.Order.Products[0].Name)
+    </th>
+    <th>
+      @Html.DisplayNameFor(model => model.Order.Products[0].Price)
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  @foreach (var item in Model.Order.Products)
+  {
+    <tr>
+      <td>
+        <img src="@item.ImageUrl" alt="@item.Name" width="100"/>
+      </td>
+      <td>
+        @Html.DisplayFor(modelItem => item.Name)
+      </td>
+      <td>
+        @Html.DisplayFor(modelItem => item.Price.Amount)
+        @Html.DisplayFor(modelItem => item.Price.Currency.Name)
+      </td>
+    </tr>
+  }
+  </tbody>
+</table>

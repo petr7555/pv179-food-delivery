@@ -1,0 +1,44 @@
+@page
+@model IndexModel
+
+@{
+  ViewData["Title"] = "My orders";
+}
+
+<h1>My orders</h1>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>
+      @Html.DisplayNameFor(model => model.Orders[0].Id)
+    </th>
+    <th>
+      @Html.DisplayNameFor(model => model.Orders[0].CreatedAt)
+    </th>
+    <th>
+      @Html.DisplayNameFor(model => model.Orders[0].Status)
+    </th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  @foreach (var item in Model.Orders)
+  {
+    <tr>
+      <td>
+        @Html.DisplayFor(modelItem => item.Id)
+      </td>
+      <td>
+        @Html.DisplayFor(modelItem => item.CreatedAt)
+      </td>
+      <td>
+        @Html.DisplayFor(modelItem => item.Status)
+      </td>
+      <td>
+        <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
+      </td>
+    </tr>
+  }
+  </tbody>
+</table>

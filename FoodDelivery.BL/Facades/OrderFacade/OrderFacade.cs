@@ -3,7 +3,6 @@ using FoodDelivery.BL.DTOs.Order;
 using FoodDelivery.BL.DTOs.OrderProduct;
 using FoodDelivery.BL.Services.OrderProductService;
 using FoodDelivery.BL.Services.OrderService;
-using FoodDelivery.BL.Services.ProductService;
 using FoodDelivery.BL.Services.UserService;
 using FoodDelivery.DAL.EntityFramework.Models;
 using FoodDelivery.Infrastructure.UnitOfWork;
@@ -15,43 +14,63 @@ public class OrderFacade : IOrderFacade
     private readonly IUnitOfWork _uow;
     private readonly IOrderService _orderService;
     private readonly IOrderProductService _orderProductService;
-    private readonly IProductService _productService;
     private readonly IUserService _userService;
 
     public OrderFacade(IUnitOfWork uow, IOrderService orderService, IOrderProductService orderProductService,
-        IProductService productService,
         IUserService userService)
     {
         _uow = uow;
         _orderService = orderService;
         _orderProductService = orderProductService;
-        _productService = productService;
         _userService = userService;
     }
 
-    public async Task<IEnumerable<OrderGetDto>> GetAllAsync()
+    public async Task<OrderWithProductsGetDto?> GetByIdAsync(Guid id)
     {
-        return await _orderService.GetAllAsync();
+        var order = await _orderService.GetByIdAsync(id);
+        if (order == null)
+        {
+            return null;
+        }
+
+        var orderWithProducts = new OrderWithProductsGetDto
+        {
+            Id = order.Id,
+            CreatedAt = order.CreatedAt,
+            CustomerDetails = order.CustomerDetails,
+            Status = order.Status,
+            Products = (await _orderProductService.GetProductsForOrderAsync(order.Id)).ToList(),
+        };
+        return orderWithProducts;
     }
 
-    public async Task<IEnumerable<OrderGetDto>> QueryAsync(QueryDto<OrderGetDto> queryDto)
-    {
-        return await _orderService.QueryAsync(queryDto);
-    }
-
-    public async Task<IEnumerable<OrderGetDto>> GetOrdersForUserAsync(string username)
+    public async Task<IEnumerable<OrderWithProductsGetDto>> GetOrdersForUserAsync(string username)
     {
         var user = await _userService.GetByUsernameAsync(username);
-        return await _orderService.QueryAsync(
-                new QueryDto<OrderGetDto>()
-                    .Where(o => o.CustomerDetails.Customer.Id == user.Id));
+        var orders = await _orderService.QueryAsync(
+            new QueryDto<OrderGetDto>()
+                .Where(o => o.CustomerDetails.Customer.Id == user.Id));
+        var ordersWithProducts = new List<OrderWithProductsGetDto>();
+        foreach (var order in orders)
+        {
+            ordersWithProducts.Add(new OrderWithProductsGetDto
+            {
+                Id = order.Id,
+                CreatedAt = order.CreatedAt,
+                CustomerDetails = order.CustomerDetails,
+                Status = order.Status,
+                Products = (await _orderProductService.GetProductsForOrderAsync(order.Id)).ToList(),
+            });
+        }
+
+        return ordersWithProducts;
     }
 
-    public async Task AddToCartAsync(string username, Guid productId)
+    public async Task AddProductToCartAsync(string username, Guid productId)
     {
         var user = await _userService.GetByUsernameAsync(username);
         var orders = await GetOrdersForUserAsync(username);
-        var activeOrder = orders.SingleOrDefault(o => o.OrderStatus == OrderStatus.Active);
+        var activeOrder = orders.SingleOrDefault(o => o.Status == OrderStatus.Active);
 
         Guid orderId;
         if (activeOrder != null)
@@ -63,10 +82,11 @@ public class OrderFacade : IOrderFacade
             var newOrder = new OrderCreateDto
             {
                 Id = Guid.NewGuid(),
+                CreatedAt = DateTime.UtcNow,
                 // TODO what if not found?
                 CustomerDetailsId = user.CustomerDetailsId ??
                                     throw new InvalidOperationException("Customer details not found"),
-                OrderStatus = OrderStatus.Active,
+                Status = OrderStatus.Active,
             };
             _orderService.Create(newOrder);
             orderId = newOrder.Id;
@@ -81,15 +101,22 @@ public class OrderFacade : IOrderFacade
         await _uow.CommitAsync();
     }
 
-    public async Task<OrderGetDto?> GetActiveOrder(string username)
+    public async Task<OrderWithProductsGetDto?> GetActiveOrderAsync(string username)
     {
         var orders = await GetOrdersForUserAsync(username);
-        var activeOrder = orders.SingleOrDefault(o => o.OrderStatus == OrderStatus.Active);
-        if (activeOrder == null)
-        {
-            return null;
-        }
-        activeOrder.Products = (await _orderProductService.GetProductsForOrderAsync(activeOrder.Id)).ToList();
+        var activeOrder = orders.SingleOrDefault(o => o.Status == OrderStatus.Active);
         return activeOrder;
+    }
+
+    public async Task FulfillOrderAsync(Guid orderId)
+    {
+        var order = await _orderService.GetByIdAsync(orderId);
+        var updatedOrder = new OrderUpdateDto
+        {
+            Id = order.Id,
+            Status = OrderStatus.Paid,
+        };
+        _orderService.Update(updatedOrder);
+        await _uow.CommitAsync();
     }
 }

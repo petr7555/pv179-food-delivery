@@ -11,16 +11,16 @@ namespace FoodDelivery.BL.Services.ProductService;
 public class ProductService : CrudService<Product, Guid, ProductGetDto, ProductCreateDto, ProductUpdateDto>,
     IProductService
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IQueryObject<ProductGetDto, Product> _queryObject;
 
-    public ProductService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork.ProductRepository, mapper)
+    public ProductService(IUnitOfWork unitOfWork, IMapper mapper, IQueryObject<ProductGetDto, Product> queryObject) :
+        base(unitOfWork.ProductRepository, mapper)
     {
-        _unitOfWork = unitOfWork;
+        _queryObject = queryObject;
     }
 
     public async Task<IEnumerable<ProductGetDto>> QueryAsync(QueryDto<ProductGetDto> queryDto)
     {
-        var queryObject = new QueryObject<ProductGetDto, Product>(Mapper, _unitOfWork.ProductQuery);
-        return await queryObject.ExecuteAsync(queryDto);
+        return await _queryObject.ExecuteAsync(queryDto);
     }
 }

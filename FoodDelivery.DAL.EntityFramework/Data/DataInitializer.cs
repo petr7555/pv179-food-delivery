@@ -162,8 +162,9 @@ public static class DataInitializer
         {
             Id = Guid.NewGuid(),
             CategoryId = pizzaCategory.Id,
-            Name = "Salami",
+            Name = "Pizza Salami",
             Description = "Tomato salsa, Ham, Spicy salami, Mozzarella",
+            ImageUrl = "https://media-cdn.tripadvisor.com/media/photo-s/10/90/53/e8/pizza-salami.jpg",
             RestaurantId = pizzeriaGuiseppe.Id,
             PriceId = pizzaPrice.Id,
         };
@@ -174,6 +175,7 @@ public static class DataInitializer
             CategoryId = sushiCategory.Id,
             Name = "California Salmon Eight",
             Description = "California rolls with salmon",
+            ImageUrl = "https://www.sushimisanantonio.es/wp-content/uploads/2017/04/california-salmon-2.jpg",
             RestaurantId = happySushi.Id,
             PriceId = californiaSalmonEightRollsPrice.Id,
         };
@@ -184,6 +186,7 @@ public static class DataInitializer
             CategoryId = sushiCategory.Id,
             Name = "24 Salmon, tuna and prawn maki mix",
             Description = "Salmon, tuna and prawn maki with 8 pieces each.",
+            ImageUrl = "https://makfahealth.com/upload/iblock/48b/48b8e460bedd7e1037f571095409699a.jpg",
             RestaurantId = happySushi.Id,
             PriceId = salmonTunaPrawnEightMakiEachPrice.Id,
         };
@@ -195,6 +198,7 @@ public static class DataInitializer
             Name = "Barbecue Burger",
             Description =
                 "Special homemade bun, 200g beef meat, cheddar, onion rings, lettuce, tomato, barbecue sauce, fries",
+            ImageUrl = "https://recipes.net/wp-content/uploads/2021/10/the-best-grilled-bbq-burger-recipe.jpg",
             RestaurantId = burgerino.Id,
             PriceId = barbecueBurgerPrice.Id,
         };
@@ -205,6 +209,8 @@ public static class DataInitializer
             CategoryId = burgerCategory.Id,
             Name = "Chicken Burger",
             Description = "Special homemade bun, 150g chicken, lettuce, tomato, homemade mayo with herbs, fries",
+            ImageUrl =
+                "https://media.istockphoto.com/id/652832752/photo/fried-chicken-burger.jpg?s=612x612&w=0&k=20&c=EendRCleaNpkKOUiOplgStACHh_8IyHYzjbzcByGC_4=",
             RestaurantId = burgerino.Id,
             PriceId = chickenBurgerPrice.Id,
         };
@@ -216,6 +222,8 @@ public static class DataInitializer
             Name = "Royal Burger",
             Description =
                 "Special homemade bun, 200g beef meat, cheddar, roasted smoked bacon, egg, caramelized onion, lettuce, tomato, fries",
+            ImageUrl =
+                "https://img.freepik.com/premium-photo/royal-burger-with-double-meat-cutlet_127425-327.jpg?w=2000",
             RestaurantId = burgerino.Id,
             PriceId = royalBurgerPrice.Id,
         };
@@ -227,6 +235,7 @@ public static class DataInitializer
             Name = "Devil Burger",
             Description =
                 "Special homemade bun, 200g beef meat, cheddar, roasted smoked bacon, red habanero mayo, lettuce, tomato, fries",
+            ImageUrl = "https://images.hdqwalls.com/wallpapers/bthumb/hot-spicy-burger-ys.jpg",
             RestaurantId = burgerino.Id,
             PriceId = devilBurgerPrice.Id,
         };
@@ -246,7 +255,7 @@ public static class DataInitializer
             Id = Guid.NewGuid(),
             CreatedAt = DateTime.UtcNow,
             CustomerDetailsId = customerDetails.Id,
-            OrderStatus = OrderStatus.Paid,
+            Status = OrderStatus.Paid,
             // PaymentMethodId = cardPaymentMethod.Id,
         };
 
@@ -255,7 +264,7 @@ public static class DataInitializer
             Id = Guid.NewGuid(),
             CreatedAt = DateTime.UtcNow.AddDays(-1),
             CustomerDetailsId = customerDetails.Id,
-            OrderStatus = OrderStatus.Paid,
+            Status = OrderStatus.Paid,
             // PaymentMethodId = cardPaymentMethod.Id,
         };
 

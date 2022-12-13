@@ -87,10 +87,8 @@ public class QueryObjectTest
             _anotherOne,
         };
 
-        var query = new TestQuery(allEntities.AsQueryable());
-
         _mapper = new Mapper(new MapperConfiguration(TestMappingConfig.ConfigureMapping));
-        _queryObject = new QueryObject<TestDto, TestEntity>(_mapper, query);
+        _queryObject = new QueryObject<TestDto, TestEntity>(_mapper, () => new TestQuery(allEntities.AsQueryable()));
     }
 
     [Fact]

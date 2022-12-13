@@ -3,6 +3,7 @@ using FluentAssertions;
 using FoodDelivery.BL.DTOs.Category;
 using FoodDelivery.BL.DTOs.Product;
 using FoodDelivery.BL.DTOs.Restaurant;
+using FoodDelivery.BL.QueryObject;
 using FoodDelivery.BL.Services.CategoryService;
 using FoodDelivery.DAL.EntityFramework.Models;
 using FoodDelivery.Infrastructure.Repository;
@@ -35,7 +36,8 @@ public class CategoryServiceTest
         unitOfWork.Setup(u => u.CategoryRepository)
             .Returns(_repositoryMock.Object);
 
-        _service = new CategoryService(unitOfWork.Object, _mapper);
+        var queryObjectStub = new Mock<IQueryObject<CategoryGetDto, Category>>();
+        _service = new CategoryService(unitOfWork.Object, _mapper, queryObjectStub.Object);
     }
 
     [Fact]

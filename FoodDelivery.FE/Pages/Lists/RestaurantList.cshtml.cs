@@ -1,5 +1,4 @@
 using FoodDelivery.BL.DTOs.Restaurant;
-using FoodDelivery.BL.Facades;
 using FoodDelivery.BL.Facades.RestaurantFacade;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;

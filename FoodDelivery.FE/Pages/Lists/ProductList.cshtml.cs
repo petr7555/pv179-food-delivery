@@ -1,5 +1,4 @@
 using FoodDelivery.BL.DTOs.Product;
-using FoodDelivery.BL.Facades;
 using FoodDelivery.BL.Facades.OrderFacade;
 using FoodDelivery.BL.Facades.ProductFacade;
 using Microsoft.AspNetCore.Authorization;
@@ -29,7 +28,7 @@ public class ProductList : PageModel
 
     public async Task<IActionResult> OnPost(Guid id)
     {
-        await _orderFacade.AddToCartAsync(User.Identity.Name, id);
+        await _orderFacade.AddProductToCartAsync(User.Identity.Name, id);
 
         return RedirectToPage("../Lists/ProductList");
     }

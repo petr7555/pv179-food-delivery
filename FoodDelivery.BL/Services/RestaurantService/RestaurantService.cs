@@ -12,16 +12,16 @@ public class
     RestaurantService : CrudService<Restaurant, Guid, RestaurantGetDto, RestaurantCreateDto, RestaurantUpdateDto>,
         IRestaurantService
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IQueryObject<RestaurantGetDto, Restaurant> _queryObject;
 
-    public RestaurantService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork.RestaurantRepository, mapper)
+    public RestaurantService(IUnitOfWork unitOfWork, IMapper mapper,
+        IQueryObject<RestaurantGetDto, Restaurant> queryObject) : base(unitOfWork.RestaurantRepository, mapper)
     {
-        _unitOfWork = unitOfWork;
+        _queryObject = queryObject;
     }
 
     public async Task<IEnumerable<RestaurantGetDto>> QueryAsync(QueryDto<RestaurantGetDto> queryDto)
     {
-        var queryObject = new QueryObject<RestaurantGetDto, Restaurant>(Mapper, _unitOfWork.RestaurantQuery);
-        return await queryObject.ExecuteAsync(queryDto);
+        return await _queryObject.ExecuteAsync(queryDto);
     }
 }

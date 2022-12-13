@@ -1,25 +1,24 @@
 using FoodDelivery.BL.DTOs.Order;
-using FoodDelivery.BL.Facades;
 using FoodDelivery.BL.Facades.OrderFacade;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace FoodDelivery.FE.Pages.Lists;
+namespace FoodDelivery.FE.Pages.Orders;
 
 [Authorize(Roles = "Customer")]
-public class OrderList : PageModel
+public class IndexModel : PageModel
 {
-    public IEnumerable<OrderGetDto> Orders { get; set; }
+    public IList<OrderWithProductsGetDto> Orders { get; set; } = default!;
 
     private readonly IOrderFacade _orderFacade;
 
-    public OrderList(IOrderFacade orderFacade)
+    public IndexModel(IOrderFacade orderFacade)
     {
         _orderFacade = orderFacade;
     }
 
     public async Task OnGet()
     {
-        Orders = await _orderFacade.GetOrdersForUserAsync(User.Identity.Name);
+        Orders = (await _orderFacade.GetOrdersForUserAsync(User.Identity.Name)).ToList();
     }
 }

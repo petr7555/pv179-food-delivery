@@ -1,4 +1,4 @@
-using FoodDelivery.BL.Services.OrderService;
+using FoodDelivery.BL.Facades.OrderFacade;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;
 using Stripe.Checkout;
@@ -11,11 +11,11 @@ public class StripeWebHook : ControllerBase
     // You can find your endpoint's secret in your webhook settings
     private const string Secret = "whsec_9fb831cc5126b1f3974f66f6c2534b8ee275e1f90cd029e87f9711680aa6e13c";
 
-    private readonly IOrderService _orderService;
+    private readonly IOrderFacade _orderFacade;
 
-    public StripeWebHook(IOrderService orderService)
+    public StripeWebHook(IOrderFacade orderFacade)
     {
-        _orderService = orderService;
+        _orderFacade = orderFacade;
     }
 
     [HttpPost]
@@ -40,7 +40,7 @@ public class StripeWebHook : ControllerBase
                 var orderId = Guid.Parse(session.ClientReferenceId);
 
                 // Fulfill the purchase...
-                await _orderService.FulfillOrderAsync(orderId);
+                await _orderFacade.FulfillOrderAsync(orderId);
             }
 
             return Ok();

@@ -1,7 +1,5 @@
 using FoodDelivery.DAL.EntityFramework.Models;
-using FoodDelivery.Infrastructure.EntityFramework.Query;
 using FoodDelivery.Infrastructure.EntityFramework.Repositories;
-using FoodDelivery.Infrastructure.Query;
 using FoodDelivery.Infrastructure.Repository;
 using FoodDelivery.Infrastructure.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
@@ -19,13 +17,6 @@ public class EfUnitOfWork : IUnitOfWork
     public IRepository<Restaurant, Guid> RestaurantRepository { get; }
     public IRepository<Category, Guid> CategoryRepository { get; }
 
-    public IQuery<User> UserQuery { get; }
-    public IQuery<Order> OrderQuery { get; }
-    public IQuery<OrderProduct> OrderProductQuery { get; }
-    public IQuery<Restaurant> RestaurantQuery { get; }
-    public IQuery<Product> ProductQuery { get; }
-    public IQuery<Category> CategoryQuery { get; }
-
     public EfUnitOfWork(DbContext context)
     {
         _context = context;
@@ -36,13 +27,6 @@ public class EfUnitOfWork : IUnitOfWork
         OrderProductRepository = new EfRepository<OrderProduct, Guid>(_context);
         RestaurantRepository = new EfRepository<Restaurant, Guid>(_context);
         CategoryRepository = new EfRepository<Category, Guid>(_context);
-
-        UserQuery = new EfQuery<User>(_context);
-        OrderQuery = new EfQuery<Order>(_context);
-        ProductQuery = new EfQuery<Product>(_context);
-        OrderProductQuery = new EfQuery<OrderProduct>(_context);
-        RestaurantQuery = new EfQuery<Restaurant>(_context);
-        CategoryQuery = new EfQuery<Category>(_context);
     }
 
     public async Task CommitAsync()
