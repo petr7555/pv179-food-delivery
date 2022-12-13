@@ -7,12 +7,12 @@ namespace FoodDelivery.BL.Facades.RestaurantFacade;
 
 public class RestaurantFacade : IRestaurantFacade
 {
-    private readonly IUnitOfWork _uow;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IRestaurantService _restaurantService;
 
-    public RestaurantFacade(IUnitOfWork uow, IRestaurantService restaurantService)
+    public RestaurantFacade(IUnitOfWork unitOfWork, IRestaurantService restaurantService)
     {
-        _uow = uow;
+        _unitOfWork = unitOfWork;
         _restaurantService = restaurantService;
     }
 
@@ -29,6 +29,6 @@ public class RestaurantFacade : IRestaurantFacade
     public async Task Create(RestaurantCreateDto dto)
     {
         _restaurantService.Create(dto);
-        await _uow.CommitAsync();
+        await _unitOfWork.CommitAsync();
     }
 }

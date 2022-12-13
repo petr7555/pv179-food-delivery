@@ -9,12 +9,12 @@ namespace FoodDelivery.BL.Facades.UserFacade;
 
 public class UserFacade : IUserFacade
 {
-    private readonly IUnitOfWork _uow;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IUserService _userService;
 
-    public UserFacade(IUnitOfWork uow, IUserService userService)
+    public UserFacade(IUnitOfWork unitOfWork, IUserService userService)
     {
-        _uow = uow;
+        _unitOfWork = unitOfWork;
         _userService = userService;
     }
 
@@ -51,6 +51,6 @@ public class UserFacade : IUserFacade
     public async Task CreateUserAsync(UserCreateDto userCreateDto)
     {
         _userService.Create(userCreateDto);
-        await _uow.CommitAsync();
+        await _unitOfWork.CommitAsync();
     }
 }

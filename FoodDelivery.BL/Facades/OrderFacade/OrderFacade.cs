@@ -11,15 +11,15 @@ namespace FoodDelivery.BL.Facades.OrderFacade;
 
 public class OrderFacade : IOrderFacade
 {
-    private readonly IUnitOfWork _uow;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IOrderService _orderService;
     private readonly IOrderProductService _orderProductService;
     private readonly IUserService _userService;
 
-    public OrderFacade(IUnitOfWork uow, IOrderService orderService, IOrderProductService orderProductService,
+    public OrderFacade(IUnitOfWork unitOfWork, IOrderService orderService, IOrderProductService orderProductService,
         IUserService userService)
     {
-        _uow = uow;
+        _unitOfWork = unitOfWork;
         _orderService = orderService;
         _orderProductService = orderProductService;
         _userService = userService;
@@ -98,7 +98,7 @@ public class OrderFacade : IOrderFacade
             ProductId = productId,
         });
 
-        await _uow.CommitAsync();
+        await _unitOfWork.CommitAsync();
     }
 
     public async Task<OrderWithProductsGetDto?> GetActiveOrderAsync(string username)
@@ -117,6 +117,6 @@ public class OrderFacade : IOrderFacade
             Status = OrderStatus.Paid,
         };
         _orderService.Update(updatedOrder);
-        await _uow.CommitAsync();
+        await _unitOfWork.CommitAsync();
     }
 }
