@@ -13,13 +13,11 @@ public class OrderProductService :
     CrudService<OrderProduct, Guid, OrderProductGetDto, OrderProductCreateDto, OrderProductUpdateDto>,
     IOrderProductService
 {
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IQueryObject<OrderProductGetDto, OrderProduct> _queryObject;
 
     public OrderProductService(IUnitOfWork unitOfWork, IMapper mapper,
         IQueryObject<OrderProductGetDto, OrderProduct> queryObject) : base(unitOfWork.OrderProductRepository, mapper)
     {
-        _unitOfWork = unitOfWork;
         _queryObject = queryObject;
     }
 
@@ -30,8 +28,6 @@ public class OrderProductService :
 
     public async Task<IEnumerable<ProductGetDto>> GetProductsForOrderAsync(Guid orderId)
     {
-        var allOrderProducts = await _unitOfWork.OrderProductRepository.GetAllAsync();
-        var ops = allOrderProducts.Where(op => op.OrderId == orderId);
         var orderProducts = await QueryAsync(
             new QueryDto<OrderProductGetDto>()
                 .Where(op => op.OrderId == orderId)

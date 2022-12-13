@@ -30,7 +30,7 @@ public class AddRestaurant : PageModel
             return Page();
         }
 
-        await _restaurantFacade.Create(Restaurant);
+        await _restaurantFacade.CreateAsync(Restaurant);
 
         // TODO
         // return Page();

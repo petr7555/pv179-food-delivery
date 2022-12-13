@@ -26,7 +26,7 @@ public class RestaurantFacade : IRestaurantFacade
         return await _restaurantService.QueryAsync(queryDto);
     }
 
-    public async Task Create(RestaurantCreateDto dto)
+    public async Task CreateAsync(RestaurantCreateDto dto)
     {
         _restaurantService.Create(dto);
         await _unitOfWork.CommitAsync();

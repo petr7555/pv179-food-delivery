@@ -25,7 +25,7 @@ public class CategoryService : CrudService<Category, Guid, CategoryGetDto, Categ
         return await _queryObject.ExecuteAsync(queryDto);
     }
 
-    public async Task<IEnumerable<RestaurantGetDto>> GetRestaurantsForCategory(Guid categoryId)
+    public async Task<IEnumerable<RestaurantGetDto>> GetRestaurantsForCategoryAsync(Guid categoryId)
     {
         var categories = await GetAllAsync();
         return categories

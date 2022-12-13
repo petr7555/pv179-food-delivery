@@ -10,5 +10,5 @@ public interface ICategoryService : ICrudService<Category, Guid, CategoryGetDto,
 {
     public Task<IEnumerable<CategoryGetDto>> QueryAsync(QueryDto<CategoryGetDto> queryDto);
 
-    public Task<IEnumerable<RestaurantGetDto>> GetRestaurantsForCategory(Guid categoryId);
+    public Task<IEnumerable<RestaurantGetDto>> GetRestaurantsForCategoryAsync(Guid categoryId);
 }
