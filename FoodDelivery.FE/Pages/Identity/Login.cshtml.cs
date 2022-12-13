@@ -5,14 +5,15 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FoodDelivery.FE.Pages.Identity;
 
-[BindProperties]
 public class Login : PageModel
 {
+    [BindProperty]
     [Required]
     [EmailAddress]
     [Display(Name = "E-mail")]
     public string? Email { get; set; }
 
+    [BindProperty]
     [Required]
     [DataType(DataType.Password)]
     [Display(Name = "Password")]
