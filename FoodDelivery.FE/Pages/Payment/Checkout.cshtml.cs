@@ -11,7 +11,7 @@ namespace FoodDelivery.FE.Pages.Payment;
 [Authorize(Roles = "Customer")]
 public class Checkout : PageModel
 {
-    public IEnumerable<ProductGetDto> ProductsInBasket { get; set; }
+    public List<ProductGetDto> ProductsInBasket { get; set; }
 
     private readonly IOrderFacade _orderFacade;
     private readonly IProductService _productService;

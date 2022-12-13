@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using FoodDelivery.BL.DTOs.Category;
 using FoodDelivery.BL.DTOs.Price;
 using FoodDelivery.BL.DTOs.Restaurant;
@@ -8,6 +9,7 @@ public class ProductGetDto
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
+    [Display(Name = "Image")]
     public string ImageUrl { get; set; }
     public CategoryGetDto Category { get; set; }
     public RestaurantGetDto Restaurant { get; set; }
