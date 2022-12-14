@@ -28,6 +28,19 @@ public class CategoryService : CrudService<Category, Guid, CategoryGetDto, Categ
     public async Task<IEnumerable<RestaurantGetDto>> GetRestaurantsForCategoryAsync(Guid categoryId)
     {
         var categories = await GetAllAsync();
+
+        Console.WriteLine("ALL CATEGORIES ********************");
+        for (int i = 0; i < categories.Count(); i++)
+        {
+            Console.Write(categories.ElementAt(i).Name);
+            if (categories.ElementAt(i).Products.Count() > 0)
+            {
+                Console.Write(" " + categories.ElementAt(i).Products.First().Name);
+            }
+            Console.WriteLine();
+
+        }
+
         return categories
             .Single(c => c.Id == categoryId)
             .Products

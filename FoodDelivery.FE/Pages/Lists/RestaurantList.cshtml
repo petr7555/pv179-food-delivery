@@ -11,7 +11,7 @@
             Find by name:
             <input type="text" name="SearchString" value="@Model.CurrentFilter" />
             <!-- <label>Select category</label> -->
-            <select asp-for="SelectedTags" asp-items="Model.TagOptions"></select>
+            <select asp-for="SelectedTag" asp-items="Model.TagOptions"></select>
             <input type="submit" value="Search" class="btn btn-primary" />
             <a asp-page="./RestaurantList">Back to full List</a>
         </p>
