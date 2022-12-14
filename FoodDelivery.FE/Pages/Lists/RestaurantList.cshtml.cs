@@ -31,66 +31,43 @@ public class RestaurantList : PageModel
 
     public async Task OnGetAsync(string sortOrder, string searchString, string SelectedTag)
     {
-        // Restaurants = await _restaurantFacade.QueryAsync(
-        // new QueryDto<RestaurantGetDto>()
-        // .Where(r => r.Name.Contains("Pizza"))
-        // .OrderBy(r => r.Name));
         NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
 
-        CurrentFilter = searchString;
+        CurrentFilter = searchString;        
+        Categories = await _categoryService.GetAllAsync();
 
-        Restaurants = await _restaurantFacade.GetAllAsync();
-        Categories = await _categoryService.GetAllAsync();        
-        TagOptions = new SelectList(Categories, nameof(CategoryGetDto.Id), nameof(CategoryGetDto.Name));
+        // sort categories by its tree structure, then alphabetically for each layer
+        var currentLayer = Categories.Where(category => !category.ParentCategoryId.HasValue);
+        var sortedCategories = new List<CategoryGetDto>();
+        while (currentLayer.Any()) {
+            currentLayer = currentLayer.OrderBy(category => category.Name);
+            sortedCategories.AddRange(currentLayer);
+            var temp = new List<CategoryGetDto>();
+
+            // find all subcategories
+            foreach (var category in currentLayer)
+            {                
+                temp.AddRange(Categories.Where(ctg => ctg?.ParentCategoryId == category.Id));
+            }
+
+            currentLayer = temp;
+        }
         
+        TagOptions = new SelectList(sortedCategories, nameof(CategoryGetDto.Id), nameof(CategoryGetDto.Name));
+
+        if (SelectedTag != null)
+        {
+            Restaurants = await _categoryService.GetRestaurantsForCategoryAsync(new Guid(SelectedTag));
+        } else
+        {
+            Restaurants = await _restaurantFacade.GetAllAsync();
+        }
 
         if (!String.IsNullOrEmpty(searchString))
         {
-            Restaurants = Restaurants.Where(restaurant => restaurant.Name.Contains(searchString));
+            Restaurants = Restaurants.Where(restaurant => restaurant.Name.ToLower().Contains(searchString.ToLower()));
         }
 
-        //var test = TagOptions.Where(tag => tag.Selected);
-
-        //if (SelectedTag > 0)
-        //{
-        //var iterator = TagOptions.Items.GetEnumerator();
-        //for (int i = 0; i < SelectedTag; i++)
-        //{
-        //    iterator.MoveNext();
-        //}
-
-        //TagOptions.
-        //var item = (SelectListItem)iterator.Current;
-
-        //Restaurants = await _categoryService.GetRestaurantsForCategoryAsync(new Guid(item.Value));
-
-        Console.WriteLine("SELECTED TAG: " + SelectedTag);
-        Console.WriteLine(TagOptions.First().Value);
-
-        if (SelectedTag != null
-            //new Guid(SelectedTag) != new Guid("00000000-0000-0000-0000-000000000000")
-            && !SelectedTag.Equals(Categories.Where((category) => category.Name.Equals("All"))))
-        {
-            for (int i = 0; i < Categories.Count(); i++)
-            {
-                Console.Write(Categories.ElementAt(i).Name);
-                if (Categories.ElementAt(i).Products.Count() > 0) {
-                    Console.Write(" " + Categories.ElementAt(i).Products.First().Name);
-                }
-                Console.WriteLine();
-                
-            }
-            //Restaurants = await _categoryService.GetRestaurantsForCategoryAsync(new Guid(TagOptions.First().Value));
-            Restaurants = await _categoryService.GetRestaurantsForCategoryAsync(new Guid(SelectedTag));
-        }            
-
-            //TagOptions.Items.GetEnumerator().
-            //if (test.Count() == 0)
-            //{
-            //    Restaurants = new List<RestaurantGetDto>();
-            //}
-            //}
-
-        //}
+        Restaurants = Restaurants.OrderBy(restaurant => restaurant.Name);
     }
 }
