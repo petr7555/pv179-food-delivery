@@ -9,7 +9,6 @@ See the app [deployed here](https://pv179-food-delivery.azurewebsites.net/).
 - 👨‍🎓 485283 Oliver Svetlik
 - 👨‍🎓 484975 Luboslav Halama
 
-
 ## User stories
 - As a new customer I can create an account. As a registered customer I can log in to my account.
 - As a customer I can edit my personal information (delivery address, billing address).
@@ -27,3 +26,10 @@ See the app [deployed here](https://pv179-food-delivery.azurewebsites.net/).
 - `dotnet watch --project FoodDelivery.FE` to run web application with hot reload
 - If you want to send Stripe events to locally running server, run `stripe listen --forward-to https://localhost:7127/webhook/StripeWebHook`.
   Otherwise, the events are sent to `https://pv179-food-delivery.azurewebsites.net/webhook/StripeWebHook`.
+
+## Test users
+| Role            | Email                | Password |
+|-----------------|----------------------|----------|
+| Admin           | admin@example.com    | pass     |
+| Content manager | cm@example.com       | pass     |
+| Customer        | customer@example.com | pass     |
