@@ -27,9 +27,13 @@ See the app [deployed here](https://pv179-food-delivery.azurewebsites.net/).
 - If you want to send Stripe events to locally running server, run `stripe listen --forward-to https://localhost:7127/webhook/StripeWebHook`.
   Otherwise, the events are sent to `https://pv179-food-delivery.azurewebsites.net/webhook/StripeWebHook`.
 
-## Test users
+## Manual Testing
+### Users
 | Role            | Email                | Password |
 |-----------------|----------------------|----------|
 | Admin           | admin@example.com    | pass     |
 | Content manager | cm@example.com       | pass     |
 | Customer        | customer@example.com | pass     |
+
+### Stripe
+Use `4242 4242 4242 4242` as a card number for Stripe checkout.
