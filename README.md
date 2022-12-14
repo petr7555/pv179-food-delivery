@@ -25,4 +25,5 @@ See the app [deployed here](https://pv179-food-delivery.azurewebsites.net/).
 
 ## How to run
 - `dotnet watch --project FoodDelivery.FE` to run web application with hot reload
-- `stripe listen --forward-to https://localhost:7127/webhook/StripeWebHook` for the checkout to work
+- If you want to send Stripe events to locally running server, run `stripe listen --forward-to https://localhost:7127/webhook/StripeWebHook`.
+  Otherwise, the events are sent to `https://pv179-food-delivery.azurewebsites.net/webhook/StripeWebHook`.
