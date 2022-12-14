@@ -6,18 +6,18 @@ using Stripe.Checkout;
 namespace FoodDelivery.FE.Controllers;
 
 [Route("webhook/[controller]")]
-public class StripeWebHook : ControllerBase
+public class StripeWebhook : ControllerBase
 {
-    // You can find your endpoint's secret in your webhook settings
-    private const string Secret = "whsec_9fb831cc5126b1f3974f66f6c2534b8ee275e1f90cd029e87f9711680aa6e13c";
+    private readonly string _secret;
 
     private readonly IOrderFacade _orderFacade;
 
-    public StripeWebHook(IOrderFacade orderFacade)
+    public StripeWebhook(IOrderFacade orderFacade, IConfiguration configuration)
     {
         _orderFacade = orderFacade;
+        _secret = configuration.GetSection("Stripe")["SecretWebhookKey"];
     }
-
+    
     [HttpPost]
     public async Task<IActionResult> Index()
     {
@@ -31,7 +31,7 @@ public class StripeWebHook : ControllerBase
         try
         {
             var stripeEvent = EventUtility.ConstructEvent(json,
-                Request.Headers["Stripe-Signature"], Secret);
+                Request.Headers["Stripe-Signature"], _secret);
 
             // Handle the checkout.session.completed event
             if (stripeEvent.Type == Events.CheckoutSessionCompleted)
