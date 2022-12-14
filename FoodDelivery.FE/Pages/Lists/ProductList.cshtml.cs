@@ -21,15 +21,21 @@ public class ProductList : PageModel
         _orderFacade = orderFacade;
     }
 
-    public async Task OnGet()
+    public async Task OnGet(Guid restaurantId)
     {
         Products = await _productFacade.GetAllAsync();
+        Products = Products.Where((product) => product.Restaurant.Id == restaurantId);    
     }
 
-    public async Task<IActionResult> OnPost(Guid id)
+    public async Task<IActionResult> OnPost(Guid productId, Guid restaurantId)
     {
-        await _orderFacade.AddProductToCartAsync(User.Identity.Name, id);
+        await _orderFacade.AddProductToCartAsync(User.Identity.Name, productId);
 
-        return RedirectToPage("../Lists/ProductList");
+        var redirectPage = RedirectToPage("../Lists/ProductList");
+
+        redirectPage.RouteValues = new RouteValueDictionary();
+        redirectPage.RouteValues.Add("restaurantId", restaurantId);
+
+        return redirectPage;
     }
 }
