@@ -28,11 +28,39 @@ public class CategoryService : CrudService<Category, Guid, CategoryGetDto, Categ
     public async Task<IEnumerable<RestaurantGetDto>> GetRestaurantsForCategoryAsync(Guid categoryId)
     {
         var categories = await GetAllAsync();
-        return categories
-            .Single(c => c.Id == categoryId)
-            .Products
-            .Select(p => p.Restaurant)
-            .GroupBy(r => r.Id)
-            .Select(g => Mapper.Map<RestaurantGetDto>(g.First()));
+
+        // use given category as a starting point
+        var subcategories = new List<CategoryGetDto>(){ categories.Single(c => c.Id == categoryId) };
+
+        var index = 0;
+        while (index < subcategories.Count())
+        {
+            // find all subcategories
+            var temp = categories.Where(category => category?.ParentCategoryId == subcategories.ElementAt(index).Id);
+
+            // if anything was found, replace parent category with its subcategories. If nothing new, move to the next one.
+            if (temp?.Count() > 0)
+            {
+                subcategories.AddRange(temp); 
+                subcategories.RemoveAt(index);
+            } else
+            {
+                index++;
+            }
+        }
+        
+        var restaurants = new List<Restaurant>();
+
+        // get all restaurants for subcategories
+        foreach (var category in subcategories)
+        {
+            restaurants.AddRange(
+                category.Products
+                .Select(product => product.Restaurant)
+            );
+        }
+
+        // remove duplicates and return
+        return restaurants.GroupBy(restaurant => restaurant.Id).Select(group => Mapper.Map<RestaurantGetDto>(group.First()));
     }
 }

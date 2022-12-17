@@ -5,9 +5,25 @@
   ViewData["Title"] = "Restaurants";
 }
 
+<form asp-page="./RestaurantList" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name:
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <!-- <label>Select category</label> -->
+            <select asp-for="SelectedTag" asp-items="Model.TagOptions"></select>
+            <input type="submit" value="Search" class="btn btn-primary" />
+            <a asp-page="./RestaurantList">Back to full List</a>
+        </p>
+    </div>
+</form>
+
+
 <ul>
   @foreach (var restaurant in Model.Restaurants)
   {
-    <li>@restaurant.Name</li>
+    <li>
+        <a class="text-dark" asp-page="/Lists/ProductList" asp-route-restaurantId="@restaurant.Id">@restaurant.Name</a>
+    </li>
   }
 </ul>
