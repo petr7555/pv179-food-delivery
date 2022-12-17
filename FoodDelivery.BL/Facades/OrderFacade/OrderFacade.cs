@@ -6,6 +6,11 @@ using FoodDelivery.BL.Services.OrderService;
 using FoodDelivery.BL.Services.UserService;
 using FoodDelivery.DAL.EntityFramework.Models;
 using FoodDelivery.Infrastructure.UnitOfWork;
+using PdfSharpCore;
+using PdfSharpCore.Fonts;
+using PdfSharpCore.Pdf;
+using PdfSharpCore.Utils;
+using VetCV.HtmlRendererCore.PdfSharpCore;
 
 namespace FoodDelivery.BL.Facades.OrderFacade;
 
@@ -120,5 +125,15 @@ public class OrderFacade : IOrderFacade
         };
         _orderService.Update(updatedOrder);
         await _unitOfWork.CommitAsync();
+    }
+    
+    public async Task<MemoryStream> CreatePdfFromOrder(string url)
+    {
+        var httpClient = new HttpClient();
+        var html = await httpClient.GetStringAsync(url);
+        var pdfDocument = PdfGenerator.GeneratePdf(html, PageSize.A4, (int)PdfPageMode.UseOutlines); 
+        var stream = new MemoryStream();
+        pdfDocument.Save(stream, false);
+        return stream;
     }
 }

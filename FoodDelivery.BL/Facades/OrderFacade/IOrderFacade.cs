@@ -13,4 +13,6 @@ public interface IOrderFacade
     public Task AddProductToCartAsync(string username, Guid productId);
 
     public Task FulfillOrderAsync(Guid orderId);
+    
+    public Task<MemoryStream> CreatePdfFromOrder(string url);
 }

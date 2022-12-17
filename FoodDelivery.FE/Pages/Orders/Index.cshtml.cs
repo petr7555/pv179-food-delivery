@@ -1,6 +1,7 @@
 using FoodDelivery.BL.DTOs.Order;
 using FoodDelivery.BL.Facades.OrderFacade;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace FoodDelivery.FE.Pages.Orders;
@@ -20,5 +21,14 @@ public class IndexModel : PageModel
     public async Task OnGet()
     {
         Orders = (await _orderFacade.GetOrdersForUserAsync(User.Identity.Name)).ToList();
+    }
+    
+    public async Task<IActionResult> OnPost(Guid id)
+    {
+        var pdfPreviewUrl = $"https://{Request.Host}/Orders/PdfPreview?id={id}";
+        var stream = await _orderFacade.CreatePdfFromOrder(pdfPreviewUrl);
+        const string contentType = "application/pdf";
+        var fileName = $"Order_{id}.pdf";
+        return File(stream, contentType, fileName);
     }
 }
