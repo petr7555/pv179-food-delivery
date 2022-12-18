@@ -106,31 +106,6 @@ public static class DataInitializer
             beerCategory, whiskeyCategory, softDrinksCategory, coffeeCategory, teaCategory
         );
 
-        /****************
-         **   PRICES   **
-         ****************/
-
-        var pizzaPrice = new Price { Id = Guid.NewGuid(), Amount = 199, CurrencyId = czkCurrency.Id };
-        var pizzeriaGiuseppeDeliveryPrice = new Price { Id = Guid.NewGuid(), Amount = 29, CurrencyId = czkCurrency.Id };
-
-        var californiaSalmonEightRollsPrice = new Price
-            { Id = Guid.NewGuid(), Amount = 169, CurrencyId = czkCurrency.Id };
-        var salmonTunaPrawnEightMakiEachPrice = new Price
-            { Id = Guid.NewGuid(), Amount = 199, CurrencyId = czkCurrency.Id };
-        var happySushiDeliveryPrice = new Price { Id = Guid.NewGuid(), Amount = 39, CurrencyId = czkCurrency.Id };
-
-        var barbecueBurgerPrice = new Price { Id = Guid.NewGuid(), Amount = 239, CurrencyId = czkCurrency.Id };
-        var chickenBurgerPrice = new Price { Id = Guid.NewGuid(), Amount = 199, CurrencyId = czkCurrency.Id };
-        var royalBurgerPrice = new Price { Id = Guid.NewGuid(), Amount = 269, CurrencyId = czkCurrency.Id };
-        var devilBurgerPrice = new Price { Id = Guid.NewGuid(), Amount = 249, CurrencyId = czkCurrency.Id };
-        var burgerinoDeliveryPrice = new Price { Id = Guid.NewGuid(), Amount = 25, CurrencyId = czkCurrency.Id };
-
-        modelBuilder.Entity<Price>().HasData(
-            pizzaPrice, pizzeriaGiuseppeDeliveryPrice,
-            californiaSalmonEightRollsPrice, salmonTunaPrawnEightMakiEachPrice, happySushiDeliveryPrice,
-            barbecueBurgerPrice, chickenBurgerPrice, royalBurgerPrice, devilBurgerPrice, burgerinoDeliveryPrice
-        );
-
         /*************************
          **   PAYMENT METHODS   **
          *************************/
@@ -143,12 +118,9 @@ public static class DataInitializer
          **   RESTAURANTS   **
          *********************/
 
-        var pizzeriaGuiseppe = new Restaurant
-            { Id = Guid.NewGuid(), Name = "Pizza Guiseppe", DeliveryPriceId = pizzeriaGiuseppeDeliveryPrice.Id };
-        var happySushi = new Restaurant
-            { Id = Guid.NewGuid(), Name = "Happy Sushi", DeliveryPriceId = happySushiDeliveryPrice.Id };
-        var burgerino = new Restaurant
-            { Id = Guid.NewGuid(), Name = "Burgerino", DeliveryPriceId = burgerinoDeliveryPrice.Id };
+        var pizzeriaGuiseppe = new Restaurant { Id = Guid.NewGuid(), Name = "Pizza Guiseppe" };
+        var happySushi = new Restaurant { Id = Guid.NewGuid(), Name = "Happy Sushi" };
+        var burgerino = new Restaurant { Id = Guid.NewGuid(), Name = "Burgerino" };
 
         modelBuilder.Entity<Restaurant>().HasData(
             pizzeriaGuiseppe,
@@ -168,7 +140,6 @@ public static class DataInitializer
             Description = "Tomato salsa, Ham, Spicy salami, Mozzarella",
             ImageUrl = "https://media-cdn.tripadvisor.com/media/photo-s/10/90/53/e8/pizza-salami.jpg",
             RestaurantId = pizzeriaGuiseppe.Id,
-            PriceId = pizzaPrice.Id,
         };
 
         var californiaSalmonEightRolls = new Product
@@ -179,7 +150,6 @@ public static class DataInitializer
             Description = "California rolls with salmon",
             ImageUrl = "https://www.sushimisanantonio.es/wp-content/uploads/2017/04/california-salmon-2.jpg",
             RestaurantId = happySushi.Id,
-            PriceId = californiaSalmonEightRollsPrice.Id,
         };
 
         var salmonTunaPrawnEightMakiEach = new Product
@@ -190,7 +160,6 @@ public static class DataInitializer
             Description = "Salmon, tuna and prawn maki with 8 pieces each.",
             ImageUrl = "https://makfahealth.com/upload/iblock/48b/48b8e460bedd7e1037f571095409699a.jpg",
             RestaurantId = happySushi.Id,
-            PriceId = salmonTunaPrawnEightMakiEachPrice.Id,
         };
 
         var barbecueBurger = new Product
@@ -202,7 +171,6 @@ public static class DataInitializer
                 "Special homemade bun, 200g beef meat, cheddar, onion rings, lettuce, tomato, barbecue sauce, fries",
             ImageUrl = "https://recipes.net/wp-content/uploads/2021/10/the-best-grilled-bbq-burger-recipe.jpg",
             RestaurantId = burgerino.Id,
-            PriceId = barbecueBurgerPrice.Id,
         };
 
         var chickenBurger = new Product
@@ -214,7 +182,6 @@ public static class DataInitializer
             ImageUrl =
                 "https://media.istockphoto.com/id/652832752/photo/fried-chicken-burger.jpg?s=612x612&w=0&k=20&c=EendRCleaNpkKOUiOplgStACHh_8IyHYzjbzcByGC_4=",
             RestaurantId = burgerino.Id,
-            PriceId = chickenBurgerPrice.Id,
         };
 
         var royalBurger = new Product
@@ -227,7 +194,6 @@ public static class DataInitializer
             ImageUrl =
                 "https://img.freepik.com/premium-photo/royal-burger-with-double-meat-cutlet_127425-327.jpg?w=2000",
             RestaurantId = burgerino.Id,
-            PriceId = royalBurgerPrice.Id,
         };
 
         var devilBurger = new Product
@@ -239,13 +205,65 @@ public static class DataInitializer
                 "Special homemade bun, 200g beef meat, cheddar, roasted smoked bacon, red habanero mayo, lettuce, tomato, fries",
             ImageUrl = "https://images.hdqwalls.com/wallpapers/bthumb/hot-spicy-burger-ys.jpg",
             RestaurantId = burgerino.Id,
-            PriceId = devilBurgerPrice.Id,
         };
 
         modelBuilder.Entity<Product>().HasData(
             pizzaSalami,
             californiaSalmonEightRolls, salmonTunaPrawnEightMakiEach,
             barbecueBurger, chickenBurger, royalBurger, devilBurger
+        );
+
+        /****************
+         **   PRICES   **
+         ****************/
+
+        var pizzeriaGiuseppeDeliveryPriceCzk = new Price
+            { Id = Guid.NewGuid(), Amount = 29, CurrencyId = czkCurrency.Id, RestaurantId = pizzeriaGuiseppe.Id };
+        var pizzeriaGiuseppeDeliveryPriceEur = new Price
+            { Id = Guid.NewGuid(), Amount = 1.5, CurrencyId = eurCurrency.Id, RestaurantId = pizzeriaGuiseppe.Id };
+        var happySushiDeliveryPriceCzk = new Price
+            { Id = Guid.NewGuid(), Amount = 39, CurrencyId = czkCurrency.Id, RestaurantId = happySushi.Id };
+        var happySushiDeliveryPriceEur = new Price
+            { Id = Guid.NewGuid(), Amount = 1.5, CurrencyId = eurCurrency.Id, RestaurantId = happySushi.Id };
+        var burgerinoDeliveryPriceCzk = new Price
+            { Id = Guid.NewGuid(), Amount = 25, CurrencyId = czkCurrency.Id, RestaurantId = burgerino.Id };
+        var burgerinoDeliveryPriceEur = new Price
+            { Id = Guid.NewGuid(), Amount = 1, CurrencyId = eurCurrency.Id, RestaurantId = burgerino.Id };
+
+        var pizzaSalamiPriceCzk = new Price
+            { Id = Guid.NewGuid(), Amount = 199, CurrencyId = czkCurrency.Id, ProductId = pizzaSalami.Id };
+        var pizzaSalamiPriceEur = new Price
+            { Id = Guid.NewGuid(), Amount = 8, CurrencyId = eurCurrency.Id, ProductId = pizzaSalami.Id };
+
+        var californiaSalmonEightRollsPriceCzk = new Price
+            { Id = Guid.NewGuid(), Amount = 169, CurrencyId = czkCurrency.Id, ProductId = californiaSalmonEightRolls.Id };
+        var californiaSalmonEightRollsPriceEur = new Price
+            { Id = Guid.NewGuid(), Amount = 7, CurrencyId = eurCurrency.Id, ProductId = californiaSalmonEightRolls.Id };
+        var salmonTunaPrawnEightMakiEachPriceCzk = new Price
+            { Id = Guid.NewGuid(), Amount = 199, CurrencyId = czkCurrency.Id, ProductId = salmonTunaPrawnEightMakiEach.Id };
+        var salmonTunaPrawnEightMakiEachPriceEur = new Price
+            { Id = Guid.NewGuid(), Amount = 8, CurrencyId = eurCurrency.Id, ProductId = salmonTunaPrawnEightMakiEach.Id };
+
+        var barbecueBurgerPriceCzk = new Price { Id = Guid.NewGuid(), Amount = 239, CurrencyId = czkCurrency.Id, ProductId = barbecueBurger.Id };
+        var barbecueBurgerPriceEur = new Price { Id = Guid.NewGuid(), Amount = 10, CurrencyId = eurCurrency.Id, ProductId = barbecueBurger.Id };
+        var chickenBurgerPriceCzk = new Price { Id = Guid.NewGuid(), Amount = 199, CurrencyId = czkCurrency.Id, ProductId = chickenBurger.Id };
+        var chickenBurgerPriceEur = new Price { Id = Guid.NewGuid(), Amount = 8, CurrencyId = eurCurrency.Id, ProductId = chickenBurger.Id };
+        var royalBurgerPriceCzk = new Price { Id = Guid.NewGuid(), Amount = 269, CurrencyId = czkCurrency.Id, ProductId = royalBurger.Id };
+        var royalBurgerPriceEur = new Price { Id = Guid.NewGuid(), Amount = 11, CurrencyId = eurCurrency.Id, ProductId = royalBurger.Id };
+        var devilBurgerPriceCzk = new Price { Id = Guid.NewGuid(), Amount = 249, CurrencyId = czkCurrency.Id, ProductId = devilBurger.Id };
+        var devilBurgerPriceEur = new Price { Id = Guid.NewGuid(), Amount = 10, CurrencyId = eurCurrency.Id, ProductId = devilBurger.Id };
+
+        modelBuilder.Entity<Price>().HasData(
+            pizzaSalamiPriceCzk, pizzaSalamiPriceEur,
+            pizzeriaGiuseppeDeliveryPriceCzk, pizzeriaGiuseppeDeliveryPriceEur,
+            californiaSalmonEightRollsPriceCzk, californiaSalmonEightRollsPriceEur,
+            salmonTunaPrawnEightMakiEachPriceCzk, salmonTunaPrawnEightMakiEachPriceEur,
+            happySushiDeliveryPriceCzk, happySushiDeliveryPriceEur,
+            barbecueBurgerPriceCzk, barbecueBurgerPriceEur,
+            chickenBurgerPriceCzk, chickenBurgerPriceEur,
+            royalBurgerPriceCzk, royalBurgerPriceEur,
+            devilBurgerPriceCzk, devilBurgerPriceEur,
+            burgerinoDeliveryPriceCzk, burgerinoDeliveryPriceEur
         );
 
         /****************
@@ -282,7 +300,7 @@ public static class DataInitializer
                 new
                 {
                     Id = Guid.NewGuid(), OrderId = pizzaSalamiAndCaliforniaSalmonEightRollsOrder.Id,
-                    ProductId = pizzaSalami.Id
+                    ProductId = pizzaSalami.Id,
                 },
                 new
                 {

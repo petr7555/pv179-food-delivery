@@ -5,7 +5,7 @@ using FoodDelivery.BL.DTOs.Restaurant;
 
 namespace FoodDelivery.BL.DTOs.Product;
 
-public class ProductGetDto
+public class ProductLocalizedGetDto
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
@@ -13,5 +13,5 @@ public class ProductGetDto
     public string ImageUrl { get; set; }
     public CategoryGetDto Category { get; set; }
     public RestaurantGetDto Restaurant { get; set; }
-    public List<PriceGetDto> Prices { get; set; }
+    public PriceGetDto Price { get; set; }
 }

@@ -11,7 +11,7 @@ namespace FoodDelivery.FE.Pages.Payment;
 [Authorize(Roles = "Customer")]
 public class Checkout : PageModel
 {
-    public List<ProductGetDto> ProductsInBasket { get; set; }
+    public List<ProductLocalizedGetDto> ProductsInBasket { get; set; }
 
     private readonly IOrderFacade _orderFacade;
     private readonly IProductService _productService;
@@ -25,7 +25,7 @@ public class Checkout : PageModel
     public async Task OnGet()
     {
         var activeOrder = await _orderFacade.GetActiveOrderAsync(User.Identity.Name);
-        ProductsInBasket = activeOrder?.Products ?? new List<ProductGetDto>();
+        ProductsInBasket = activeOrder?.Products ?? new List<ProductLocalizedGetDto>();
     }
 
     /**
@@ -38,24 +38,15 @@ public class Checkout : PageModel
         var productsInBasket = activeOrder?.Products ??
                                throw new InvalidOperationException("Cannot checkout, no active order found.");
 
-        var sessionLineItemOptions = new List<SessionLineItemOptions>();
-        foreach (var p in productsInBasket)
+        var sessionLineItemOptions = productsInBasket.Select(p => new SessionLineItemOptions
         {
-            var product = await _productService.GetByIdAsync(p.Id);
-            sessionLineItemOptions.Add(new SessionLineItemOptions
+            PriceData = new SessionLineItemPriceDataOptions
             {
-                PriceData = new SessionLineItemPriceDataOptions
-                {
-                    UnitAmount = (long)(product.Price.Amount * 100),
-                    Currency = product.Price.Currency.Name,
-                    ProductData = new SessionLineItemPriceDataProductDataOptions
-                    {
-                        Name = product.Name,
-                    },
-                },
-                Quantity = 1,
-            });
-        }
+                UnitAmount = (long)(p.Price.Amount * 100), Currency = p.Price.Currency.Name,
+                ProductData = new SessionLineItemPriceDataProductDataOptions { Name = p.Name, },
+            },
+            Quantity = 1,
+        }).ToList();
 
         var domain = Request.Scheme + "://" + Request.Host.Value;
         var options = new SessionCreateOptions

@@ -5,7 +5,7 @@ namespace FoodDelivery.BL.Facades.ProductFacade;
 
 public interface IProductFacade
 {
-    public Task<IEnumerable<ProductGetDto>> GetAllAsync();
+    public Task<IEnumerable<ProductLocalizedGetDto>> GetAllAsync(string username);
 
     public Task<IEnumerable<ProductGetDto>> QueryAsync(QueryDto<ProductGetDto> queryDto);
 }

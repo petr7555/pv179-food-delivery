@@ -2,6 +2,7 @@
 using FoodDelivery.BL.DTOs.Order;
 using FoodDelivery.BL.DTOs.OrderProduct;
 using FoodDelivery.BL.DTOs.Price;
+using FoodDelivery.BL.DTOs.Product;
 using FoodDelivery.BL.Services.OrderProductService;
 using FoodDelivery.BL.Services.OrderService;
 using FoodDelivery.BL.Services.UserService;
@@ -33,19 +34,30 @@ public class OrderFacade : IOrderFacade
 
     private async Task<OrderWithProductsGetDto> OrderToOrderWithProducts(OrderGetDto order)
     {
+        var currency = order.CustomerDetails.SelectedCurrency;
         var products = (await _orderProductService.GetProductsForOrderAsync(order.Id)).ToList();
-        var totalAmount = products.Sum(p => p.Price.Amount);
+        var productsLocalized = products.Select(p => new ProductLocalizedGetDto()
+        {
+            Id = p.Id,
+            Name = p.Name,
+            ImageUrl = p.ImageUrl,
+            Category = p.Category,
+            Restaurant = p.Restaurant,
+            Price = p.Prices.Single(price => price.Currency.Id == currency.Id),
+        }).ToList();
+        
+        var totalAmount = productsLocalized.Sum(p => p.Price.Amount);
         return new OrderWithProductsGetDto
         {
             Id = order.Id,
             CreatedAt = order.CreatedAt,
             CustomerDetails = order.CustomerDetails,
             Status = order.Status,
-            Products = products,
+            Products = productsLocalized,
             TotalPrice = new PriceGetDto
             {
                 Amount = totalAmount,
-                Currency = products.First().Price.Currency,
+                Currency = currency,
             },
         };
     }

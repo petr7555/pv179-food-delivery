@@ -8,10 +8,4 @@ public class RestaurantUpdateDto
 
     [StringLength(255)]
     public string Name { get; set; }
-
-    public Guid DeliveryPriceId { get; set; }
-
-    public float DeliveryPriceAmount { get; set; }
-
-    public Guid CurrencyId { get; set; }
 }

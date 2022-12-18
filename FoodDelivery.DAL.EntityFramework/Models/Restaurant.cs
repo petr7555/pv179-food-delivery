@@ -7,9 +7,6 @@ public class Restaurant : BaseEntity
 {
     [MaxLength(255)]
     public string Name { get; set; }
-
-    public Guid DeliveryPriceId { get; set; }
-
-    [ForeignKey(nameof(DeliveryPriceId))]
-    public virtual Price DeliveryPrice { get; set; }
+    
+    public virtual List<Price> DeliveryPrices { get; set; }
 }

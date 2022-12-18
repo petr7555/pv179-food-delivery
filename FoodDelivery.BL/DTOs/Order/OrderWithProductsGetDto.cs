@@ -15,7 +15,7 @@ public class OrderWithProductsGetDto
     public CustomerDetailsGetDto CustomerDetails { get; set; }
     [Display(Name = "Order status")]
     public OrderStatus Status { get; set; }
-    public List<ProductGetDto> Products { get; set; }
+    public List<ProductLocalizedGetDto> Products { get; set; }
     [Display(Name = "Total price")]
     public PriceGetDto TotalPrice { get; set; }
 }

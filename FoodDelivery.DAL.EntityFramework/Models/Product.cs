@@ -23,10 +23,7 @@ public class Product : BaseEntity
     [ForeignKey(nameof(RestaurantId))]
     public virtual Restaurant Restaurant { get; set; }
 
-    public Guid PriceId { get; set; }
-
-    [ForeignKey(nameof(PriceId))]
-    public virtual Price Price { get; set; }
+    public virtual List<Price> Prices { get; set; }
 
     public virtual List<OrderProduct> OrderProducts { get; set; }
 }

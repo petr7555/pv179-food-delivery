@@ -10,7 +10,7 @@ namespace FoodDelivery.FE.Pages.Lists;
 [Authorize(Roles = "Customer, ContentManager")]
 public class ProductList : PageModel
 {
-    public IEnumerable<ProductGetDto> Products { get; set; }
+    public IEnumerable<ProductLocalizedGetDto> Products { get; set; }
 
     private readonly IProductFacade _productFacade;
     private readonly IOrderFacade _orderFacade;
@@ -23,7 +23,7 @@ public class ProductList : PageModel
 
     public async Task OnGet()
     {
-        Products = await _productFacade.GetAllAsync();
+        Products = await _productFacade.GetAllAsync(User.Identity.Name);
     }
 
     public async Task<IActionResult> OnPost(Guid id)

@@ -41,31 +41,26 @@ public class RepositoryTests
         _pizzaGiuseppe = new Restaurant
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000001"), Name = "Pizza Guiseppe",
-            DeliveryPriceId = _priceFifty.Id
         };
         _pizzaDominos = new Restaurant
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000002"), Name = "Pizza Domino's",
-            DeliveryPriceId = _priceFifty.Id
         };
         _pizzaHut = new Restaurant
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000003"), Name = "Pizza Hut",
-            DeliveryPriceId = priceEighty.Id
         };
         _k1 = new Restaurant
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000004"), Name = "Steak House K1",
-            DeliveryPriceId = priceEighty.Id
         };
         _jeanPauls = new Restaurant
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000005"), Name = "Jean Paul's",
-            DeliveryPriceId = priceEighty.Id
         };
         _poePoe = new Restaurant
         {
-            Id = Guid.Parse("00000000-0000-0000-0000-000000000006"), Name = "POE POE", DeliveryPriceId = priceEighty.Id
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000006"), Name = "POE POE",
         };
         _context.Restaurants.AddRange(_pizzaGiuseppe, _pizzaDominos, _pizzaHut, _k1, _jeanPauls, _poePoe);
 
@@ -100,8 +95,7 @@ public class RepositoryTests
     public void ItCreatesRestaurant()
     {
         var id = Guid.Parse("00000000-0000-0000-0000-000000000007");
-        var restaurant = new Restaurant
-            { Id = id, Name = "Pizza test", DeliveryPriceId = _priceFifty.Id, DeliveryPrice = _priceFifty };
+        var restaurant = new Restaurant { Id = id, Name = "Pizza test" };
         _repository.Create(restaurant);
 
         var found = _context.Restaurants.Find(id);
@@ -120,8 +114,7 @@ public class RepositoryTests
         var id = Guid.Parse("00000000-0000-0000-0000-000000000010");
         using (var context = new FoodDeliveryDbContext(dbContextOptions))
         {
-            context.Restaurants.Add(new Restaurant
-                { Id = id, Name = "Pizza test", DeliveryPriceId = _priceFifty.Id, DeliveryPrice = _priceFifty });
+            context.Restaurants.Add(new Restaurant { Id = id, Name = "Pizza test" });
             context.SaveChanges();
         }
 
@@ -131,7 +124,7 @@ public class RepositoryTests
             repository.Update(new Restaurant
             {
                 Id = id, Name = "Updated pizza test",
-            }, new []{nameof(Restaurant.Name)});
+            }, new[] { nameof(Restaurant.Name) });
 
             context.Restaurants.Find(id)!.Name.Should().BeEquivalentTo("Updated pizza test");
         }

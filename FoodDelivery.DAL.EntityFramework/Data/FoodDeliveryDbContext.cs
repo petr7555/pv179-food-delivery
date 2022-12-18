@@ -21,7 +21,7 @@ public class FoodDeliveryDbContext : DbContext
         modelBuilder.Seed();
 
         modelBuilder.Entity<Product>()
-            .Navigation(p => p.Price)
+            .Navigation(p => p.Prices)
             .AutoInclude();
 
         modelBuilder.Entity<Price>()
@@ -37,7 +37,7 @@ public class FoodDeliveryDbContext : DbContext
             .AutoInclude();
 
         modelBuilder.Entity<Restaurant>()
-            .Navigation(r => r.DeliveryPrice)
+            .Navigation(r => r.DeliveryPrices)
             .AutoInclude();
 
         modelBuilder.Entity<Category>()

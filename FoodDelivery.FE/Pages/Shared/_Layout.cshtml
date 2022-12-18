@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using FoodDelivery.BL.Facades.UserFacade
+@using Microsoft.AspNetCore.Http.Extensions
 @inject SignInManager<IdentityUser> SignInManager
 @inject IUserFacade UserFacade
 
@@ -97,7 +98,7 @@
                       var currencies = await UserFacade.GetRemainingCurrencies(User.Identity?.Name);
                       foreach (var c in currencies)
                       {
-                        <form method="post" asp-page="/Forms/SetCurrency" asp-route-currencyId="@c.Id" asp-route-returnUrl="@Context.Request.Path">
+                        <form method="post" asp-page="/Forms/SetCurrency" asp-route-currencyId="@c.Id" asp-route-returnUrl="@Context.Request.GetDisplayUrl()">
                           <button type="submit" class="dropdown-item">@c.Name</button>
                         </form>
                       }
