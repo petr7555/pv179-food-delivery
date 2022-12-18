@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
@@ -19,9 +22,6 @@
       </button>
       <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
         <ul class="navbar-nav flex-grow-1">
-          <li class="nav-item">
-            <a class="nav-link text-dark" asp-page="/Index">Home</a>
-          </li>
           @if (User.IsInRole("Customer") || User.IsInRole("ContentManager"))
           {
             <li class="nav-item">
@@ -29,22 +29,6 @@
             </li>
             <li class="nav-item">
               <a class="nav-link text-dark" asp-page="/Lists/RestaurantList">Restaurants</a>
-            </li>
-          }
-          @if (User.IsInRole("Customer"))
-          {
-            <li class="nav-item">
-              <a class="nav-link text-dark" asp-page="/Orders/Index">My orders</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-dark" asp-page="/Forms/EditAccount">Edit account</a>
-            </li>
-            <li class="nav-item" style="margin-left: auto;">
-              <a class="btn btn-outline-dark" asp-page="/Payment/Checkout">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" style="width: 20px">
-                  <path fill="currentColor" d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/>
-                </svg>
-              </a>
             </li>
           }
           @if (User.IsInRole("Admin"))
@@ -63,7 +47,47 @@
             </li>
           }
         </ul>
-        <partial name="_LoginPartial"/>
+        <ul class="navbar-nav">
+          @if (SignInManager.IsSignedIn(User))
+          {
+            @if (User.IsInRole("Customer"))
+            {
+              <li class="nav-item" style="margin-right: 15px;">
+                <a class="btn btn-outline-dark" asp-page="/Payment/Checkout">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" style="width: 20px">
+                    <path fill="currentColor" d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/>
+                  </svg>
+                </a>
+              </li>
+            }
+            <li class="nav-item">
+              <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  @User.Identity?.Name
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  @if (User.IsInRole("Customer"))
+                  {
+                    <a class="dropdown-item" asp-page="/Orders/Index">My orders</a>
+                    <a class="dropdown-item" asp-page="/Forms/EditAccount">Edit account</a>
+                  }
+                  <form method="post" asp-page="/Identity/Logout">
+                    <button type="submit" class="dropdown-item">Logout</button>
+                  </form>
+                </div>
+              </div>
+            </li>
+          }
+          else
+          {
+            <li class="nav-item">
+              <a class="nav-link text-dark" asp-page="/Identity/Register">Register</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark" asp-page="/Identity/Login">Login</a>
+            </li>
+          }
+        </ul>
       </div>
     </div>
   </nav>
