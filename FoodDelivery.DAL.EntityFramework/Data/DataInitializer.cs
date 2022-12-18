@@ -7,6 +7,15 @@ public static class DataInitializer
 {
     public static void Seed(this ModelBuilder modelBuilder)
     {
+        /********************
+         **   CURRENCIES   **
+         ********************/
+
+        var czkCurrency = new Currency { Id = Guid.NewGuid(), Name = "CZK" };
+        var eurCurrency = new Currency { Id = Guid.NewGuid(), Name = "EUR" };
+
+        modelBuilder.Entity<Currency>().HasData(czkCurrency, eurCurrency);
+
         /**********************
          **   COMPANY INFO   **
          **********************/
@@ -44,6 +53,7 @@ public static class DataInitializer
             Id = Guid.NewGuid(), Email = "jozef.straka@funkcnymail.sk", BillingAddressId = secondAddress.Id,
             DeliveryAddressId = firstAddress.Id,
             CompanyInfoId = companyInfo.Id,
+            SelectedCurrencyId = czkCurrency.Id,
         };
 
         modelBuilder.Entity<CustomerDetails>().HasData(customerDetails);
@@ -95,14 +105,6 @@ public static class DataInitializer
             pastaCategory, saladCategory, burgerCategory, steakCategory, sushiCategory, wineCategory,
             beerCategory, whiskeyCategory, softDrinksCategory, coffeeCategory, teaCategory
         );
-
-        /********************
-         **   CURRENCIES   **
-         ********************/
-
-        var czkCurrency = new Currency { Id = Guid.NewGuid(), Name = "CZK" };
-
-        modelBuilder.Entity<Currency>().HasData(czkCurrency);
 
         /****************
          **   PRICES   **

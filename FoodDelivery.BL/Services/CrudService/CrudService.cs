@@ -35,10 +35,10 @@ public class
         _repository.Create(entity);
     }
 
-    public void Update(TUpdateDto dto)
+    public void Update(TUpdateDto dto, IEnumerable<string> propertiesToUpdate)
     {
         var entity = Mapper.Map<TEntity>(dto);
-        _repository.Update(entity);
+        _repository.Update(entity, propertiesToUpdate);
     }
 
     public void Delete(TKey id)

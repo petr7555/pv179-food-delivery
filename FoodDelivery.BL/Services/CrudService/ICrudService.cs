@@ -8,7 +8,7 @@ public interface ICrudService<TEntity, TKey, TGetDto, TCreateDto, TUpdateDto> wh
 
     public void Create(TCreateDto dto);
 
-    public void Update(TUpdateDto dto);
+    public void Update(TUpdateDto dto, IEnumerable<string> propertiesToUpdate);
 
     public void Delete(TKey id);
 }

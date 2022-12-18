@@ -130,8 +130,8 @@ public class RepositoryTests
             var repository = new EfRepository<Restaurant, Guid>(context);
             repository.Update(new Restaurant
             {
-                Id = id, Name = "Updated pizza test", DeliveryPriceId = _priceFifty.Id, DeliveryPrice = _priceFifty
-            });
+                Id = id, Name = "Updated pizza test",
+            }, new []{nameof(Restaurant.Name)});
 
             context.Restaurants.Find(id)!.Name.Should().BeEquivalentTo("Updated pizza test");
         }
@@ -165,7 +165,7 @@ public class RepositoryTests
     [Fact]
     public void ItThrowsAnExceptionWhenUpdatingNullRestaurant()
     {
-        Assert.Throws<ArgumentNullException>(() => _repository.Update(null));
+        Assert.Throws<ArgumentNullException>(() => _repository.Update(null, new List<string>()));
     }
 
     [Fact]

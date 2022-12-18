@@ -24,4 +24,9 @@ public class CustomerDetails : BaseEntity
 
     [ForeignKey(nameof(CompanyInfoId))]
     public virtual CompanyInfo? CompanyInfo { get; set; }
+    
+    public Guid SelectedCurrencyId { get; set; }
+
+    [ForeignKey(nameof(SelectedCurrencyId))]
+    public virtual Currency SelectedCurrency { get; set; }
 }

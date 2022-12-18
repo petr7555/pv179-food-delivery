@@ -32,7 +32,8 @@ public class UserService : CrudService<User, Guid, UserGetDto, UserCreateDto, Us
         var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
 
         user.CustomerDetails = Mapper.Map<CustomerDetails>(customerDetailsUpdateDto);
-        _unitOfWork.UserRepository.Update(user);
+        // TODO
+        _unitOfWork.UserRepository.Update(user, null);
     }
 
     public async Task UpdateAddressAsync(Guid userId, Guid addressId, AddressUpdateDto addressUpdateDto)
@@ -48,7 +49,8 @@ public class UserService : CrudService<User, Guid, UserGetDto, UserCreateDto, Us
             user.CustomerDetails.DeliveryAddress = Mapper.Map<Address>(addressUpdateDto);
         }
 
-        _unitOfWork.UserRepository.Update(user);
+        // TODO
+        _unitOfWork.UserRepository.Update(user, null);
     }
 
     public async Task BanUserAsync(Guid userId)
@@ -59,7 +61,7 @@ public class UserService : CrudService<User, Guid, UserGetDto, UserCreateDto, Us
 
         var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
         user.Banned = true;
-        _unitOfWork.UserRepository.Update(user);
+        _unitOfWork.UserRepository.Update(user, new []{nameof(User.Banned)});
     }
 
     public async Task UnbanUserAsync(Guid userId)
@@ -70,7 +72,7 @@ public class UserService : CrudService<User, Guid, UserGetDto, UserCreateDto, Us
 
         var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
         user.Banned = false;
-        _unitOfWork.UserRepository.Update(user);
+        _unitOfWork.UserRepository.Update(user, new []{nameof(User.Banned)});
     }
 
     public async Task<UserGetDto> GetByUsernameAsync(string username)

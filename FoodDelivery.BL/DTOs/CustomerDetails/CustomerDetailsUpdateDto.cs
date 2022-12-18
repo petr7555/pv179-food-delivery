@@ -2,5 +2,6 @@
 
 public class CustomerDetailsUpdateDto
 {
-    public string Email { get; set; }
+    public Guid Id { get; set; }
+    public Guid SelectedCurrencyId { get; set; }
 }

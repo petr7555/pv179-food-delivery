@@ -30,19 +30,24 @@ public class EfRepository<TEntity, TKey> : IRepository<TEntity, TKey> where TEnt
         _dbSet.Add(entity);
     }
 
-    public void Update(TEntity entity)
+    public void Update(TEntity entity, IEnumerable<string> propertiesToUpdate)
     {
         if (entity == null)
         {
             throw new ArgumentNullException(nameof(entity));
         }
+
         var originalEntity = _dbSet.Find(entity.Id);
         if (originalEntity == null)
         {
             throw new Exception("Cannot update entity, entity not found.");
         }
 
-        _context.Entry(originalEntity).CurrentValues.SetValues(entity);
+        foreach (var property in propertiesToUpdate)
+        {
+            var newValue = entity.GetType().GetProperty(property)?.GetValue(entity);
+            originalEntity.GetType().GetProperty(property)?.SetValue(originalEntity, newValue);
+        }
     }
 
     public void Delete(TKey id)

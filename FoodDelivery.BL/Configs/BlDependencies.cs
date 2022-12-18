@@ -9,6 +9,8 @@ using FoodDelivery.BL.Facades.ProductFacade;
 using FoodDelivery.BL.Facades.RestaurantFacade;
 using FoodDelivery.BL.Facades.UserFacade;
 using FoodDelivery.BL.QueryObject;
+using FoodDelivery.BL.Services.CurrencyService;
+using FoodDelivery.BL.Services.CustomerDetailsService;
 using FoodDelivery.BL.Services.OrderProductService;
 using FoodDelivery.BL.Services.OrderService;
 using FoodDelivery.BL.Services.ProductService;
@@ -76,6 +78,9 @@ public static class BlDependencies
                 () => new EfQuery<User>(sp.GetRequiredService<DbContext>())
             )
         );
+
+        services.AddScoped<ICurrencyService, CurrencyService>();
+        services.AddScoped<ICustomerDetailsService, CustomerDetailsService>();
 
         return services;
     }

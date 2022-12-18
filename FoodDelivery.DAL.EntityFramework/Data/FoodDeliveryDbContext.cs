@@ -51,6 +51,14 @@ public class FoodDeliveryDbContext : DbContext
         modelBuilder.Entity<CustomerDetails>()
             .Navigation(cd => cd.Customer)
             .AutoInclude();
+        
+        modelBuilder.Entity<User>()
+            .Navigation(u => u.CustomerDetails)
+            .AutoInclude();
+        
+        modelBuilder.Entity<CustomerDetails>()
+            .Navigation(cd => cd.SelectedCurrency)
+            .AutoInclude();
 
         base.OnModelCreating(modelBuilder);
     }

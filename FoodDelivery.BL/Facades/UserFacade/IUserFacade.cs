@@ -1,5 +1,6 @@
 ﻿using FoodDelivery.BL.DTOs;
 using FoodDelivery.BL.DTOs.Address;
+using FoodDelivery.BL.DTOs.Currency;
 using FoodDelivery.BL.DTOs.CustomerDetails;
 using FoodDelivery.BL.DTOs.User;
 
@@ -20,4 +21,10 @@ public interface IUserFacade
     public Task UnbanUserAsync(Guid userId);
 
     public Task CreateUserAsync(UserCreateDto userCreateDto);
+    
+    public Task<CurrencyGetDto> GetCurrencyAsync(string username);
+    
+    public Task<IEnumerable<CurrencyGetDto>> GetRemainingCurrencies(string username);
+    
+    public Task SetCurrencyAsync(string username, Guid currencyId);
 }
