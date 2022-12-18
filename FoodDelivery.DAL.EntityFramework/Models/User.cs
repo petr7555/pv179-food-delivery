@@ -16,4 +16,9 @@ public class User : BaseEntity
 
     [ForeignKey(nameof(CustomerDetailsId))]
     public virtual CustomerDetails? CustomerDetails { get; set; }
+
+    public Guid UserSettingsId { get; set; }
+
+    [ForeignKey(nameof(UserSettingsId))]
+    public virtual UserSettings UserSettings { get; set; }
 }

@@ -19,7 +19,7 @@ public class ProductFacade : IProductFacade
     public async Task<IEnumerable<ProductLocalizedGetDto>> GetAllAsync(string username)
     {
         var user = await _userService.GetByUsernameAsync(username);
-        var currency = user.CustomerDetails.SelectedCurrency;
+        var currency = user.UserSettings.SelectedCurrency;
         var products = await _productService.GetAllAsync();
         var productsLocalized = products.Select(p =>
             new ProductLocalizedGetDto

@@ -16,6 +16,7 @@ using FoodDelivery.BL.Services.OrderService;
 using FoodDelivery.BL.Services.ProductService;
 using FoodDelivery.BL.Services.RestaurantService;
 using FoodDelivery.BL.Services.UserService;
+using FoodDelivery.BL.Services.UserSettingsService;
 using FoodDelivery.DAL.EntityFramework.Data;
 using FoodDelivery.DAL.EntityFramework.Models;
 using FoodDelivery.Infrastructure.EntityFramework.Query;
@@ -81,6 +82,7 @@ public static class BlDependencies
 
         services.AddScoped<ICurrencyService, CurrencyService>();
         services.AddScoped<ICustomerDetailsService, CustomerDetailsService>();
+        services.AddScoped<IUserSettingsService, UserSettingsService>();
 
         return services;
     }

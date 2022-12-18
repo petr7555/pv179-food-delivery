@@ -3,9 +3,10 @@ using FoodDelivery.BL.DTOs.Address;
 using FoodDelivery.BL.DTOs.Currency;
 using FoodDelivery.BL.DTOs.CustomerDetails;
 using FoodDelivery.BL.DTOs.User;
+using FoodDelivery.BL.DTOs.UserSettings;
 using FoodDelivery.BL.Services.CurrencyService;
-using FoodDelivery.BL.Services.CustomerDetailsService;
 using FoodDelivery.BL.Services.UserService;
+using FoodDelivery.BL.Services.UserSettingsService;
 using FoodDelivery.Infrastructure.UnitOfWork;
 
 namespace FoodDelivery.BL.Facades.UserFacade;
@@ -15,15 +16,15 @@ public class UserFacade : IUserFacade
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserService _userService;
     private readonly ICurrencyService _currencyService;
-    private readonly ICustomerDetailsService _customerDetailsService;
+    private readonly IUserSettingsService _userSettings;
 
     public UserFacade(IUnitOfWork unitOfWork, IUserService userService, ICurrencyService currencyService,
-        ICustomerDetailsService customerDetailsService)
+        IUserSettingsService userSettingsService)
     {
         _unitOfWork = unitOfWork;
         _userService = userService;
         _currencyService = currencyService;
-        _customerDetailsService = customerDetailsService;
+        _userSettings = userSettingsService;
     }
 
     public async Task<IEnumerable<UserGetDto>> GetAllAsync()
@@ -65,34 +66,28 @@ public class UserFacade : IUserFacade
     public async Task<CurrencyGetDto> GetCurrencyAsync(string username)
     {
         var user = await _userService.GetByUsernameAsync(username);
-        return user.CustomerDetails?.SelectedCurrency ??
-               throw new InvalidOperationException("Cannot get currency of user without customer details.");
+        return user.UserSettings.SelectedCurrency;
     }
 
     public async Task<IEnumerable<CurrencyGetDto>> GetRemainingCurrencies(string username)
     {
         var user = await _userService.GetByUsernameAsync(username);
         var allCurrencies = await _currencyService.GetAllAsync();
-        var remainingCurrencies = allCurrencies.Where(c => c.Id != user.CustomerDetails.SelectedCurrency.Id);
+        var remainingCurrencies = allCurrencies.Where(c => c.Id != user.UserSettings.SelectedCurrency.Id);
         return remainingCurrencies;
     }
 
     public async Task SetCurrencyAsync(string username, Guid currencyId)
     {
         var user = await _userService.GetByUsernameAsync(username);
-        if (user.CustomerDetails == null)
-        {
-            throw new InvalidOperationException("Cannot set currency of user without customer details.");
-        }
 
-        var customerDetailsUpdateDto = new CustomerDetailsUpdateDto
+        var userSettingsUpdateDto = new UserSettingsUpdateDto
         {
-            Id = user.CustomerDetails.Id,
+            Id = user.UserSettings.Id, 
             SelectedCurrencyId = currencyId,
         };
 
-        _customerDetailsService.Update(customerDetailsUpdateDto,
-            new[] { nameof(CustomerDetailsUpdateDto.SelectedCurrencyId) });
+        _userSettings.Update(userSettingsUpdateDto, new[] { nameof(UserSettingsUpdateDto.SelectedCurrencyId) });
 
         await _unitOfWork.CommitAsync();
     }

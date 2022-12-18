@@ -54,21 +54,48 @@ public static class DataInitializer
             BillingAddressId = secondAddress.Id,
             DeliveryAddressId = firstAddress.Id,
             CompanyInfoId = companyInfo.Id,
-            SelectedCurrencyId = czkCurrency.Id,
         };
 
         modelBuilder.Entity<CustomerDetails>().HasData(customerDetails);
+
+        /***********************
+         **   USER SETTINGS   **
+         ***********************/
+
+        var adminSettings = new UserSettings
+        {
+            Id = Guid.NewGuid(),
+            SelectedCurrencyId = czkCurrency.Id,
+        };
+
+        var contentManagerSettings = new UserSettings
+        {
+            Id = Guid.NewGuid(),
+            SelectedCurrencyId = czkCurrency.Id,
+        };
+
+        var customerSettings = new UserSettings
+        {
+            Id = Guid.NewGuid(),
+            SelectedCurrencyId = czkCurrency.Id,
+        };
+
+        modelBuilder.Entity<UserSettings>().HasData(
+            adminSettings,
+            contentManagerSettings,
+            customerSettings
+        );
 
         /***************
          **   USERS   **
          ***************/
 
-        var firstUser = new User { Id = Guid.NewGuid(), Email = "admin@example.com" };
-        var secondUser = new User { Id = Guid.NewGuid(), Email = "cm@example.com" };
-        var thirdUser = new User
-            { Id = Guid.NewGuid(), Email = "customer@example.com", CustomerDetailsId = customerDetails.Id };
+        var admin = new User { Id = Guid.NewGuid(), Email = "admin@example.com", UserSettingsId  = adminSettings.Id };
+        var contentManager = new User { Id = Guid.NewGuid(), Email = "cm@example.com", UserSettingsId = contentManagerSettings.Id};
+        var customer = new User
+            { Id = Guid.NewGuid(), Email = "customer@example.com", CustomerDetailsId = customerDetails.Id, UserSettingsId = customerSettings.Id};
 
-        modelBuilder.Entity<User>().HasData(firstUser, secondUser, thirdUser);
+        modelBuilder.Entity<User>().HasData(admin, contentManager, customer);
 
         /********************
          **   CATEGORIES   **

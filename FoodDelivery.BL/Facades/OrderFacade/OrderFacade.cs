@@ -9,9 +9,7 @@ using FoodDelivery.BL.Services.UserService;
 using FoodDelivery.DAL.EntityFramework.Models;
 using FoodDelivery.Infrastructure.UnitOfWork;
 using PdfSharpCore;
-using PdfSharpCore.Fonts;
 using PdfSharpCore.Pdf;
-using PdfSharpCore.Utils;
 using VetCV.HtmlRendererCore.PdfSharpCore;
 
 namespace FoodDelivery.BL.Facades.OrderFacade;
@@ -34,7 +32,7 @@ public class OrderFacade : IOrderFacade
 
     private async Task<OrderWithProductsGetDto> OrderToOrderWithProducts(OrderGetDto order)
     {
-        var currency = order.CustomerDetails.SelectedCurrency;
+        var currency = order.CustomerDetails.Customer.UserSettings.SelectedCurrency;
         var products = (await _orderProductService.GetProductsForOrderAsync(order.Id)).ToList();
         var productsLocalized = products.Select(p => new ProductLocalizedGetDto()
         {

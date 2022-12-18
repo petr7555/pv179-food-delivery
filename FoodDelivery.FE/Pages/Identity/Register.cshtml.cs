@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using FoodDelivery.BL.DTOs.CustomerDetails;
 using FoodDelivery.BL.DTOs.User;
+using FoodDelivery.BL.DTOs.UserSettings;
 using FoodDelivery.BL.Facades.UserFacade;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -62,7 +63,7 @@ public class Register : PageModel
             await _userFacade.CreateUserAsync(new UserCreateDto
             {
                 Email = Email,
-                CustomerDetails = new CustomerDetailsCreateDto
+                UserSettings = new UserSettingsCreateDto
                 {
                     SelectedCurrencyId = currency.Id,
                 },

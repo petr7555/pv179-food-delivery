@@ -9,6 +9,7 @@ using FoodDelivery.BL.DTOs.Price;
 using FoodDelivery.BL.DTOs.Product;
 using FoodDelivery.BL.DTOs.Restaurant;
 using FoodDelivery.BL.DTOs.User;
+using FoodDelivery.BL.DTOs.UserSettings;
 using FoodDelivery.DAL.EntityFramework.Models;
 
 namespace FoodDelivery.BL.Configs;
@@ -36,6 +37,10 @@ public static class MappingConfig
         config.CreateMap<CustomerDetails, CustomerDetailsGetDto>().ReverseMap();
         config.CreateMap<CustomerDetails, CustomerDetailsUpdateDto>().ReverseMap();
         config.CreateMap<CustomerDetails, CustomerDetailsCreateDto>().ReverseMap();
+        
+        config.CreateMap<UserSettings, UserSettingsGetDto>().ReverseMap();
+        config.CreateMap<UserSettings, UserSettingsUpdateDto>().ReverseMap();
+        config.CreateMap<UserSettings, UserSettingsCreateDto>().ReverseMap();
 
         config.CreateMap<Order, OrderGetDto>().ReverseMap();
         config.CreateMap<Order, OrderCreateDto>().ReverseMap();
