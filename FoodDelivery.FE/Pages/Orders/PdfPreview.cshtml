@@ -3,7 +3,6 @@
 
 @{
   Layout = null;
-  ViewData["Title"] = "PDF preview";
 }
 
-@await Html.PartialAsync("_ProductsPartial", Model.Order.Products)
+@await Html.PartialAsync("_OrderDetailsPartial", Model.Order)

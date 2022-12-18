@@ -1,0 +1,56 @@
+@model FoodDelivery.BL.DTOs.Order.OrderWithProductsGetDto
+
+@{
+  ViewData["Title"] = "Order details";
+}
+
+<h1>Order number @Model.Id</h1>
+
+<table class="table table-sm">
+  <tbody>
+  <tr>
+    <td>@Html.DisplayNameFor(model => Model.CreatedAt)</td>
+    <td>@Model.CreatedAt</td>
+  </tr>
+  <tr>
+    <td>@Html.DisplayNameFor(model => Model.Status)</td>
+    <td>@Model.Status</td>
+  </tr>
+  <tr style="font-weight: bold;">
+    <td>@Html.DisplayNameFor(model => Model.TotalPrice)</td>
+    <td>@Model.TotalPrice.Amount @Model.TotalPrice.Currency.Name</td>
+  </tr>
+  </tbody>
+</table>
+
+<h2>Billing address:</h2>
+@await Html.PartialAsync("_AddressPartial", Model.CustomerDetails.BillingAddress)
+
+@if (Model.CustomerDetails.DeliveryAddress != null)
+{
+  <h2>Delivery address:</h2>
+  @await Html.PartialAsync("_AddressPartial", Model.CustomerDetails.DeliveryAddress)
+}
+else
+{
+  <p>Delivery address is the same as the billing address.</p>
+}
+
+@if (Model.CustomerDetails.CompanyInfo != null)
+{
+  <h2>Company info:</h2>
+  <table class="table table-sm">
+    <tbody>
+    <tr>
+      <td>@Html.DisplayNameFor(model => Model.CustomerDetails.CompanyInfo.Vat)</td>
+      <td>@Model.CustomerDetails.CompanyInfo.Vat</td>
+    </tr>
+    <tr>
+      <td>@Html.DisplayNameFor(model => Model.CustomerDetails.CompanyInfo.CompanyName)</td>
+      <td>@Model.CustomerDetails.CompanyInfo.CompanyName</td>
+    </tr>
+    </tbody>
+  </table>
+}
+
+@await Html.PartialAsync("_ProductsPartial", Model.Products)

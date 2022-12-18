@@ -1,27 +1,4 @@
 @page
 @model DetailsModel
 
-@{
-  ViewData["Title"] = "Order details";
-}
-
-<h1>Order number @Model.Order.Id</h1>
-
-<table class="table table-sm">
-  <tbody>
-  <tr>
-    <td>@Html.DisplayNameFor(model => model.Order.CreatedAt)</td>
-    <td>@Model.Order.CreatedAt</td>
-  </tr>
-  <tr>
-    <td>@Html.DisplayNameFor(model => model.Order.Status)</td>
-    <td>@Model.Order.Status</td>
-  </tr>
-  <tr style="font-weight: bold;">
-    <td>@Html.DisplayNameFor(model => model.Order.TotalPrice)</td>
-    <td>@Model.Order.TotalPrice.Amount @Model.Order.TotalPrice.Currency.Name</td>
-  </tr>
-  </tbody>
-</table>
-
-@await Html.PartialAsync("_ProductsPartial", Model.Order.Products)
+@await Html.PartialAsync("_OrderDetailsPartial", Model.Order)

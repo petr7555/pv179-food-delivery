@@ -1,6 +1,8 @@
 using AutoMapper;
 using AutoMapper.Extensions.ExpressionMapping;
+using FoodDelivery.BL.DTOs.Address;
 using FoodDelivery.BL.DTOs.Category;
+using FoodDelivery.BL.DTOs.CompanyInfo;
 using FoodDelivery.BL.DTOs.Currency;
 using FoodDelivery.BL.DTOs.CustomerDetails;
 using FoodDelivery.BL.DTOs.Order;
@@ -48,5 +50,11 @@ public static class MappingConfig
 
         config.CreateMap<OrderProduct, OrderProductGetDto>().ReverseMap();
         config.CreateMap<OrderProduct, OrderProductCreateDto>().ReverseMap();
+        
+        config.CreateMap<CompanyInfo, CompanyInfoGetDto>().ReverseMap();
+        config.CreateMap<CompanyInfo, CompanyInfoUpdateDto>().ReverseMap();
+        config.CreateMap<CompanyInfo, CompanyInfoCreateDto>().ReverseMap();
+        
+        config.CreateMap<Address, AddressGetDto>().ReverseMap();
     }
 }
