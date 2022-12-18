@@ -14,7 +14,7 @@
 else
 {
   @await Html.PartialAsync("_ProductsPartial", Model.ProductsInBasket)
-  
+
   <form method="post">
     <button type="submit" class="btn btn-primary" id="checkout-button">Checkout</button>
   </form>

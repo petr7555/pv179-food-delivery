@@ -4,6 +4,7 @@ using FoodDelivery.DAL.EntityFramework.Models;
 
 namespace FoodDelivery.BL.Services.UserSettingsService;
 
-public interface IUserSettingsService : ICrudService<UserSettings, Guid, UserSettingsGetDto, UserSettingsCreateDto, UserSettingsUpdateDto>
+public interface IUserSettingsService : ICrudService<UserSettings, Guid, UserSettingsGetDto, UserSettingsCreateDto,
+    UserSettingsUpdateDto>
 {
 }

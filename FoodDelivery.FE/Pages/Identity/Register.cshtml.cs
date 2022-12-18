@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using FoodDelivery.BL.DTOs.CustomerDetails;
 using FoodDelivery.BL.DTOs.User;
 using FoodDelivery.BL.DTOs.UserSettings;
 using FoodDelivery.BL.Facades.UserFacade;

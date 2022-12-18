@@ -61,7 +61,7 @@ public class UserService : CrudService<User, Guid, UserGetDto, UserCreateDto, Us
 
         var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
         user.Banned = true;
-        _unitOfWork.UserRepository.Update(user, new []{nameof(User.Banned)});
+        _unitOfWork.UserRepository.Update(user, new[] { nameof(User.Banned) });
     }
 
     public async Task UnbanUserAsync(Guid userId)
@@ -72,7 +72,7 @@ public class UserService : CrudService<User, Guid, UserGetDto, UserCreateDto, Us
 
         var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
         user.Banned = false;
-        _unitOfWork.UserRepository.Update(user, new []{nameof(User.Banned)});
+        _unitOfWork.UserRepository.Update(user, new[] { nameof(User.Banned) });
     }
 
     public async Task<UserGetDto> GetByUsernameAsync(string username)

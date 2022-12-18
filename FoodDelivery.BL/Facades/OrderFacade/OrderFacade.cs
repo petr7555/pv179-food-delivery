@@ -43,7 +43,7 @@ public class OrderFacade : IOrderFacade
             Restaurant = p.Restaurant,
             Price = p.Prices.Single(price => price.Currency.Id == currency.Id),
         }).ToList();
-        
+
         var totalAmount = productsLocalized.Sum(p => p.Price.Amount);
         return new OrderWithProductsGetDto
         {
@@ -59,7 +59,7 @@ public class OrderFacade : IOrderFacade
             },
         };
     }
-    
+
     public async Task<OrderWithProductsGetDto?> GetByIdAsync(Guid id)
     {
         var order = await _orderService.GetByIdAsync(id);
@@ -136,7 +136,7 @@ public class OrderFacade : IOrderFacade
             Id = order.Id,
             Status = OrderStatus.Paid,
         };
-        _orderService.Update(updatedOrder, new []{nameof(OrderUpdateDto.Status)});
+        _orderService.Update(updatedOrder, new[] { nameof(OrderUpdateDto.Status) });
         await _unitOfWork.CommitAsync();
     }
 

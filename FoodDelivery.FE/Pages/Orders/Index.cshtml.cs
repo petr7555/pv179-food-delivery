@@ -22,7 +22,7 @@ public class IndexModel : PageModel
     {
         Orders = (await _orderFacade.GetOrdersForUserAsync(User.Identity.Name)).ToList();
     }
-    
+
     public async Task<IActionResult> OnPost(Guid id)
     {
         var pdfPreviewUrl = $"https://{Request.Host}/Orders/PdfPreview?id={id}";

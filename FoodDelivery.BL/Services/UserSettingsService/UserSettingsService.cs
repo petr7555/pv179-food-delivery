@@ -6,7 +6,8 @@ using FoodDelivery.Infrastructure.UnitOfWork;
 
 namespace FoodDelivery.BL.Services.UserSettingsService;
 
-public class UserSettingsService : CrudService<UserSettings, Guid, UserSettingsGetDto, UserSettingsCreateDto, UserSettingsUpdateDto>,
+public class UserSettingsService :
+    CrudService<UserSettings, Guid, UserSettingsGetDto, UserSettingsCreateDto, UserSettingsUpdateDto>,
     IUserSettingsService
 {
     public UserSettingsService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork.UserSettingsRepository, mapper)

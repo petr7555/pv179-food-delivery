@@ -47,31 +47,31 @@ public class FoodDeliveryDbContext : DbContext
         modelBuilder.Entity<Order>()
             .Navigation(o => o.CustomerDetails)
             .AutoInclude();
-        
+
         modelBuilder.Entity<CustomerDetails>()
             .Navigation(cd => cd.Customer)
-            .AutoInclude();        
-        
+            .AutoInclude();
+
         modelBuilder.Entity<CustomerDetails>()
             .Navigation(cd => cd.BillingAddress)
-            .AutoInclude();        
-        
+            .AutoInclude();
+
         modelBuilder.Entity<CustomerDetails>()
             .Navigation(cd => cd.DeliveryAddress)
             .AutoInclude();
-        
+
         modelBuilder.Entity<CustomerDetails>()
             .Navigation(cd => cd.CompanyInfo)
             .AutoInclude();
-        
+
         modelBuilder.Entity<User>()
             .Navigation(u => u.CustomerDetails)
             .AutoInclude();
-        
+
         modelBuilder.Entity<User>()
             .Navigation(u => u.UserSettings)
             .AutoInclude();
-        
+
         modelBuilder.Entity<UserSettings>()
             .Navigation(us => us.SelectedCurrency)
             .AutoInclude();

@@ -6,10 +6,12 @@ using FoodDelivery.Infrastructure.UnitOfWork;
 
 namespace FoodDelivery.BL.Services.CustomerDetailsService;
 
-public class CustomerDetailsService : CrudService<CustomerDetails, Guid, CustomerDetailsGetDto, CustomerDetailsCreateDto, CustomerDetailsUpdateDto>,
+public class CustomerDetailsService : CrudService<CustomerDetails, Guid, CustomerDetailsGetDto, CustomerDetailsCreateDto
+        , CustomerDetailsUpdateDto>,
     ICustomerDetailsService
 {
-    public CustomerDetailsService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork.CustomerDetailsRepository, mapper)
+    public CustomerDetailsService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork.CustomerDetailsRepository,
+        mapper)
     {
     }
 }

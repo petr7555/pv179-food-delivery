@@ -83,7 +83,7 @@ public class UserFacade : IUserFacade
 
         var userSettingsUpdateDto = new UserSettingsUpdateDto
         {
-            Id = user.UserSettings.Id, 
+            Id = user.UserSettings.Id,
             SelectedCurrencyId = currencyId,
         };
 

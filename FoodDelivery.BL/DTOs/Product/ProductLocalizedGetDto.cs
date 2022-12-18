@@ -9,8 +9,10 @@ public class ProductLocalizedGetDto
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
+
     [Display(Name = "Image")]
     public string ImageUrl { get; set; }
+
     public CategoryGetDto Category { get; set; }
     public RestaurantGetDto Restaurant { get; set; }
     public PriceGetDto Price { get; set; }

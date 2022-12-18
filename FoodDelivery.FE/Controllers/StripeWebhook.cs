@@ -17,7 +17,7 @@ public class StripeWebhook : ControllerBase
         _orderFacade = orderFacade;
         _secret = configuration.GetSection("Stripe")["SecretWebhookKey"];
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> Index()
     {

@@ -10,12 +10,17 @@ public class OrderWithProductsGetDto
 {
     [Display(Name = "Order number")]
     public Guid Id { get; set; }
+
     [Display(Name = "Created at")]
     public DateTime CreatedAt { get; set; }
+
     public CustomerDetailsGetDto CustomerDetails { get; set; }
+
     [Display(Name = "Order status")]
     public OrderStatus Status { get; set; }
+
     public List<ProductLocalizedGetDto> Products { get; set; }
+
     [Display(Name = "Total price")]
     public PriceGetDto TotalPrice { get; set; }
 }

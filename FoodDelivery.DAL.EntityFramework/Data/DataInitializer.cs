@@ -90,10 +90,14 @@ public static class DataInitializer
          **   USERS   **
          ***************/
 
-        var admin = new User { Id = Guid.NewGuid(), Email = "admin@example.com", UserSettingsId  = adminSettings.Id };
-        var contentManager = new User { Id = Guid.NewGuid(), Email = "cm@example.com", UserSettingsId = contentManagerSettings.Id};
+        var admin = new User { Id = Guid.NewGuid(), Email = "admin@example.com", UserSettingsId = adminSettings.Id };
+        var contentManager = new User
+            { Id = Guid.NewGuid(), Email = "cm@example.com", UserSettingsId = contentManagerSettings.Id };
         var customer = new User
-            { Id = Guid.NewGuid(), Email = "customer@example.com", CustomerDetailsId = customerDetails.Id, UserSettingsId = customerSettings.Id};
+        {
+            Id = Guid.NewGuid(), Email = "customer@example.com", CustomerDetailsId = customerDetails.Id,
+            UserSettingsId = customerSettings.Id
+        };
 
         modelBuilder.Entity<User>().HasData(admin, contentManager, customer);
 

@@ -4,6 +4,7 @@ using FoodDelivery.DAL.EntityFramework.Models;
 
 namespace FoodDelivery.BL.Services.CustomerDetailsService;
 
-public interface ICustomerDetailsService : ICrudService<CustomerDetails, Guid, CustomerDetailsGetDto, CustomerDetailsCreateDto, CustomerDetailsUpdateDto>
+public interface ICustomerDetailsService : ICrudService<CustomerDetails, Guid, CustomerDetailsGetDto,
+    CustomerDetailsCreateDto, CustomerDetailsUpdateDto>
 {
 }
