@@ -35,32 +35,37 @@ public class RepositoryTests
         _context.Currencies.Add(czkCurrency);
 
         _priceFifty = new Price { Id = Guid.NewGuid(), Amount = 50, CurrencyId = czkCurrency.Id };
-        var priceEighty = new Price { Id = Guid.NewGuid(), Amount = 80, CurrencyId = czkCurrency.Id };
-        _context.Prices.AddRange(_priceFifty, priceEighty);
+        _context.Prices.AddRange(_priceFifty);
 
         _pizzaGiuseppe = new Restaurant
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000001"), Name = "Pizza Guiseppe",
+            DeliveryPrices = new List<Price>(),
         };
         _pizzaDominos = new Restaurant
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000002"), Name = "Pizza Domino's",
+            DeliveryPrices = new List<Price>(),
         };
         _pizzaHut = new Restaurant
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000003"), Name = "Pizza Hut",
+            DeliveryPrices = new List<Price>(),
         };
         _k1 = new Restaurant
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000004"), Name = "Steak House K1",
+            DeliveryPrices = new List<Price>(),
         };
         _jeanPauls = new Restaurant
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000005"), Name = "Jean Paul's",
+            DeliveryPrices = new List<Price>(),
         };
         _poePoe = new Restaurant
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000006"), Name = "POE POE",
+            DeliveryPrices = new List<Price>(),
         };
         _context.Restaurants.AddRange(_pizzaGiuseppe, _pizzaDominos, _pizzaHut, _k1, _jeanPauls, _poePoe);
 
