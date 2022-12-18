@@ -131,6 +131,37 @@ public class RepositoryTests
     }
 
     [Fact]
+    public void ItUpdatesOnlySelectedProperties()
+    {
+        var databaseName = "QueryTests_db_" + DateTime.Now.ToFileTimeUtc();
+        var dbContextOptions = new DbContextOptionsBuilder<FoodDeliveryDbContext>()
+            .UseInMemoryDatabase(databaseName)
+            .Options;
+
+        var id = Guid.Parse("00000000-0000-0000-0000-000000000010");
+        using (var context = new FoodDeliveryDbContext(dbContextOptions))
+        {
+            context.Restaurants.Add(new Restaurant { Id = id, Name = "Pizza test" });
+            context.SaveChanges();
+        }
+
+        using (var context = new FoodDeliveryDbContext(dbContextOptions))
+        {
+            var repository = new EfRepository<Restaurant, Guid>(context);
+            repository.Update(new Restaurant
+            {
+                Id = id,
+                Name = "Updated pizza test",
+                DeliveryPrices = new List<Price> { _priceFifty },
+            }, new[] { nameof(Restaurant.DeliveryPrices) });
+
+            var foundRestaurant = context.Restaurants.Find(id)!;
+            foundRestaurant.Name.Should().BeEquivalentTo("Pizza test");
+            foundRestaurant.DeliveryPrices.Should().BeEquivalentTo(new List<Price> { _priceFifty });
+        }
+    }
+
+    [Fact]
     public void ItDeletesRestaurantThatExists()
     {
         var id = Guid.Parse("00000000-0000-0000-0000-000000000001");

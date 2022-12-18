@@ -30,40 +30,46 @@ public class QueryTests
         var czkCurrency = new Currency { Id = Guid.NewGuid(), Name = "CZK" };
         _context.Currencies.Add(czkCurrency);
 
-        var priceFifty = new Price { Id = Guid.NewGuid(), Amount = 50, CurrencyId = czkCurrency.Id };
-        var priceEighty = new Price { Id = Guid.NewGuid(), Amount = 80, CurrencyId = czkCurrency.Id };
-        _context.Prices.AddRange(priceFifty, priceEighty);
-
         _pizzaGiuseppe = new Restaurant
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000001"), Name = "Pizza Guiseppe",
-            DeliveryPriceId = priceFifty.Id
         };
         _pizzaDominos = new Restaurant
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000002"), Name = "Pizza Domino's",
-            DeliveryPriceId = priceFifty.Id
         };
         _pizzaHut = new Restaurant
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000003"), Name = "Pizza Hut",
-            DeliveryPriceId = priceEighty.Id
         };
         _k1 = new Restaurant
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000004"), Name = "Steak House K1",
-            DeliveryPriceId = priceEighty.Id
         };
         _jeanPauls = new Restaurant
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000005"), Name = "Jean Paul's",
-            DeliveryPriceId = priceEighty.Id
         };
         _poePoe = new Restaurant
         {
-            Id = Guid.Parse("00000000-0000-0000-0000-000000000006"), Name = "POE POE", DeliveryPriceId = priceEighty.Id
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000006"), Name = "POE POE",
         };
         _context.Restaurants.AddRange(_pizzaGiuseppe, _pizzaDominos, _pizzaHut, _k1, _jeanPauls, _poePoe);
+
+        var priceFiftyPizzaGiuseppe = new Price
+            { Id = Guid.NewGuid(), Amount = 50, CurrencyId = czkCurrency.Id, RestaurantId = _pizzaGiuseppe.Id };
+        var priceFiftyPizzaDominos = new Price
+            { Id = Guid.NewGuid(), Amount = 50, CurrencyId = czkCurrency.Id, RestaurantId = _pizzaDominos.Id };
+        var priceEightyPizzaHut = new Price
+            { Id = Guid.NewGuid(), Amount = 80, CurrencyId = czkCurrency.Id, RestaurantId = _pizzaHut.Id };
+        var priceEightyK1 = new Price
+            { Id = Guid.NewGuid(), Amount = 80, CurrencyId = czkCurrency.Id, RestaurantId = _k1.Id };
+        var priceEightyJeanPauls = new Price
+            { Id = Guid.NewGuid(), Amount = 80, CurrencyId = czkCurrency.Id, RestaurantId = _jeanPauls.Id };
+        var priceEightyPoePoe = new Price
+            { Id = Guid.NewGuid(), Amount = 80, CurrencyId = czkCurrency.Id, RestaurantId = _poePoe.Id };
+        _context.Prices.AddRange(priceFiftyPizzaGiuseppe, priceFiftyPizzaDominos,
+            priceEightyPizzaHut, priceEightyK1, priceEightyJeanPauls, priceEightyPoePoe);
 
         _context.SaveChanges();
     }
@@ -101,7 +107,7 @@ public class QueryTests
     public async Task ItFiltersRestaurantsWithSmallerDeliveryPriceThanEighty()
     {
         var query = new EfQuery<Restaurant>(_context);
-        query.Where(r => r.DeliveryPrice.Amount < 80);
+        query.Where(r => r.DeliveryPrices.First().Amount < 80);
         var result = await query.ExecuteAsync();
 
         result.Should().BeEquivalentTo(new List<Restaurant>
@@ -116,7 +122,7 @@ public class QueryTests
     {
         var query = new EfQuery<Restaurant>(_context);
         query.Where(r => r.Name.StartsWith("P"))
-            .Where(r => r.DeliveryPrice.Amount > 50);
+            .Where(r => r.DeliveryPrices.First().Amount > 50);
         var result = await query.ExecuteAsync();
 
         result.Should().BeEquivalentTo(new List<Restaurant>

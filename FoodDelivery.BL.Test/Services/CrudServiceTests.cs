@@ -85,10 +85,10 @@ public class CrudServiceTest
 
         var service = new TestService(_repositoryMock.Object, _mapper);
 
-        service.Update(_mapper.Map<TestDto>(entity));
+        service.Update(_mapper.Map<TestDto>(entity), new[] { nameof(TestEntity.Name) });
 
         _repositoryMock.Verify(x => x.Update(
-            It.Is<TestEntity>(e => e.Id == entity.Id && e.Name == entity.Name)), Times.Once());
+            It.Is<TestEntity>(e => e.Id == entity.Id && e.Name == entity.Name), It.IsAny<string[]>()), Times.Once());
     }
 
     [Fact]

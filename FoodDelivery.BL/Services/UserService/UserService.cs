@@ -33,7 +33,7 @@ public class UserService : CrudService<User, Guid, UserGetDto, UserCreateDto, Us
 
         user.CustomerDetails = Mapper.Map<CustomerDetails>(customerDetailsUpdateDto);
         // TODO
-        _unitOfWork.UserRepository.Update(user, null);
+        _unitOfWork.UserRepository.Update(user, Array.Empty<string>());
     }
 
     public async Task UpdateAddressAsync(Guid userId, Guid addressId, AddressUpdateDto addressUpdateDto)
@@ -50,7 +50,7 @@ public class UserService : CrudService<User, Guid, UserGetDto, UserCreateDto, Us
         }
 
         // TODO
-        _unitOfWork.UserRepository.Update(user, null);
+        _unitOfWork.UserRepository.Update(user, Array.Empty<string>());
     }
 
     public async Task BanUserAsync(Guid userId)
