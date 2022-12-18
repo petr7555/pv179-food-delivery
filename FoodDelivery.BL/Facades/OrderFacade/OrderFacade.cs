@@ -1,6 +1,7 @@
 ﻿using FoodDelivery.BL.DTOs;
 using FoodDelivery.BL.DTOs.Order;
 using FoodDelivery.BL.DTOs.OrderProduct;
+using FoodDelivery.BL.DTOs.Price;
 using FoodDelivery.BL.Services.OrderProductService;
 using FoodDelivery.BL.Services.OrderService;
 using FoodDelivery.BL.Services.UserService;
@@ -30,6 +31,25 @@ public class OrderFacade : IOrderFacade
         _userService = userService;
     }
 
+    private async Task<OrderWithProductsGetDto> OrderToOrderWithProducts(OrderGetDto order)
+    {
+        var products = (await _orderProductService.GetProductsForOrderAsync(order.Id)).ToList();
+        var totalAmount = products.Sum(p => p.Price.Amount);
+        return new OrderWithProductsGetDto
+        {
+            Id = order.Id,
+            CreatedAt = order.CreatedAt,
+            CustomerDetails = order.CustomerDetails,
+            Status = order.Status,
+            Products = products,
+            TotalPrice = new PriceGetDto
+            {
+                Amount = totalAmount,
+                Currency = products.First().Price.Currency,
+            },
+        };
+    }
+    
     public async Task<OrderWithProductsGetDto?> GetByIdAsync(Guid id)
     {
         var order = await _orderService.GetByIdAsync(id);
@@ -38,15 +58,7 @@ public class OrderFacade : IOrderFacade
             return null;
         }
 
-        var orderWithProducts = new OrderWithProductsGetDto
-        {
-            Id = order.Id,
-            CreatedAt = order.CreatedAt,
-            CustomerDetails = order.CustomerDetails,
-            Status = order.Status,
-            Products = (await _orderProductService.GetProductsForOrderAsync(order.Id)).ToList(),
-        };
-        return orderWithProducts;
+        return await OrderToOrderWithProducts(order);
     }
 
     public async Task<IEnumerable<OrderWithProductsGetDto>> GetOrdersForUserAsync(string username)
@@ -58,14 +70,7 @@ public class OrderFacade : IOrderFacade
         var ordersWithProducts = new List<OrderWithProductsGetDto>();
         foreach (var order in orders)
         {
-            ordersWithProducts.Add(new OrderWithProductsGetDto
-            {
-                Id = order.Id,
-                CreatedAt = order.CreatedAt,
-                CustomerDetails = order.CustomerDetails,
-                Status = order.Status,
-                Products = (await _orderProductService.GetProductsForOrderAsync(order.Id)).ToList(),
-            });
+            ordersWithProducts.Add(await OrderToOrderWithProducts(order));
         }
 
         return ordersWithProducts;
@@ -126,12 +131,12 @@ public class OrderFacade : IOrderFacade
         _orderService.Update(updatedOrder);
         await _unitOfWork.CommitAsync();
     }
-    
+
     public async Task<MemoryStream> CreatePdfFromOrder(string url)
     {
         var httpClient = new HttpClient();
         var html = await httpClient.GetStringAsync(url);
-        var pdfDocument = PdfGenerator.GeneratePdf(html, PageSize.A4, (int)PdfPageMode.UseOutlines); 
+        var pdfDocument = PdfGenerator.GeneratePdf(html, PageSize.A4, (int)PdfPageMode.UseOutlines);
         var stream = new MemoryStream();
         pdfDocument.Save(stream, false);
         return stream;

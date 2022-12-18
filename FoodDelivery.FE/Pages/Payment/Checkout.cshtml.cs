@@ -65,6 +65,7 @@ public class Checkout : PageModel
             SuccessUrl = domain + "/Payment/Success",
             CancelUrl = domain + "/Payment/Cancel",
             ClientReferenceId = activeOrder.Id.ToString(),
+            CustomerEmail = activeOrder.CustomerDetails.Customer.Username,
         };
 
         var service = new SessionService();
