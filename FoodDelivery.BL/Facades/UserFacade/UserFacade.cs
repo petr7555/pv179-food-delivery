@@ -96,4 +96,9 @@ public class UserFacade : IUserFacade
 
         await _unitOfWork.CommitAsync();
     }
+
+    public async Task<CurrencyGetDto> GetDefaultCurrencyAsync()
+    {
+        return await _currencyService.GetDefaultCurrencyAsync();
+    }
 }

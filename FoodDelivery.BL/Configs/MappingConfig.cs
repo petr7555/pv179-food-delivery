@@ -35,6 +35,7 @@ public static class MappingConfig
 
         config.CreateMap<CustomerDetails, CustomerDetailsGetDto>().ReverseMap();
         config.CreateMap<CustomerDetails, CustomerDetailsUpdateDto>().ReverseMap();
+        config.CreateMap<CustomerDetails, CustomerDetailsCreateDto>().ReverseMap();
 
         config.CreateMap<Order, OrderGetDto>().ReverseMap();
         config.CreateMap<Order, OrderCreateDto>().ReverseMap();

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using FoodDelivery.BL.DTOs.CustomerDetails;
 using FoodDelivery.BL.DTOs.User;
 using FoodDelivery.BL.Facades.UserFacade;
 using Microsoft.AspNetCore.Identity;
@@ -57,9 +58,14 @@ public class Register : PageModel
         var createResult = await _userManager.CreateAsync(newUser, Password);
         if (createResult.Succeeded)
         {
+            var currency = await _userFacade.GetDefaultCurrencyAsync();
             await _userFacade.CreateUserAsync(new UserCreateDto
             {
-                Username = Email,
+                Email = Email,
+                CustomerDetails = new CustomerDetailsCreateDto
+                {
+                    SelectedCurrencyId = currency.Id,
+                },
             });
             var user = await _userManager.FindByEmailAsync(Email);
             _logger.LogInformation("Successfully created a new customer account: {Email}", Email);

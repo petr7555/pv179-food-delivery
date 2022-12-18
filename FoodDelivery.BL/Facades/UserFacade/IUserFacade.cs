@@ -21,10 +21,12 @@ public interface IUserFacade
     public Task UnbanUserAsync(Guid userId);
 
     public Task CreateUserAsync(UserCreateDto userCreateDto);
-    
+
     public Task<CurrencyGetDto> GetCurrencyAsync(string username);
-    
+
     public Task<IEnumerable<CurrencyGetDto>> GetRemainingCurrencies(string username);
-    
+
     public Task SetCurrencyAsync(string username, Guid currencyId);
+
+    public Task<CurrencyGetDto> GetDefaultCurrencyAsync();
 }

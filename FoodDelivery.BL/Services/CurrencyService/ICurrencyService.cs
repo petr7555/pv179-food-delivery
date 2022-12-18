@@ -6,4 +6,5 @@ namespace FoodDelivery.BL.Services.CurrencyService;
 
 public interface ICurrencyService : ICrudService<Currency, Guid, CurrencyGetDto, CurrencyCreateDto, CurrencyUpdateDto>
 {
+    public Task<CurrencyGetDto> GetDefaultCurrencyAsync();
 }

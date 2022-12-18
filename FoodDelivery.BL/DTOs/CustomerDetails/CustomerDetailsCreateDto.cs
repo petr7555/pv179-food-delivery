@@ -2,5 +2,5 @@
 
 public class CustomerDetailsCreateDto
 {
-    public string Email { get; set; }
+    public Guid SelectedCurrencyId { get; set; }
 }

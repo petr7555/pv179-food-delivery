@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FoodDelivery.DAL.EntityFramework.Models;
@@ -6,9 +5,6 @@ namespace FoodDelivery.DAL.EntityFramework.Models;
 public class CustomerDetails : BaseEntity
 {
     public User Customer { get; set; }
-
-    [MaxLength(255)]
-    public string Email { get; set; }
 
     public Guid BillingAddressId { get; set; }
 

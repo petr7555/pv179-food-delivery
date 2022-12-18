@@ -77,7 +77,7 @@ public class UserService : CrudService<User, Guid, UserGetDto, UserCreateDto, Us
 
     public async Task<UserGetDto> GetByUsernameAsync(string username)
     {
-        var user = (await QueryAsync(new QueryDto<UserGetDto>().Where(u => u.Username == username))).Single();
+        var user = (await QueryAsync(new QueryDto<UserGetDto>().Where(u => u.Email == username))).Single();
         return user;
     }
 }

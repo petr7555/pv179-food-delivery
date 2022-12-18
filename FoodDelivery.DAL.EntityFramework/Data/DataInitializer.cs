@@ -50,7 +50,8 @@ public static class DataInitializer
 
         var customerDetails = new CustomerDetails
         {
-            Id = Guid.NewGuid(), Email = "jozef.straka@funkcnymail.sk", BillingAddressId = secondAddress.Id,
+            Id = Guid.NewGuid(),
+            BillingAddressId = secondAddress.Id,
             DeliveryAddressId = firstAddress.Id,
             CompanyInfoId = companyInfo.Id,
             SelectedCurrencyId = czkCurrency.Id,
@@ -62,10 +63,10 @@ public static class DataInitializer
          **   USERS   **
          ***************/
 
-        var firstUser = new User { Id = Guid.NewGuid(), Username = "admin@example.com" };
-        var secondUser = new User { Id = Guid.NewGuid(), Username = "cm@example.com" };
+        var firstUser = new User { Id = Guid.NewGuid(), Email = "admin@example.com" };
+        var secondUser = new User { Id = Guid.NewGuid(), Email = "cm@example.com" };
         var thirdUser = new User
-            { Id = Guid.NewGuid(), Username = "customer@example.com", CustomerDetailsId = customerDetails.Id };
+            { Id = Guid.NewGuid(), Email = "customer@example.com", CustomerDetailsId = customerDetails.Id };
 
         modelBuilder.Entity<User>().HasData(firstUser, secondUser, thirdUser);
 
@@ -236,22 +237,36 @@ public static class DataInitializer
             { Id = Guid.NewGuid(), Amount = 8, CurrencyId = eurCurrency.Id, ProductId = pizzaSalami.Id };
 
         var californiaSalmonEightRollsPriceCzk = new Price
-            { Id = Guid.NewGuid(), Amount = 169, CurrencyId = czkCurrency.Id, ProductId = californiaSalmonEightRolls.Id };
+        {
+            Id = Guid.NewGuid(), Amount = 169, CurrencyId = czkCurrency.Id, ProductId = californiaSalmonEightRolls.Id
+        };
         var californiaSalmonEightRollsPriceEur = new Price
             { Id = Guid.NewGuid(), Amount = 7, CurrencyId = eurCurrency.Id, ProductId = californiaSalmonEightRolls.Id };
         var salmonTunaPrawnEightMakiEachPriceCzk = new Price
-            { Id = Guid.NewGuid(), Amount = 199, CurrencyId = czkCurrency.Id, ProductId = salmonTunaPrawnEightMakiEach.Id };
+        {
+            Id = Guid.NewGuid(), Amount = 199, CurrencyId = czkCurrency.Id, ProductId = salmonTunaPrawnEightMakiEach.Id
+        };
         var salmonTunaPrawnEightMakiEachPriceEur = new Price
-            { Id = Guid.NewGuid(), Amount = 8, CurrencyId = eurCurrency.Id, ProductId = salmonTunaPrawnEightMakiEach.Id };
+        {
+            Id = Guid.NewGuid(), Amount = 8, CurrencyId = eurCurrency.Id, ProductId = salmonTunaPrawnEightMakiEach.Id
+        };
 
-        var barbecueBurgerPriceCzk = new Price { Id = Guid.NewGuid(), Amount = 239, CurrencyId = czkCurrency.Id, ProductId = barbecueBurger.Id };
-        var barbecueBurgerPriceEur = new Price { Id = Guid.NewGuid(), Amount = 10, CurrencyId = eurCurrency.Id, ProductId = barbecueBurger.Id };
-        var chickenBurgerPriceCzk = new Price { Id = Guid.NewGuid(), Amount = 199, CurrencyId = czkCurrency.Id, ProductId = chickenBurger.Id };
-        var chickenBurgerPriceEur = new Price { Id = Guid.NewGuid(), Amount = 8, CurrencyId = eurCurrency.Id, ProductId = chickenBurger.Id };
-        var royalBurgerPriceCzk = new Price { Id = Guid.NewGuid(), Amount = 269, CurrencyId = czkCurrency.Id, ProductId = royalBurger.Id };
-        var royalBurgerPriceEur = new Price { Id = Guid.NewGuid(), Amount = 11, CurrencyId = eurCurrency.Id, ProductId = royalBurger.Id };
-        var devilBurgerPriceCzk = new Price { Id = Guid.NewGuid(), Amount = 249, CurrencyId = czkCurrency.Id, ProductId = devilBurger.Id };
-        var devilBurgerPriceEur = new Price { Id = Guid.NewGuid(), Amount = 10, CurrencyId = eurCurrency.Id, ProductId = devilBurger.Id };
+        var barbecueBurgerPriceCzk = new Price
+            { Id = Guid.NewGuid(), Amount = 239, CurrencyId = czkCurrency.Id, ProductId = barbecueBurger.Id };
+        var barbecueBurgerPriceEur = new Price
+            { Id = Guid.NewGuid(), Amount = 10, CurrencyId = eurCurrency.Id, ProductId = barbecueBurger.Id };
+        var chickenBurgerPriceCzk = new Price
+            { Id = Guid.NewGuid(), Amount = 199, CurrencyId = czkCurrency.Id, ProductId = chickenBurger.Id };
+        var chickenBurgerPriceEur = new Price
+            { Id = Guid.NewGuid(), Amount = 8, CurrencyId = eurCurrency.Id, ProductId = chickenBurger.Id };
+        var royalBurgerPriceCzk = new Price
+            { Id = Guid.NewGuid(), Amount = 269, CurrencyId = czkCurrency.Id, ProductId = royalBurger.Id };
+        var royalBurgerPriceEur = new Price
+            { Id = Guid.NewGuid(), Amount = 11, CurrencyId = eurCurrency.Id, ProductId = royalBurger.Id };
+        var devilBurgerPriceCzk = new Price
+            { Id = Guid.NewGuid(), Amount = 249, CurrencyId = czkCurrency.Id, ProductId = devilBurger.Id };
+        var devilBurgerPriceEur = new Price
+            { Id = Guid.NewGuid(), Amount = 10, CurrencyId = eurCurrency.Id, ProductId = devilBurger.Id };
 
         modelBuilder.Entity<Price>().HasData(
             pizzaSalamiPriceCzk, pizzaSalamiPriceEur,
