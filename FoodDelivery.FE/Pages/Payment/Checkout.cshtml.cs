@@ -1,4 +1,4 @@
-using FoodDelivery.BL.DTOs.Product;
+using FoodDelivery.BL.DTOs.Order;
 using FoodDelivery.BL.Facades.OrderFacade;
 using FoodDelivery.BL.Services.ProductService;
 using Microsoft.AspNetCore.Authorization;
@@ -11,7 +11,7 @@ namespace FoodDelivery.FE.Pages.Payment;
 [Authorize(Roles = "Customer")]
 public class Checkout : PageModel
 {
-    public List<ProductLocalizedGetDto> ProductsInBasket { get; set; }
+    public OrderWithProductsGetDto? Order { get; set; }
 
     private readonly IOrderFacade _orderFacade;
     private readonly IProductService _productService;
@@ -24,8 +24,7 @@ public class Checkout : PageModel
 
     public async Task OnGet()
     {
-        var activeOrder = await _orderFacade.GetActiveOrderAsync(User.Identity.Name);
-        ProductsInBasket = activeOrder?.Products ?? new List<ProductLocalizedGetDto>();
+        Order = await _orderFacade.GetActiveOrderAsync(User.Identity.Name);
     }
 
     /**

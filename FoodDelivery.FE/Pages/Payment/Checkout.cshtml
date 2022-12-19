@@ -5,7 +5,7 @@
   ViewData["Title"] = "Checkout";
 }
 
-@if (!Model.ProductsInBasket.Any())
+@if (Model.Order == null)
 {
   <div class="alert alert-info" role="alert">
     You don't have any products in your basket.
@@ -13,7 +13,9 @@
 }
 else
 {
-  @await Html.PartialAsync("_ProductsPartial", Model.ProductsInBasket)
+  @await Html.PartialAsync("_ProductsPartial", Model.Order.Products)
+  
+  <p>Total price: @Model.Order.TotalPrice.Amount @Model.Order.TotalPrice.Currency.Name</p>
 
   <form method="post">
     <button type="submit" class="btn btn-primary" id="checkout-button">Checkout</button>
