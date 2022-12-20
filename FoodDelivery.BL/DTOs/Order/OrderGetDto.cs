@@ -11,6 +11,7 @@ public class OrderGetDto
     public DateTime CreatedAt { get; set; }
     public Guid CustomerDetailsId { get; set; }
     public CustomerDetailsGetDto CustomerDetails { get; set; }
+    public PaymentMethod? PaymentMethod { get; set; }
     public OrderStatus Status { get; set; }
     public List<OrderProductGetDto> OrderProducts { get; set; }
     public List<CouponGetDto> Coupons { get; set; }

@@ -30,7 +30,7 @@ else
     </div>
   </div>
 
-  <p>Total price: @Model.Order.TotalPrice.Amount @Model.Order.TotalPrice.Currency.Name</p>
+  <p class="mt-4 fw-bold">Total price: @Model.Order.TotalPrice.Amount @Model.Order.TotalPrice.Currency.Name</p>
 
   <a asp-page="/Payment/Checkout" class="btn btn-success">Checkout</a>
 }

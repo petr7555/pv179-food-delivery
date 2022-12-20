@@ -17,6 +17,9 @@ public class OrderWithProductsGetDto
 
     public CustomerDetailsGetDto CustomerDetails { get; set; }
 
+    [Display(Name = "Payment method")]
+    public PaymentMethod? PaymentMethod { get; set; }
+
     [Display(Name = "Order status")]
     public OrderStatus Status { get; set; }
 

@@ -1,12 +1,29 @@
 @page
+@using FoodDelivery.DAL.EntityFramework.Models
 @model FoodDelivery.FE.Pages.Payment.Checkout
 
 @{
   ViewData["Title"] = "Checkout";
 }
 
-<form method="post">
-  @* TODO *@
-  @* @Html.DropDownListFor(() => Model.PaymentMethod, Model.PaymentMethods, new { @class = "form-control" }) *@
-  <button type="submit" class="btn btn-primary">Submit order</button>
-</form>
+@if (Model.Order.TotalPrice.Amount == 0)
+{
+  <div class="alert alert-success" role="alert">
+    Your order is free!
+  </div>
+  <form method="post">
+    <button type="submit" class="btn btn-success">Submit order</button>
+  </form>
+}
+else
+{
+  <p class="fw-bold">Total price: @Model.Order.TotalPrice.Amount @Model.Order.TotalPrice.Currency.Name</p>
+  
+  <form method="post">
+    @Html.LabelFor(x => x.PaymentMethod)
+    @Html.DropDownList("PaymentMethod",
+      Html.GetEnumSelectList<PaymentMethod>().Where(i => i.Text != "Free"), new { @class = "form-control" })
+
+    <button type="submit" class="btn btn-success mt-4">Submit order</button>
+  </form>
+}

@@ -20,7 +20,8 @@ public class IndexModel : PageModel
 
     public async Task OnGet()
     {
-        Orders = (await _orderFacade.GetOrdersForUserAsync(User.Identity.Name)).ToList();
+        Orders = (await _orderFacade.GetOrdersForUserAsync(User.Identity.Name)).OrderByDescending(o => o.CreatedAt)
+            .ToList();
     }
 
     public async Task<IActionResult> OnPost(Guid id)

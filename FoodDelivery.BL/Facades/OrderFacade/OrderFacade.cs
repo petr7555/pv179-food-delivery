@@ -12,6 +12,7 @@ using FoodDelivery.DAL.EntityFramework.Models;
 using FoodDelivery.Infrastructure.UnitOfWork;
 using PdfSharpCore;
 using PdfSharpCore.Pdf;
+using Stripe.Checkout;
 using VetCV.HtmlRendererCore.PdfSharpCore;
 
 namespace FoodDelivery.BL.Facades.OrderFacade;
@@ -54,15 +55,18 @@ public class OrderFacade : IOrderFacade
             Code = c.Code,
             ValidUntil = c.ValidUntil,
             Status = c.Status,
-            Price = c.Prices.Single(price => price.Currency.Id == currency.Id), 
+            Price = c.Prices.Single(price => price.Currency.Id == currency.Id),
         }).ToList();
-        
-        var totalAmount = Math.Max(0, productsLocalized.Sum(p => p.Price.Amount) - couponsLocalized.Sum(c => c.Price.Amount));
+
+        var totalAmount = Math.Max(0,
+            productsLocalized.Sum(p => p.Price.Amount) - couponsLocalized.Sum(c => c.Price.Amount));
+
         return new OrderWithProductsGetDto
         {
             Id = order.Id,
             CreatedAt = order.CreatedAt,
             CustomerDetails = order.CustomerDetails,
+            PaymentMethod = order.PaymentMethod,
             Status = order.Status,
             Products = productsLocalized,
             Coupons = couponsLocalized,
@@ -142,16 +146,26 @@ public class OrderFacade : IOrderFacade
         return activeOrder;
     }
 
-    public async Task FulfillOrderAsync(Guid orderId)
+    private async Task ChangeOrderStatusAsync(Guid orderId, OrderStatus status)
     {
         var order = await _orderService.GetByIdAsync(orderId);
         var updatedOrder = new OrderUpdateDto
         {
             Id = order.Id,
-            Status = OrderStatus.Paid,
+            Status = status,
         };
         _orderService.Update(updatedOrder, new[] { nameof(OrderUpdateDto.Status) });
         await _unitOfWork.CommitAsync();
+    }
+
+    public async Task FulfillOrderAsync(Guid orderId)
+    {
+        await ChangeOrderStatusAsync(orderId, OrderStatus.Paid);
+    }
+
+    public async Task SubmitOrderAsync(Guid orderId)
+    {
+        await ChangeOrderStatusAsync(orderId, OrderStatus.Submitted);
     }
 
     public async Task<MemoryStream> CreatePdfFromOrder(string url)
@@ -172,13 +186,60 @@ public class OrderFacade : IOrderFacade
         {
             throw new InvalidOperationException($"Coupon {couponCode} is not valid");
         }
+
         var couponUpdateDto = new CouponUpdateDto
         {
             Id = coupon.Id,
             Status = CouponStatus.Used,
             OrderId = orderId,
         };
-        _couponService.Update(couponUpdateDto, new[] { nameof(CouponUpdateDto.Status), nameof(CouponUpdateDto.OrderId) });
+        _couponService.Update(couponUpdateDto,
+            new[] { nameof(CouponUpdateDto.Status), nameof(CouponUpdateDto.OrderId) });
+        await _unitOfWork.CommitAsync();
+    }
+
+    public async Task<string> PayByCardAsync(OrderWithProductsGetDto order, string domain)
+    {
+        var products = order.Products;
+        var sessionLineItemOptions = products.Select(p => new SessionLineItemOptions
+        {
+            PriceData = new SessionLineItemPriceDataOptions
+            {
+                UnitAmount = (long)(p.Price.Amount * 100), Currency = p.Price.Currency.Name,
+                ProductData = new SessionLineItemPriceDataProductDataOptions { Name = p.Name },
+            },
+            Quantity = 1,
+        }).ToList();
+
+        var options = new SessionCreateOptions
+        {
+            LineItems = sessionLineItemOptions,
+            Mode = "payment",
+            SuccessUrl = domain + "/Payment/Success",
+            CancelUrl = domain + "/Payment/Cancel",
+            ClientReferenceId = order.Id.ToString(),
+            CustomerEmail = order.CustomerDetails.Customer.Email,
+            // Discounts = order.Coupons.Select(c => new SessionDiscountOptions
+            // {
+            // Coupon = c.Code,
+            // }).ToList(),
+        };
+
+        var service = new SessionService();
+        var session = await service.CreateAsync(options);
+
+        return session.Url;
+    }
+
+    public async Task SetPaymentMethodAsync(Guid orderId, PaymentMethod paymentMethod)
+    {
+        var order = await _orderService.GetByIdAsync(orderId);
+        var updatedOrder = new OrderUpdateDto
+        {
+            Id = order.Id,
+            PaymentMethod = paymentMethod,
+        };
+        _orderService.Update(updatedOrder, new[] { nameof(OrderUpdateDto.PaymentMethod) });
         await _unitOfWork.CommitAsync();
     }
 }

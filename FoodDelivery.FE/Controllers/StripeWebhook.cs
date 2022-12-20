@@ -40,6 +40,7 @@ public class StripeWebhook : ControllerBase
                 var orderId = Guid.Parse(session.ClientReferenceId);
 
                 // Fulfill the purchase...
+                await _orderFacade.SetPaymentMethodAsync(orderId, DAL.EntityFramework.Models.PaymentMethod.Card);
                 await _orderFacade.FulfillOrderAsync(orderId);
             }
 

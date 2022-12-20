@@ -11,7 +11,7 @@ public class Order : BaseEntity
     [ForeignKey(nameof(CustomerDetailsId))]
     public virtual CustomerDetails CustomerDetails { get; set; }
 
-    public PaymentMethod PaymentMethod { get; set; }
+    public PaymentMethod? PaymentMethod { get; set; }
 
     public OrderStatus Status { get; set; }
 
@@ -22,6 +22,7 @@ public class Order : BaseEntity
 
 public enum PaymentMethod
 {
+    Free,
     Cash,
     Card,
 }

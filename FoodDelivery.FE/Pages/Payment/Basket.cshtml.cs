@@ -47,7 +47,7 @@ public class Basket : PageModel
         }
         catch (InvalidOperationException e)
         {
-            ModelState.AddModelError("CouponCode", e.Message);
+            ModelState.AddModelError(nameof(CouponCode), e.Message);
         }
         
         return RedirectToPage();

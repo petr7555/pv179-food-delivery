@@ -37,3 +37,8 @@ See the app [deployed here](https://pv179-food-delivery.azurewebsites.net/).
 
 ### Stripe
 Use `4242 4242 4242 4242` as a card number for Stripe checkout.
+
+### Coupons
+| Code   | Discount        |
+|--------|-----------------|
+| ABC123 | 200 CZK / 8 EUR |
