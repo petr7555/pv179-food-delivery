@@ -55,11 +55,11 @@ public class OrderFacade : IOrderFacade
             Code = c.Code,
             ValidUntil = c.ValidUntil,
             Status = c.Status,
-            Price = c.Prices.Single(price => price.Currency.Id == currency.Id),
+            Discount = c.Prices.Single(price => price.Currency.Id == currency.Id),
         }).ToList();
 
         var totalAmount = Math.Max(0,
-            productsLocalized.Sum(p => p.Price.Amount) - couponsLocalized.Sum(c => c.Price.Amount));
+            productsLocalized.Sum(p => p.Price.Amount) - couponsLocalized.Sum(c => c.Discount.Amount));
 
         return new OrderWithProductsGetDto
         {

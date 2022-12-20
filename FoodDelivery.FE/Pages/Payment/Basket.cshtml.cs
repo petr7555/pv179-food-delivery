@@ -15,7 +15,7 @@ public class Basket : PageModel
 
     [BindProperty]
     [Required(ErrorMessage = "The coupon code must not be empty")]
-    [Display(Name = "Coupon code")]
+    [Display(Name = "Coupon code:")]
     public string CouponCode { get; set; }
 
     private readonly IOrderFacade _orderFacade;
