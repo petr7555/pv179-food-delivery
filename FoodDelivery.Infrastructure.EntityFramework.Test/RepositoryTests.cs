@@ -41,31 +41,37 @@ public class RepositoryTests
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000001"), Name = "Pizza Guiseppe",
             DeliveryPrices = new List<Price>(),
+            Ratings = new List<Rating>(),
         };
         _pizzaDominos = new Restaurant
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000002"), Name = "Pizza Domino's",
             DeliveryPrices = new List<Price>(),
+            Ratings = new List<Rating>(),
         };
         _pizzaHut = new Restaurant
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000003"), Name = "Pizza Hut",
             DeliveryPrices = new List<Price>(),
+            Ratings = new List<Rating>(),
         };
         _k1 = new Restaurant
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000004"), Name = "Steak House K1",
             DeliveryPrices = new List<Price>(),
+            Ratings = new List<Rating>(),
         };
         _jeanPauls = new Restaurant
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000005"), Name = "Jean Paul's",
             DeliveryPrices = new List<Price>(),
+            Ratings = new List<Rating>(),
         };
         _poePoe = new Restaurant
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000006"), Name = "POE POE",
             DeliveryPrices = new List<Price>(),
+            Ratings = new List<Rating>(),
         };
         _context.Restaurants.AddRange(_pizzaGiuseppe, _pizzaDominos, _pizzaHut, _k1, _jeanPauls, _poePoe);
 
