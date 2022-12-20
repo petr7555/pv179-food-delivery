@@ -16,6 +16,11 @@ public class Price : BaseEntity
     [ForeignKey(nameof(RestaurantId))]
     public virtual Restaurant? Restaurant { get; set; }
 
+    public Guid? CouponId { get; set; }
+
+    [ForeignKey(nameof(CouponId))]
+    public virtual Coupon? Coupon { get; set; }
+
     public Guid CurrencyId { get; set; }
 
     [ForeignKey(nameof(CurrencyId))]

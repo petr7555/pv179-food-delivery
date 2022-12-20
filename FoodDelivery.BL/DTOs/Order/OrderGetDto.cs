@@ -1,4 +1,5 @@
-﻿using FoodDelivery.BL.DTOs.CustomerDetails;
+﻿using FoodDelivery.BL.DTOs.Coupon;
+using FoodDelivery.BL.DTOs.CustomerDetails;
 using FoodDelivery.BL.DTOs.OrderProduct;
 using FoodDelivery.DAL.EntityFramework.Models;
 
@@ -12,4 +13,5 @@ public class OrderGetDto
     public CustomerDetailsGetDto CustomerDetails { get; set; }
     public OrderStatus Status { get; set; }
     public List<OrderProductGetDto> OrderProducts { get; set; }
+    public List<CouponGetDto> Coupons { get; set; }
 }

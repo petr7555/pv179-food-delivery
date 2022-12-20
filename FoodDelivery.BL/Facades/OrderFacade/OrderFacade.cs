@@ -1,8 +1,10 @@
 ﻿using FoodDelivery.BL.DTOs;
+using FoodDelivery.BL.DTOs.Coupon;
 using FoodDelivery.BL.DTOs.Order;
 using FoodDelivery.BL.DTOs.OrderProduct;
 using FoodDelivery.BL.DTOs.Price;
 using FoodDelivery.BL.DTOs.Product;
+using FoodDelivery.BL.Services.CouponService;
 using FoodDelivery.BL.Services.OrderProductService;
 using FoodDelivery.BL.Services.OrderService;
 using FoodDelivery.BL.Services.UserService;
@@ -20,14 +22,16 @@ public class OrderFacade : IOrderFacade
     private readonly IOrderService _orderService;
     private readonly IOrderProductService _orderProductService;
     private readonly IUserService _userService;
+    private readonly ICouponService _couponService;
 
     public OrderFacade(IUnitOfWork unitOfWork, IOrderService orderService, IOrderProductService orderProductService,
-        IUserService userService)
+        IUserService userService, ICouponService couponService)
     {
         _unitOfWork = unitOfWork;
         _orderService = orderService;
         _orderProductService = orderProductService;
         _userService = userService;
+        _couponService = couponService;
     }
 
     private async Task<OrderWithProductsGetDto> OrderToOrderWithProducts(OrderGetDto order)
@@ -44,7 +48,16 @@ public class OrderFacade : IOrderFacade
             Price = p.Prices.Single(price => price.Currency.Id == currency.Id),
         }).ToList();
 
-        var totalAmount = productsLocalized.Sum(p => p.Price.Amount);
+        var couponsLocalized = order.Coupons.Select(c => new CouponLocalizedGetDto
+        {
+            Id = c.Id,
+            Code = c.Code,
+            ValidUntil = c.ValidUntil,
+            Status = c.Status,
+            Price = c.Prices.Single(price => price.Currency.Id == currency.Id), 
+        }).ToList();
+        
+        var totalAmount = Math.Max(0, productsLocalized.Sum(p => p.Price.Amount) - couponsLocalized.Sum(c => c.Price.Amount));
         return new OrderWithProductsGetDto
         {
             Id = order.Id,
@@ -52,6 +65,7 @@ public class OrderFacade : IOrderFacade
             CustomerDetails = order.CustomerDetails,
             Status = order.Status,
             Products = productsLocalized,
+            Coupons = couponsLocalized,
             TotalPrice = new PriceGetDto
             {
                 Amount = totalAmount,
@@ -148,5 +162,23 @@ public class OrderFacade : IOrderFacade
         var stream = new MemoryStream();
         pdfDocument.Save(stream, false);
         return stream;
+    }
+
+    public async Task ApplyCouponCodeAsync(Guid orderId, string couponCode)
+    {
+        var coupon = (await _couponService.QueryAsync(new QueryDto<CouponGetDto>()
+            .Where(c => c.Code == couponCode))).SingleOrDefault();
+        if (coupon is not { Status: CouponStatus.Valid } || coupon.ValidUntil < DateTime.UtcNow)
+        {
+            throw new InvalidOperationException($"Coupon {couponCode} is not valid");
+        }
+        var couponUpdateDto = new CouponUpdateDto
+        {
+            Id = coupon.Id,
+            Status = CouponStatus.Used,
+            OrderId = orderId,
+        };
+        _couponService.Update(couponUpdateDto, new[] { nameof(CouponUpdateDto.Status), nameof(CouponUpdateDto.OrderId) });
+        await _unitOfWork.CommitAsync();
     }
 }

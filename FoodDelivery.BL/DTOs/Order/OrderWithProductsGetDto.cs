@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using FoodDelivery.BL.DTOs.Coupon;
 using FoodDelivery.BL.DTOs.CustomerDetails;
 using FoodDelivery.BL.DTOs.Price;
 using FoodDelivery.BL.DTOs.Product;
@@ -23,4 +24,6 @@ public class OrderWithProductsGetDto
 
     [Display(Name = "Total price")]
     public PriceGetDto TotalPrice { get; set; }
+    
+    public List<CouponLocalizedGetDto> Coupons { get; set; }
 }

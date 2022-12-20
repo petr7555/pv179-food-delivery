@@ -11,19 +11,24 @@ public class Order : BaseEntity
     [ForeignKey(nameof(CustomerDetailsId))]
     public virtual CustomerDetails CustomerDetails { get; set; }
 
-    // TODO
-    // public Guid PaymentMethodId { get; set; }
+    public PaymentMethod PaymentMethod { get; set; }
 
-    // [ForeignKey(nameof(PaymentMethodId))]
-    // public virtual PaymentMethod PaymentMethod { get; set; }
-
-    public virtual OrderStatus Status { get; set; }
+    public OrderStatus Status { get; set; }
 
     public virtual List<OrderProduct> OrderProducts { get; set; }
+
+    public virtual List<Coupon> Coupons { get; set; }
+}
+
+public enum PaymentMethod
+{
+    Cash,
+    Card,
 }
 
 public enum OrderStatus
 {
     Active,
+    Submitted,
     Paid,
 }

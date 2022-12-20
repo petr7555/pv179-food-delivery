@@ -15,4 +15,6 @@ public interface IOrderFacade
     public Task FulfillOrderAsync(Guid orderId);
 
     public Task<MemoryStream> CreatePdfFromOrder(string url);
+    
+    public Task ApplyCouponCodeAsync(Guid orderId, string couponCode);
 }

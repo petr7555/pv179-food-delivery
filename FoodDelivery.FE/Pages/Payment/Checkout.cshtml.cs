@@ -1,18 +1,23 @@
-using FoodDelivery.BL.DTOs.Order;
 using FoodDelivery.BL.Facades.OrderFacade;
 using FoodDelivery.BL.Services.ProductService;
-using Microsoft.AspNetCore.Authorization;
+using FoodDelivery.DAL.EntityFramework.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Stripe.Checkout;
 
 namespace FoodDelivery.FE.Pages.Payment;
 
-[Authorize(Roles = "Customer")]
 public class Checkout : PageModel
 {
-    public OrderWithProductsGetDto? Order { get; set; }
+    [BindProperty]
+    public PaymentMethod PaymentMethod { get; set; }
 
+    public List<PaymentMethod> PaymentMethods { get; } = new()
+    {
+        PaymentMethod.Cash,
+        PaymentMethod.Card,
+    };
+    
     private readonly IOrderFacade _orderFacade;
     private readonly IProductService _productService;
 
@@ -21,12 +26,12 @@ public class Checkout : PageModel
         _orderFacade = orderFacade;
         _productService = productService;
     }
-
-    public async Task OnGet()
+    
+    public void OnGet()
     {
-        Order = await _orderFacade.GetActiveOrderAsync(User.Identity.Name);
+        
     }
-
+    
     /**
      * Use credit card number 4242 4242 4242 4242 for testing.
      */
@@ -56,6 +61,10 @@ public class Checkout : PageModel
             CancelUrl = domain + "/Payment/Cancel",
             ClientReferenceId = activeOrder.Id.ToString(),
             CustomerEmail = activeOrder.CustomerDetails.Customer.Email,
+            Discounts = activeOrder.Coupons.Select(c => new SessionDiscountOptions
+            {
+                Coupon = c.Code,
+            }).ToList(),
         };
 
         var service = new SessionService();

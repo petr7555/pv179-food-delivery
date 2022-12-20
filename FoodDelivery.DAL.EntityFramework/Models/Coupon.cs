@@ -11,10 +11,20 @@ public class Coupon : BaseEntity
     public string Code { get; set; }
 
     public DateTime ValidUntil { get; set; }
-    public bool Valid { get; set; }
 
-    public Guid AmountId { get; set; }
+    public CouponStatus Status { get; set; }
 
-    [ForeignKey(nameof(AmountId))]
-    public virtual Price Amount { get; set; }
+    public virtual List<Price> Prices { get; set; }
+
+    public Guid? OrderId { get; set; }
+
+    [ForeignKey(nameof(OrderId))]
+    public virtual Order? Order { get; set; }
+}
+
+public enum CouponStatus
+{
+    Valid,
+    Revoked,
+    Used,
 }

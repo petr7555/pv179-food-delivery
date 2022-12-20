@@ -138,14 +138,6 @@ public static class DataInitializer
             beerCategory, whiskeyCategory, softDrinksCategory, coffeeCategory, teaCategory
         );
 
-        /*************************
-         **   PAYMENT METHODS   **
-         *************************/
-
-        var cardPaymentMethod = new PaymentMethod { Id = Guid.NewGuid(), Type = "Card" };
-
-        modelBuilder.Entity<PaymentMethod>().HasData(cardPaymentMethod);
-
         /*********************
          **   RESTAURANTS   **
          *********************/
@@ -246,6 +238,70 @@ public static class DataInitializer
         );
 
         /****************
+         **   ORDERS   **
+         ****************/
+
+        var pizzaSalamiAndCaliforniaSalmonEightRollsOrder = new Order
+        {
+            Id = Guid.NewGuid(),
+            CreatedAt = DateTime.UtcNow,
+            CustomerDetailsId = customerDetails.Id,
+            Status = OrderStatus.Paid,
+            PaymentMethod = PaymentMethod.Cash,
+        };
+
+        var royalBurgerOrder = new Order
+        {
+            Id = Guid.NewGuid(),
+            CreatedAt = DateTime.UtcNow.AddDays(-1),
+            CustomerDetailsId = customerDetails.Id,
+            Status = OrderStatus.Paid,
+            PaymentMethod = PaymentMethod.Card,
+        };
+
+        modelBuilder.Entity<Order>().HasData(pizzaSalamiAndCaliforniaSalmonEightRollsOrder, royalBurgerOrder);
+
+        /*****************
+         **   COUPONS   **
+         *****************/
+
+        var expiredCoupon = new Coupon
+        {
+            Id = Guid.NewGuid(),
+            Code = "SALE2020",
+            ValidUntil = new DateTime(2020, 12, 31).ToUniversalTime(),
+            Status = CouponStatus.Valid,
+        };
+
+        var firstUsedCoupon = new Coupon
+        {
+            Id = Guid.NewGuid(),
+            Code = "XYZ132",
+            ValidUntil = DateTime.UtcNow.AddDays(30),
+            Status = CouponStatus.Used,
+            OrderId = pizzaSalamiAndCaliforniaSalmonEightRollsOrder.Id,
+        };
+
+        var secondUsedCoupon = new Coupon
+        {
+            Id = Guid.NewGuid(),
+            Code = "XYZ456",
+            ValidUntil = DateTime.UtcNow.AddDays(30),
+            Status = CouponStatus.Used,
+            OrderId = pizzaSalamiAndCaliforniaSalmonEightRollsOrder.Id,
+        };
+
+        var validCoupon = new Coupon
+        {
+            Id = Guid.NewGuid(),
+            Code = "ABC123",
+            ValidUntil = DateTime.UtcNow.AddDays(30),
+            Status = CouponStatus.Valid,
+        };
+
+        modelBuilder.Entity<Coupon>().HasData(expiredCoupon, firstUsedCoupon, secondUsedCoupon, validCoupon);
+
+        /****************
          **   PRICES   **
          ****************/
 
@@ -299,6 +355,26 @@ public static class DataInitializer
         var devilBurgerPriceEur = new Price
             { Id = Guid.NewGuid(), Amount = 10, CurrencyId = eurCurrency.Id, ProductId = devilBurger.Id };
 
+        var expiredCouponPriceCzk = new Price
+            { Id = Guid.NewGuid(), Amount = 200, CurrencyId = czkCurrency.Id, CouponId = expiredCoupon.Id };
+        var expiredCouponPriceEur = new Price
+            { Id = Guid.NewGuid(), Amount = 8, CurrencyId = eurCurrency.Id, CouponId = expiredCoupon.Id };
+
+        var firstUsedCouponPriceCzk = new Price
+            { Id = Guid.NewGuid(), Amount = 200, CurrencyId = czkCurrency.Id, CouponId = firstUsedCoupon.Id };
+        var firstUsedCouponPriceEur = new Price
+            { Id = Guid.NewGuid(), Amount = 8, CurrencyId = eurCurrency.Id, CouponId = firstUsedCoupon.Id };
+
+        var secondUsedCouponPriceCzk = new Price
+            { Id = Guid.NewGuid(), Amount = 50, CurrencyId = czkCurrency.Id, CouponId = secondUsedCoupon.Id };
+        var secondUsedCouponPriceEur = new Price
+            { Id = Guid.NewGuid(), Amount = 2, CurrencyId = eurCurrency.Id, CouponId = secondUsedCoupon.Id };
+
+        var validCouponPriceCzk = new Price
+            { Id = Guid.NewGuid(), Amount = 200, CurrencyId = czkCurrency.Id, CouponId = validCoupon.Id };
+        var validCouponPriceEur = new Price
+            { Id = Guid.NewGuid(), Amount = 8, CurrencyId = eurCurrency.Id, CouponId = validCoupon.Id };
+
         modelBuilder.Entity<Price>().HasData(
             pizzaSalamiPriceCzk, pizzaSalamiPriceEur,
             pizzeriaGiuseppeDeliveryPriceCzk, pizzeriaGiuseppeDeliveryPriceEur,
@@ -309,32 +385,12 @@ public static class DataInitializer
             chickenBurgerPriceCzk, chickenBurgerPriceEur,
             royalBurgerPriceCzk, royalBurgerPriceEur,
             devilBurgerPriceCzk, devilBurgerPriceEur,
-            burgerinoDeliveryPriceCzk, burgerinoDeliveryPriceEur
+            burgerinoDeliveryPriceCzk, burgerinoDeliveryPriceEur,
+            expiredCouponPriceCzk, expiredCouponPriceEur,
+            firstUsedCouponPriceCzk, firstUsedCouponPriceEur,
+            secondUsedCouponPriceCzk, secondUsedCouponPriceEur,
+            validCouponPriceCzk, validCouponPriceEur
         );
-
-        /****************
-         **   ORDERS   **
-         ****************/
-
-        var pizzaSalamiAndCaliforniaSalmonEightRollsOrder = new Order
-        {
-            Id = Guid.NewGuid(),
-            CreatedAt = DateTime.UtcNow,
-            CustomerDetailsId = customerDetails.Id,
-            Status = OrderStatus.Paid,
-            // PaymentMethodId = cardPaymentMethod.Id,
-        };
-
-        var royalBurgerOrder = new Order
-        {
-            Id = Guid.NewGuid(),
-            CreatedAt = DateTime.UtcNow.AddDays(-1),
-            CustomerDetailsId = customerDetails.Id,
-            Status = OrderStatus.Paid,
-            // PaymentMethodId = cardPaymentMethod.Id,
-        };
-
-        modelBuilder.Entity<Order>().HasData(pizzaSalamiAndCaliforniaSalmonEightRollsOrder, royalBurgerOrder);
 
         /*****************************
          **   ORDER-PRODUCT TABLE   **

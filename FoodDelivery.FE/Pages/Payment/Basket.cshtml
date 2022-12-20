@@ -1,0 +1,36 @@
+@page
+@model Basket
+
+@{
+  ViewData["Title"] = "Basket";
+}
+
+@if (Model.Order == null)
+{
+  <div class="alert alert-info" role="alert">
+    You don't have any products in your basket.
+  </div>
+}
+else
+{
+  @await Html.PartialAsync("_ProductsPartial", Model.Order.Products)
+  @await Html.PartialAsync("_CouponsPartial", Model.Order.Coupons)
+
+  <div class="row">
+    <div class="col-md-4">
+      @using (Html.BeginForm())
+      {
+        <div class="form-group">
+          @Html.LabelFor(x => x.CouponCode)
+          @Html.TextBoxFor(x => x.CouponCode, new { @class = "form-control" })
+          @Html.ValidationMessageFor(x => x.CouponCode, null, new { @class = "text-danger" })
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Apply</button>
+      }
+    </div>
+  </div>
+
+  <p>Total price: @Model.Order.TotalPrice.Amount @Model.Order.TotalPrice.Currency.Name</p>
+
+  <a asp-page="/Payment/Checkout" class="btn btn-success">Checkout</a>
+}
