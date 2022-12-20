@@ -26,4 +26,6 @@ public interface IOrderFacade
     public Task SetPaymentMethodAsync(Guid orderId, PaymentMethod paymentMethod);
     
     public Task DeleteProductFromOrderAsync(OrderWithProductsGetDto order, Guid productId);
+    
+    public Task DeleteCouponFromOrderAsync(Guid couponId);
 }

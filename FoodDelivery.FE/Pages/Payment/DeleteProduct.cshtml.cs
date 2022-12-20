@@ -1,19 +1,16 @@
-using FoodDelivery.BL.DTOs.Order;
 using FoodDelivery.BL.Facades.OrderFacade;
 using FoodDelivery.BL.Services.OrderProductService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace FoodDelivery.FE.Pages.Orders;
+namespace FoodDelivery.FE.Pages.Payment;
 
-public class Delete : PageModel
+public class DeleteProduct : PageModel
 {
-    public OrderWithProductsGetDto Order { get; set; } = default!;
-
     private readonly IOrderFacade _orderFacade;
     private readonly IOrderProductService _orderProductService;
 
-    public Delete(IOrderFacade orderFacade, IOrderProductService orderProductService)
+    public DeleteProduct(IOrderFacade orderFacade, IOrderProductService orderProductService)
     {
         _orderFacade = orderFacade;
         _orderProductService = orderProductService;

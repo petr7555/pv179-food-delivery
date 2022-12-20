@@ -5,6 +5,7 @@
 @{
   var deletable = Model.Item2;
 }
+
 <h2>Items:</h2>
 
 <table class="table">
@@ -45,7 +46,7 @@
       {
         <td>
           <form method="post">
-            <button type="submit" class="btn btn-danger" asp-page="/Payment/Delete" asp-route-productId="@item.Id" asp-route-returnUrl="@Context.Request.GetDisplayUrl()">
+            <button type="submit" class="btn btn-danger" asp-page="/Payment/DeleteProduct" asp-route-productId="@item.Id" asp-route-returnUrl="@Context.Request.GetDisplayUrl()">
               ✕
             </button>
           </form>

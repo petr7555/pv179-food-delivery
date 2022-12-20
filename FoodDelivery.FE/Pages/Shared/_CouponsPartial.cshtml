@@ -1,4 +1,10 @@
-@model List<FoodDelivery.BL.DTOs.Coupon.CouponLocalizedGetDto>
+@using Microsoft.AspNetCore.Http.Extensions
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Tuple<List<FoodDelivery.BL.DTOs.Coupon.CouponLocalizedGetDto>, bool>
+
+@{
+  var deletable = Model.Item2;
+}
 
 <h2>Coupons:</h2>
 
@@ -6,15 +12,21 @@
   <thead>
   <tr>
     <th>
-      @Html.DisplayNameFor(model => model[0].Code)
+      @Html.DisplayNameFor(model => model.Item1[0].Code)
     </th>
     <th>
-      @Html.DisplayNameFor(model => model[0].Discount)
+      @Html.DisplayNameFor(model => model.Item1[0].Discount)
     </th>
+    @if (deletable)
+    {
+      <th>
+        Actions
+      </th>
+    }
   </tr>
   </thead>
   <tbody>
-  @foreach (var item in Model)
+  @foreach (var item in Model.Item1)
   {
     <tr>
       <td>
@@ -24,6 +36,16 @@
         @Html.DisplayFor(modelItem => item.Discount.Amount)
         @Html.DisplayFor(modelItem => item.Discount.Currency.Name)
       </td>
+      @if (deletable)
+      {
+        <td>
+          <form method="post">
+            <button type="submit" class="btn btn-danger" asp-page="/Payment/DeleteCoupon" asp-route-couponId="@item.Id" asp-route-returnUrl="@Context.Request.GetDisplayUrl()">
+              ✕
+            </button>
+          </form>
+        </td>
+      }
     </tr>
   }
   </tbody>

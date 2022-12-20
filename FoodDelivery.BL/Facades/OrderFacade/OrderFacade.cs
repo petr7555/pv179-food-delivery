@@ -250,4 +250,17 @@ public class OrderFacade : IOrderFacade
         _orderProductService.Delete(orderProductToDelete.Id);
         await _unitOfWork.CommitAsync();
     }
+
+    public async Task DeleteCouponFromOrderAsync(Guid couponId)
+    {
+        var couponUpdateDto = new CouponUpdateDto
+        {
+            Id = couponId,
+            Status = CouponStatus.Valid,
+            OrderId = null,
+        };
+        _couponService.Update(couponUpdateDto,
+            new[] { nameof(CouponUpdateDto.Status), nameof(CouponUpdateDto.OrderId) });
+        await _unitOfWork.CommitAsync();
+    }
 }
