@@ -1,0 +1,16 @@
+@model FoodDelivery.BL.DTOs.Restaurant.RestaurantLocalizedGetDto
+
+<h2>Restaurant:</h2>
+
+<table class="table table-sm">
+  <tbody>
+  <tr>
+    <td>@Html.DisplayNameFor(model => model.Name)</td>
+    <td>@Model.Name</td>
+  </tr>
+  <tr>
+    <td>@Html.DisplayNameFor(model => model.DeliveryPrice)</td>
+    <td>@Model.DeliveryPrice.Amount @Model.DeliveryPrice.Currency.Name</td>
+  </tr>
+  </tbody>
+</table>

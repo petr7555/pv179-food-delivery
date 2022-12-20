@@ -4,6 +4,7 @@ using FoodDelivery.BL.DTOs.Order;
 using FoodDelivery.BL.DTOs.OrderProduct;
 using FoodDelivery.BL.DTOs.Price;
 using FoodDelivery.BL.DTOs.Product;
+using FoodDelivery.BL.DTOs.Restaurant;
 using FoodDelivery.BL.Services.CouponService;
 using FoodDelivery.BL.Services.OrderProductService;
 using FoodDelivery.BL.Services.OrderService;
@@ -58,8 +59,22 @@ public class OrderFacade : IOrderFacade
             Discount = c.Prices.Single(price => price.Currency.Id == currency.Id),
         }).ToList();
 
+        RestaurantLocalizedGetDto? restaurantLocalized = null;
+        var product = products.FirstOrDefault();
+        if (product != null)
+        {
+            var restaurant = product.Restaurant;
+            restaurantLocalized = new RestaurantLocalizedGetDto
+            {
+                Id = restaurant.Id,
+                Name = restaurant.Name,
+                DeliveryPrice = restaurant.DeliveryPrices.Single(price => price.Currency.Id == currency.Id),
+            };
+        }
+
         var totalAmount = Math.Max(0,
-            productsLocalized.Sum(p => p.Price.Amount) - couponsLocalized.Sum(c => c.Discount.Amount));
+                productsLocalized.Sum(p => p.Price.Amount) - couponsLocalized.Sum(c => c.Discount.Amount)) +
+            restaurantLocalized?.DeliveryPrice.Amount ?? 0;
 
         return new OrderWithProductsGetDto
         {
@@ -71,6 +86,7 @@ public class OrderFacade : IOrderFacade
             OrderProducts = order.OrderProducts,
             Products = productsLocalized,
             Coupons = couponsLocalized,
+            Restaurant = restaurantLocalized,
             TotalPrice = new PriceGetDto
             {
                 Amount = totalAmount,

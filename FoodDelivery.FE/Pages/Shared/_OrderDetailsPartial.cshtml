@@ -53,5 +53,9 @@ else
   </table>
 }
 
+@if (Model.Restaurant != null)
+{
+  @await Html.PartialAsync("_RestaurantPartial", Model.Restaurant)
+}
 @await Html.PartialAsync("_ProductsPartial", Tuple.Create(Model.Products, false))
 @await Html.PartialAsync("_CouponsPartial", Tuple.Create(Model.Coupons, false))

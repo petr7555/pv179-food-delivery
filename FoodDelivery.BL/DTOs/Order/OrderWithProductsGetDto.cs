@@ -4,6 +4,7 @@ using FoodDelivery.BL.DTOs.CustomerDetails;
 using FoodDelivery.BL.DTOs.OrderProduct;
 using FoodDelivery.BL.DTOs.Price;
 using FoodDelivery.BL.DTOs.Product;
+using FoodDelivery.BL.DTOs.Restaurant;
 using FoodDelivery.DAL.EntityFramework.Models;
 
 namespace FoodDelivery.BL.DTOs.Order;
@@ -30,6 +31,9 @@ public class OrderWithProductsGetDto
 
     [Display(Name = "Total price")]
     public PriceGetDto TotalPrice { get; set; }
-    
+
     public List<CouponLocalizedGetDto> Coupons { get; set; }
+
+    public RestaurantLocalizedGetDto? Restaurant { get; set; }
+    
 }

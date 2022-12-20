@@ -13,6 +13,10 @@
 }
 else
 {
+  if (Model.Order.Restaurant != null)
+  {
+    @await Html.PartialAsync("_RestaurantPartial", Model.Order.Restaurant)
+  }
   @await Html.PartialAsync("_ProductsPartial", Tuple.Create(Model.Order.Products, true))
   @await Html.PartialAsync("_CouponsPartial", Tuple.Create(Model.Order.Coupons, true))
 
