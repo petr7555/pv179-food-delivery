@@ -9,6 +9,17 @@
     <td>@Model.Name</td>
   </tr>
   <tr>
+    <td>@Html.DisplayNameFor(model => model.AverageRating)</td>
+    @if (Model.AverageRating != null)
+    {
+      <td>@Math.Round((double)Model.AverageRating, 1) / 5</td>
+    }
+    else
+    {
+      <td>No ratings</td>
+    }
+  </tr>
+  <tr>
     <td>@Html.DisplayNameFor(model => model.DeliveryPrice)</td>
     <td>@Model.DeliveryPrice.Amount @Model.DeliveryPrice.Currency.Name</td>
   </tr>

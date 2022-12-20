@@ -69,6 +69,7 @@ public class OrderFacade : IOrderFacade
                 Id = restaurant.Id,
                 Name = restaurant.Name,
                 DeliveryPrice = restaurant.DeliveryPrices.Single(price => price.Currency.Id == currency.Id),
+                AverageRating = restaurant.Ratings.Any() ? restaurant.Ratings.Average(r => r.Stars) : null,
             };
         }
 

@@ -10,6 +10,7 @@ using FoodDelivery.BL.DTOs.Order;
 using FoodDelivery.BL.DTOs.OrderProduct;
 using FoodDelivery.BL.DTOs.Price;
 using FoodDelivery.BL.DTOs.Product;
+using FoodDelivery.BL.DTOs.Rating;
 using FoodDelivery.BL.DTOs.Restaurant;
 using FoodDelivery.BL.DTOs.User;
 using FoodDelivery.BL.DTOs.UserSettings;
@@ -60,5 +61,7 @@ public static class MappingConfig
         
         config.CreateMap<Coupon, CouponGetDto>().ReverseMap();
         config.CreateMap<Coupon, CouponUpdateDto>().ReverseMap();
+        
+        config.CreateMap<Rating, RatingGetDto>().ReverseMap();
     }
 }

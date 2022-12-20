@@ -166,6 +166,17 @@ public static class DataInitializer
             RestaurantId = pizzeriaGuiseppe.Id,
         };
 
+        var pizzaMargherita = new Product
+        {
+            Id = Guid.NewGuid(),
+            CategoryId = pizzaCategory.Id,
+            Name = "Pizza Margherita",
+            Description = "Tomato salsa, Mozzarella, Fresh basil",
+            ImageUrl =
+                "https://images.getrecipekit.com/20220211142347-margherita-9920.jpg?aspect_ratio=4:3&quality=90&",
+            RestaurantId = pizzeriaGuiseppe.Id,
+        };
+
         var californiaSalmonEightRolls = new Product
         {
             Id = Guid.NewGuid(),
@@ -232,7 +243,7 @@ public static class DataInitializer
         };
 
         modelBuilder.Entity<Product>().HasData(
-            pizzaSalami,
+            pizzaSalami, pizzaMargherita,
             californiaSalmonEightRolls, salmonTunaPrawnEightMakiEach,
             barbecueBurger, chickenBurger, royalBurger, devilBurger
         );
@@ -241,7 +252,7 @@ public static class DataInitializer
          **   ORDERS   **
          ****************/
 
-        var pizzaSalamiAndCaliforniaSalmonEightRollsOrder = new Order
+        var pizzaSalamiAndPizzaMargheritaOrder = new Order
         {
             Id = Guid.NewGuid(),
             CreatedAt = DateTime.UtcNow,
@@ -259,7 +270,7 @@ public static class DataInitializer
             PaymentMethod = PaymentMethod.Card,
         };
 
-        modelBuilder.Entity<Order>().HasData(pizzaSalamiAndCaliforniaSalmonEightRollsOrder, royalBurgerOrder);
+        modelBuilder.Entity<Order>().HasData(pizzaSalamiAndPizzaMargheritaOrder, royalBurgerOrder);
 
         /*****************
          **   COUPONS   **
@@ -279,7 +290,7 @@ public static class DataInitializer
             Code = "XYZ132",
             ValidUntil = DateTime.UtcNow.AddDays(30),
             Status = CouponStatus.Used,
-            OrderId = pizzaSalamiAndCaliforniaSalmonEightRollsOrder.Id,
+            OrderId = pizzaSalamiAndPizzaMargheritaOrder.Id,
         };
 
         var secondUsedCoupon = new Coupon
@@ -288,7 +299,7 @@ public static class DataInitializer
             Code = "XYZ456",
             ValidUntil = DateTime.UtcNow.AddDays(30),
             Status = CouponStatus.Used,
-            OrderId = pizzaSalamiAndCaliforniaSalmonEightRollsOrder.Id,
+            OrderId = pizzaSalamiAndPizzaMargheritaOrder.Id,
         };
 
         var validCoupon = new Coupon
@@ -322,6 +333,10 @@ public static class DataInitializer
             { Id = Guid.NewGuid(), Amount = 199, CurrencyId = czkCurrency.Id, ProductId = pizzaSalami.Id };
         var pizzaSalamiPriceEur = new Price
             { Id = Guid.NewGuid(), Amount = 8, CurrencyId = eurCurrency.Id, ProductId = pizzaSalami.Id };
+        var pizzaMargheritaPriceCzk = new Price
+            { Id = Guid.NewGuid(), Amount = 149, CurrencyId = czkCurrency.Id, ProductId = pizzaMargherita.Id };
+        var pizzaMargheritaPriceEur = new Price
+            { Id = Guid.NewGuid(), Amount = 6, CurrencyId = eurCurrency.Id, ProductId = pizzaMargherita.Id };
 
         var californiaSalmonEightRollsPriceCzk = new Price
         {
@@ -377,6 +392,7 @@ public static class DataInitializer
 
         modelBuilder.Entity<Price>().HasData(
             pizzaSalamiPriceCzk, pizzaSalamiPriceEur,
+            pizzaMargheritaPriceCzk, pizzaMargheritaPriceEur,
             pizzeriaGiuseppeDeliveryPriceCzk, pizzeriaGiuseppeDeliveryPriceEur,
             californiaSalmonEightRollsPriceCzk, californiaSalmonEightRollsPriceEur,
             salmonTunaPrawnEightMakiEachPriceCzk, salmonTunaPrawnEightMakiEachPriceEur,
@@ -401,13 +417,13 @@ public static class DataInitializer
             .HasData(
                 new
                 {
-                    Id = Guid.NewGuid(), OrderId = pizzaSalamiAndCaliforniaSalmonEightRollsOrder.Id,
+                    Id = Guid.NewGuid(), OrderId = pizzaSalamiAndPizzaMargheritaOrder.Id,
                     ProductId = pizzaSalami.Id,
                 },
                 new
                 {
-                    Id = Guid.NewGuid(), OrderId = pizzaSalamiAndCaliforniaSalmonEightRollsOrder.Id,
-                    ProductId = californiaSalmonEightRolls.Id
+                    Id = Guid.NewGuid(), OrderId = pizzaSalamiAndPizzaMargheritaOrder.Id,
+                    ProductId = pizzaMargherita.Id,
                 },
                 new { Id = Guid.NewGuid(), OrderId = royalBurgerOrder.Id, ProductId = royalBurger.Id }
             );
@@ -420,7 +436,7 @@ public static class DataInitializer
         {
             Id = Guid.NewGuid(),
             RestaurantId = pizzeriaGuiseppe.Id,
-            OrderId = pizzaSalamiAndCaliforniaSalmonEightRollsOrder.Id,
+            OrderId = pizzaSalamiAndPizzaMargheritaOrder.Id,
             Comment = "Delicious and crusty pizza.",
             CreatedAt = DateTime.UtcNow,
             Stars = 4,

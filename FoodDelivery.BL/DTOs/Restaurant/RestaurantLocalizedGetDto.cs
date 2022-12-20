@@ -11,4 +11,7 @@ public class RestaurantLocalizedGetDto
 
     [Display(Name = "Delivery price")]
     public PriceGetDto DeliveryPrice { get; set; }
+    
+    [Display(Name = "Average rating")]
+    public double? AverageRating { get; set; }
 }
