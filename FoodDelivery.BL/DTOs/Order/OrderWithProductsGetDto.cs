@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using FoodDelivery.BL.DTOs.Coupon;
 using FoodDelivery.BL.DTOs.CustomerDetails;
+using FoodDelivery.BL.DTOs.OrderProduct;
 using FoodDelivery.BL.DTOs.Price;
 using FoodDelivery.BL.DTOs.Product;
 using FoodDelivery.DAL.EntityFramework.Models;
@@ -22,6 +23,8 @@ public class OrderWithProductsGetDto
 
     [Display(Name = "Order status")]
     public OrderStatus Status { get; set; }
+
+    public List<OrderProductGetDto> OrderProducts { get; set; }
 
     public List<ProductLocalizedGetDto> Products { get; set; }
 

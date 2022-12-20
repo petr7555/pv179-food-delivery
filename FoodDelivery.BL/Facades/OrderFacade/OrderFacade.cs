@@ -68,6 +68,7 @@ public class OrderFacade : IOrderFacade
             CustomerDetails = order.CustomerDetails,
             PaymentMethod = order.PaymentMethod,
             Status = order.Status,
+            OrderProducts = order.OrderProducts,
             Products = productsLocalized,
             Coupons = couponsLocalized,
             TotalPrice = new PriceGetDto
@@ -240,6 +241,13 @@ public class OrderFacade : IOrderFacade
             PaymentMethod = paymentMethod,
         };
         _orderService.Update(updatedOrder, new[] { nameof(OrderUpdateDto.PaymentMethod) });
+        await _unitOfWork.CommitAsync();
+    }
+
+    public async Task DeleteProductFromOrderAsync(OrderWithProductsGetDto order, Guid productId)
+    {
+        var orderProductToDelete = order.OrderProducts.First(op => op.ProductId == productId);
+        _orderProductService.Delete(orderProductToDelete.Id);
         await _unitOfWork.CommitAsync();
     }
 }
