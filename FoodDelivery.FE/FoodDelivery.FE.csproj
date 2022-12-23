@@ -11,10 +11,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Stripe.net" Version="41.1.0" />
-    </ItemGroup>
-
-    <ItemGroup>
       <AdditionalFiles Include="Pages\Orders\Index.cshtml" />
     </ItemGroup>
 

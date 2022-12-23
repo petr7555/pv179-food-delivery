@@ -269,7 +269,8 @@ public class OrderFacade : IOrderFacade
         {
             PriceData = new SessionLineItemPriceDataOptions
             {
-                UnitAmount = (long)(p.PricePerEach.Amount * 100), Currency = p.PricePerEach.Currency.Name,
+                UnitAmount = (long)(p.PricePerEach.Amount * 100), 
+                Currency = p.PricePerEach.Currency.Name,
                 ProductData = new SessionLineItemPriceDataProductDataOptions { Name = p.Name },
             },
             Quantity = p.Quantity,
@@ -283,11 +284,12 @@ public class OrderFacade : IOrderFacade
             CancelUrl = domain + "/Payment/Cancel",
             ClientReferenceId = order.Id.ToString(),
             CustomerEmail = order.CustomerDetails.Customer.Email,
-            // TODO
-            // Discounts = order.Coupons.Select(c => new SessionDiscountOptions
-            // {
-            // Coupon = c.Code,
-            // }).ToList(),
+            Currency = order.TotalPrice.Currency.Name,
+            Discounts = order.Coupons.Select(c => new SessionDiscountOptions
+                {
+                    Coupon = c.Code,
+                }
+            ).ToList(),
         };
 
         var service = new SessionService();
@@ -339,7 +341,8 @@ public class OrderFacade : IOrderFacade
         var existingOrderProduct = await GetOrderProductAsync(orderId, productId);
         if (existingOrderProduct is null)
         {
-            throw new InvalidOperationException($"OrderProduct for order {orderId} and product {productId} does not exist.");
+            throw new InvalidOperationException(
+                $"OrderProduct for order {orderId} and product {productId} does not exist.");
         }
 
         _orderProductService.Update(new OrderProductUpdateDto
