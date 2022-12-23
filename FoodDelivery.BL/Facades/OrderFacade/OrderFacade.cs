@@ -4,10 +4,12 @@ using FoodDelivery.BL.DTOs.Order;
 using FoodDelivery.BL.DTOs.OrderProduct;
 using FoodDelivery.BL.DTOs.Price;
 using FoodDelivery.BL.DTOs.Product;
+using FoodDelivery.BL.DTOs.Rating;
 using FoodDelivery.BL.DTOs.Restaurant;
 using FoodDelivery.BL.Services.CouponService;
 using FoodDelivery.BL.Services.OrderProductService;
 using FoodDelivery.BL.Services.OrderService;
+using FoodDelivery.BL.Services.RatingService;
 using FoodDelivery.BL.Services.UserService;
 using FoodDelivery.DAL.EntityFramework.Models;
 using FoodDelivery.Infrastructure.UnitOfWork;
@@ -25,15 +27,17 @@ public class OrderFacade : IOrderFacade
     private readonly IOrderProductService _orderProductService;
     private readonly IUserService _userService;
     private readonly ICouponService _couponService;
+    private readonly IRatingService _ratingService;
 
     public OrderFacade(IUnitOfWork unitOfWork, IOrderService orderService, IOrderProductService orderProductService,
-        IUserService userService, ICouponService couponService)
+        IUserService userService, ICouponService couponService, IRatingService ratingService)
     {
         _unitOfWork = unitOfWork;
         _orderService = orderService;
         _orderProductService = orderProductService;
         _userService = userService;
         _couponService = couponService;
+        _ratingService = ratingService;
     }
 
     private async Task<OrderWithProductsGetDto> OrderToOrderWithProducts(OrderGetDto order)
@@ -85,6 +89,7 @@ public class OrderFacade : IOrderFacade
             PaymentMethod = order.PaymentMethod,
             Status = order.Status,
             OrderProducts = order.OrderProducts,
+            Rating = order.Rating,
             Products = productsLocalized,
             Coupons = couponsLocalized,
             Restaurant = restaurantLocalized,
@@ -278,6 +283,12 @@ public class OrderFacade : IOrderFacade
         };
         _couponService.Update(couponUpdateDto,
             new[] { nameof(CouponUpdateDto.Status), nameof(CouponUpdateDto.OrderId) });
+        await _unitOfWork.CommitAsync();
+    }
+
+    public async Task AddRatingForOrderAsync(RatingCreateDto ratingCreateDto)
+    {
+        _ratingService.Create(ratingCreateDto);
         await _unitOfWork.CommitAsync();
     }
 }

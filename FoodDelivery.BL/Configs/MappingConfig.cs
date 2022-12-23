@@ -63,5 +63,6 @@ public static class MappingConfig
         config.CreateMap<Coupon, CouponUpdateDto>().ReverseMap();
         
         config.CreateMap<Rating, RatingGetDto>().ReverseMap();
+        config.CreateMap<Rating, RatingCreateDto>().ReverseMap();
     }
 }

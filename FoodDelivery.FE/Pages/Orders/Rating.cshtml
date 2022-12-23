@@ -1,0 +1,56 @@
+@page
+@model FoodDelivery.FE.Pages.Orders.Review
+
+@{
+  ViewData["Title"] = "Add rating";
+}
+
+@if (Model.SuccessfullyAddedRating)
+{
+  <div class="alert alert-success" role="alert">
+    Rating added.
+  </div>
+}
+
+<h1>@Model.Order.Restaurant.Name on @Model.Order.CreatedAt.ToString("dd.MM.yyyy")</h1>
+
+@{
+  var rating = Model.Order.Rating;
+}
+
+@if (rating != null)
+{
+  <h2>Your rating:</h2>
+  <table class="table table-sm">
+    <tbody>
+    <tr style="font-weight: bold;">
+      <td>@Html.DisplayNameFor(model => rating.Stars)</td>
+      <td>@rating.Stars / 5</td>
+    </tr>
+    <tr>
+      <td>@Html.DisplayNameFor(model => rating.Comment)</td>
+      <td>@rating.Comment</td>
+    </tbody>
+  </table>
+}
+else
+{
+  <div class="row">
+    <div class="col-md-4">
+      @using (Html.BeginForm())
+      {
+        <div class="form-group">
+          @Html.LabelFor(x => x.NewRating.Stars)
+          @Html.TextBoxFor(x => x.NewRating.Stars, new { @class = "form-control" })
+          @Html.ValidationMessageFor(x => x.NewRating.Stars, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+          @Html.LabelFor(x => x.NewRating.Comment)
+          @Html.TextAreaFor(x => x.NewRating.Comment, new { @class = "form-control" })
+          @Html.ValidationMessageFor(x => x.NewRating.Comment, null, new { @class = "text-danger" })
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Submit</button>
+      }
+    </div>
+  </div>
+}

@@ -14,10 +14,12 @@ public class Order : BaseEntity
     public PaymentMethod? PaymentMethod { get; set; }
 
     public OrderStatus Status { get; set; }
-
+ 
     public virtual List<OrderProduct> OrderProducts { get; set; }
 
     public virtual List<Coupon> Coupons { get; set; }
+    
+    public virtual Rating? Rating { get; set; }
 }
 
 public enum PaymentMethod

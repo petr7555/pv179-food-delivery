@@ -16,6 +16,7 @@ using FoodDelivery.BL.Services.CustomerDetailsService;
 using FoodDelivery.BL.Services.OrderProductService;
 using FoodDelivery.BL.Services.OrderService;
 using FoodDelivery.BL.Services.ProductService;
+using FoodDelivery.BL.Services.RatingService;
 using FoodDelivery.BL.Services.RestaurantService;
 using FoodDelivery.BL.Services.UserService;
 using FoodDelivery.BL.Services.UserSettingsService;
@@ -93,6 +94,7 @@ public static class BlDependencies
         services.AddScoped<ICurrencyService, CurrencyService>();
         services.AddScoped<ICustomerDetailsService, CustomerDetailsService>();
         services.AddScoped<IUserSettingsService, UserSettingsService>();
+        services.AddScoped<IRatingService, RatingService>();
 
         return services;
     }

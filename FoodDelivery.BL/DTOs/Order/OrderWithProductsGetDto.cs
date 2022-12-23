@@ -4,6 +4,7 @@ using FoodDelivery.BL.DTOs.CustomerDetails;
 using FoodDelivery.BL.DTOs.OrderProduct;
 using FoodDelivery.BL.DTOs.Price;
 using FoodDelivery.BL.DTOs.Product;
+using FoodDelivery.BL.DTOs.Rating;
 using FoodDelivery.BL.DTOs.Restaurant;
 using FoodDelivery.DAL.EntityFramework.Models;
 
@@ -36,4 +37,5 @@ public class OrderWithProductsGetDto
 
     public RestaurantLocalizedGetDto? Restaurant { get; set; }
     
+    public RatingGetDto? Rating { get; set; }
 }

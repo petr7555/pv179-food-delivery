@@ -1,4 +1,5 @@
 ﻿using FoodDelivery.BL.DTOs.Order;
+using FoodDelivery.BL.DTOs.Rating;
 using FoodDelivery.DAL.EntityFramework.Models;
 
 namespace FoodDelivery.BL.Facades.OrderFacade;
@@ -28,4 +29,6 @@ public interface IOrderFacade
     public Task DeleteProductFromOrderAsync(OrderWithProductsGetDto order, Guid productId);
     
     public Task DeleteCouponFromOrderAsync(Guid couponId);
+    
+    public Task AddRatingForOrderAsync(RatingCreateDto ratingCreateDto);
 }

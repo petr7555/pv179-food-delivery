@@ -1,4 +1,8 @@
 @page
 @model DetailsModel
 
+@{
+  ViewData["Title"] = "Order details";
+}
+
 @await Html.PartialAsync("_OrderDetailsPartial", Model.Order)

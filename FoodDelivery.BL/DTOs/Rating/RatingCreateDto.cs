@@ -2,4 +2,13 @@
 
 public class RatingCreateDto
 {
+    public Guid RestaurantId { get; set; }
+
+    public Guid OrderId { get; set; }
+
+    public DateTime CreatedAt { get; set; }
+    
+    public int Stars { get; set; }
+    
+    public string? Comment { get; set; }    
 }
