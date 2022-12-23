@@ -17,8 +17,15 @@
 }
 else
 {
+  if (ModelState["PaymentError"] != null)
+  {
+    <div class="alert alert-danger" role="alert">
+      @ModelState["PaymentError"]!.Errors[0].ErrorMessage
+    </div>
+  }
+
   <p class="fw-bold">Total price: @Model.Order.TotalPrice.Amount @Model.Order.TotalPrice.Currency.Name</p>
-  
+
   <form method="post">
     @Html.LabelFor(x => x.PaymentMethod)
     @Html.DropDownList("PaymentMethod",

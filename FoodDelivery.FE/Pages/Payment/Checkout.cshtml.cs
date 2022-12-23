@@ -49,9 +49,17 @@ public class Checkout : PageModel
                 return RedirectToPage("/Payment/Success");
             case PaymentMethod.Card:
                 var domain = Request.Scheme + "://" + Request.Host.Value;
-                var redirectUrl = await _orderFacade.PayByCardAsync(Order, domain);
-                Response.Headers.Add("Location", redirectUrl);
-                return new StatusCodeResult(303);
+                try
+                {
+                    var redirectUrl = await _orderFacade.PayByCardAsync(Order, domain);
+                    Response.Headers.Add("Location", redirectUrl);
+                    return new StatusCodeResult(303);
+                }
+                catch (InvalidOperationException e)
+                {
+                    ModelState.AddModelError("PaymentError", e.Message);
+                    return Page();
+                }
             case PaymentMethod.Free:
             default:
                 throw new ArgumentOutOfRangeException();

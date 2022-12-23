@@ -264,12 +264,17 @@ public class OrderFacade : IOrderFacade
 
     public async Task<string> PayByCardAsync(OrderWithProductsGetDto order, string domain)
     {
+        if (order.Coupons.Count > 1)
+        {
+            throw new InvalidOperationException("You can use only 1 coupon when paying by card.");
+        }
+
         var products = order.Products;
         var sessionLineItemOptions = products.Select(p => new SessionLineItemOptions
         {
             PriceData = new SessionLineItemPriceDataOptions
             {
-                UnitAmount = (long)(p.PricePerEach.Amount * 100), 
+                UnitAmount = (long)(p.PricePerEach.Amount * 100),
                 Currency = p.PricePerEach.Currency.Name,
                 ProductData = new SessionLineItemPriceDataProductDataOptions { Name = p.Name },
             },

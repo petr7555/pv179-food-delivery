@@ -302,15 +302,23 @@ public static class DataInitializer
             OrderId = pizzaSalamiAndPizzaMargheritaOrder.Id,
         };
 
-        var validCoupon = new Coupon
+        var firstValidCoupon = new Coupon
         {
             Id = Guid.NewGuid(),
             Code = "ABC123",
             ValidUntil = DateTime.UtcNow.AddDays(30),
             Status = CouponStatus.Valid,
         };
+        
+        var secondValidCoupon = new Coupon
+        {
+            Id = Guid.NewGuid(),
+            Code = "DEF456",
+            ValidUntil = DateTime.UtcNow.AddDays(30),
+            Status = CouponStatus.Valid,
+        };
 
-        modelBuilder.Entity<Coupon>().HasData(expiredCoupon, firstUsedCoupon, secondUsedCoupon, validCoupon);
+        modelBuilder.Entity<Coupon>().HasData(expiredCoupon, firstUsedCoupon, secondUsedCoupon, firstValidCoupon, secondValidCoupon);
 
         /****************
          **   PRICES   **
@@ -385,10 +393,14 @@ public static class DataInitializer
         var secondUsedCouponPriceEur = new Price
             { Id = Guid.NewGuid(), Amount = 2, CurrencyId = eurCurrency.Id, CouponId = secondUsedCoupon.Id };
 
-        var validCouponPriceCzk = new Price
-            { Id = Guid.NewGuid(), Amount = 200, CurrencyId = czkCurrency.Id, CouponId = validCoupon.Id };
-        var validCouponPriceEur = new Price
-            { Id = Guid.NewGuid(), Amount = 8, CurrencyId = eurCurrency.Id, CouponId = validCoupon.Id };
+        var firstValidCouponPriceCzk = new Price
+            { Id = Guid.NewGuid(), Amount = 200, CurrencyId = czkCurrency.Id, CouponId = firstValidCoupon.Id };
+        var firstValidCouponPriceEur = new Price
+            { Id = Guid.NewGuid(), Amount = 8, CurrencyId = eurCurrency.Id, CouponId = firstValidCoupon.Id };
+        var secondValidCouponPriceCzk = new Price
+            { Id = Guid.NewGuid(), Amount = 100, CurrencyId = czkCurrency.Id, CouponId = secondValidCoupon.Id };
+        var secondValidCouponPriceEur = new Price
+            { Id = Guid.NewGuid(), Amount = 4, CurrencyId = eurCurrency.Id, CouponId = secondValidCoupon.Id };
 
         modelBuilder.Entity<Price>().HasData(
             pizzaSalamiPriceCzk, pizzaSalamiPriceEur,
@@ -405,7 +417,8 @@ public static class DataInitializer
             expiredCouponPriceCzk, expiredCouponPriceEur,
             firstUsedCouponPriceCzk, firstUsedCouponPriceEur,
             secondUsedCouponPriceCzk, secondUsedCouponPriceEur,
-            validCouponPriceCzk, validCouponPriceEur
+            firstValidCouponPriceCzk, firstValidCouponPriceEur,
+            secondValidCouponPriceCzk, secondValidCouponPriceEur
         );
 
         /*****************************
