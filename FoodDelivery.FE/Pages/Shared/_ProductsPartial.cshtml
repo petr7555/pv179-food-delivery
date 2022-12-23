@@ -3,7 +3,7 @@
 @model Tuple<List<FoodDelivery.BL.DTOs.Product.ProductLocalizedGetDto>, bool>
 
 @{
-  var deletable = Model.Item2;
+  var modifiable = Model.Item2;
 }
 
 <h2>Items:</h2>
@@ -19,14 +19,14 @@
     </th>
     <th>
       @Html.DisplayNameFor(model => model.Item1[0].Quantity)
-    </th>    
+    </th>
     <th>
       @Html.DisplayNameFor(model => model.Item1[0].PricePerEach)
-    </th>    
+    </th>
     <th>
       @Html.DisplayNameFor(model => model.Item1[0].TotalPrice)
     </th>
-    @if (deletable)
+    @if (modifiable)
     {
       <th>
         Actions
@@ -43,19 +43,34 @@
       </td>
       <td>
         @Html.DisplayFor(modelItem => item.Name)
-      </td>     
+      </td>
       <td>
-        @Html.DisplayFor(modelItem => item.Quantity)
+        @if (modifiable)
+        {
+          <form method="post" class="form-inline">
+            <div class="input-group">
+              <input type="number" name="quantity" value="@item.Quantity" min="1" max="100" class="form-control" style="max-width: 80px;"/>
+              <button type="submit" class="btn btn-secondary" asp-page="/Payment/UpdateQuantity" asp-route-productId="@item.Id" asp-route-returnUrl="@Context.Request.GetDisplayUrl()">
+                Update
+              </button>
+            </div>
+          </form>
+        }
+        else
+        {
+          @Html.DisplayFor(modelItem => item.Quantity)
+        }
+
       </td>
       <td>
         @Html.DisplayFor(modelItem => item.PricePerEach.Amount)
         @Html.DisplayFor(modelItem => item.PricePerEach.Currency.Name)
-      </td>      
+      </td>
       <td>
         @Html.DisplayFor(modelItem => item.TotalPrice.Amount)
         @Html.DisplayFor(modelItem => item.TotalPrice.Currency.Name)
       </td>
-      @if (deletable)
+      @if (modifiable)
       {
         <td>
           <form method="post">

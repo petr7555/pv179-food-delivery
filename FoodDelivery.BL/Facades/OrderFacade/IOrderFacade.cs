@@ -31,4 +31,6 @@ public interface IOrderFacade
     public Task DeleteCouponFromOrderAsync(Guid couponId);
     
     public Task AddRatingForOrderAsync(RatingCreateDto ratingCreateDto);
+    
+    public Task UpdateQuantityAsync(Guid orderId, Guid productId, int quantity);
 }

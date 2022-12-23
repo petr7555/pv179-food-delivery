@@ -171,8 +171,7 @@ public class OrderFacade : IOrderFacade
             orderId = newOrder.Id;
         }
 
-        var existingOrderProduct = (await _orderProductService.QueryAsync(new QueryDto<OrderProductGetDto>()
-            .Where(op => op.OrderId == orderId && op.ProductId == productId))).SingleOrDefault();
+        var existingOrderProduct = await GetOrderProductAsync(orderId, productId);
 
         if (existingOrderProduct != null)
         {
@@ -195,6 +194,13 @@ public class OrderFacade : IOrderFacade
         }
 
         await _unitOfWork.CommitAsync();
+    }
+
+    private async Task<OrderProductGetDto?> GetOrderProductAsync(Guid orderId, Guid productId)
+    {
+        var existingOrderProduct = (await _orderProductService.QueryAsync(new QueryDto<OrderProductGetDto>()
+            .Where(op => op.OrderId == orderId && op.ProductId == productId))).SingleOrDefault();
+        return existingOrderProduct;
     }
 
     public async Task<OrderWithProductsGetDto?> GetActiveOrderAsync(string username)
@@ -277,6 +283,7 @@ public class OrderFacade : IOrderFacade
             CancelUrl = domain + "/Payment/Cancel",
             ClientReferenceId = order.Id.ToString(),
             CustomerEmail = order.CustomerDetails.Customer.Email,
+            // TODO
             // Discounts = order.Coupons.Select(c => new SessionDiscountOptions
             // {
             // Coupon = c.Code,
@@ -324,6 +331,25 @@ public class OrderFacade : IOrderFacade
     public async Task AddRatingForOrderAsync(RatingCreateDto ratingCreateDto)
     {
         _ratingService.Create(ratingCreateDto);
+        await _unitOfWork.CommitAsync();
+    }
+
+    public async Task UpdateQuantityAsync(Guid orderId, Guid productId, int quantity)
+    {
+        var existingOrderProduct = await GetOrderProductAsync(orderId, productId);
+        if (existingOrderProduct is null)
+        {
+            throw new InvalidOperationException($"OrderProduct for order {orderId} and product {productId} does not exist.");
+        }
+
+        _orderProductService.Update(new OrderProductUpdateDto
+        {
+            Id = existingOrderProduct.Id,
+            OrderId = orderId,
+            ProductId = productId,
+            Quantity = quantity,
+        }, new[] { nameof(OrderProductUpdateDto.Quantity) });
+
         await _unitOfWork.CommitAsync();
     }
 }
