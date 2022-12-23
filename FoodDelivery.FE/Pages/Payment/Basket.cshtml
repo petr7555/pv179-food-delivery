@@ -22,15 +22,14 @@ else
 
   <div class="row">
     <div class="col-md-4">
-      @using (Html.BeginForm())
-      {
-        <div class="form-group">
-          @Html.LabelFor(x => x.CouponCode)
-          @Html.TextBoxFor(x => x.CouponCode, new { @class = "form-control" })
+      <form method="post" class="form-inline">
+        @Html.LabelFor(x => x.CouponCode)
+        <div class="input-group">
+          @Html.TextBoxFor(x => x.CouponCode, new { @class = "form-control", style = "max-width: 200px;" })
           @Html.ValidationMessageFor(x => x.CouponCode, null, new { @class = "text-danger" })
+          <button type="submit" class="btn btn-primary">Apply</button>
         </div>
-        <button type="submit" class="btn btn-primary mt-2">Apply</button>
-      }
+      </form>
     </div>
   </div>
 
