@@ -417,15 +417,25 @@ public static class DataInitializer
             .HasData(
                 new
                 {
-                    Id = Guid.NewGuid(), OrderId = pizzaSalamiAndPizzaMargheritaOrder.Id,
+                    Id = Guid.NewGuid(),
+                    OrderId = pizzaSalamiAndPizzaMargheritaOrder.Id,
                     ProductId = pizzaSalami.Id,
+                    Quantity = 1,
                 },
                 new
                 {
-                    Id = Guid.NewGuid(), OrderId = pizzaSalamiAndPizzaMargheritaOrder.Id,
+                    Id = Guid.NewGuid(),
+                    OrderId = pizzaSalamiAndPizzaMargheritaOrder.Id,
                     ProductId = pizzaMargherita.Id,
+                    Quantity = 2,
                 },
-                new { Id = Guid.NewGuid(), OrderId = royalBurgerOrder.Id, ProductId = royalBurger.Id }
+                new
+                {
+                    Id = Guid.NewGuid(),
+                    OrderId = royalBurgerOrder.Id,
+                    ProductId = royalBurger.Id,
+                    Quantity = 1,
+                }
             );
 
         /*****************

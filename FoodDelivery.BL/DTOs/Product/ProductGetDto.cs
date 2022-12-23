@@ -16,4 +16,5 @@ public class ProductGetDto
     public CategoryGetDto Category { get; set; }
     public RestaurantGetDto Restaurant { get; set; }
     public List<PriceGetDto> Prices { get; set; }
+    public int Quantity { get; set; }
 }

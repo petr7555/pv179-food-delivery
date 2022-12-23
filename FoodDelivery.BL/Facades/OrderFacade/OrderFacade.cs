@@ -32,7 +32,8 @@ public class OrderFacade : IOrderFacade
     private readonly IProductService _productService;
 
     public OrderFacade(IUnitOfWork unitOfWork, IOrderService orderService, IOrderProductService orderProductService,
-        IUserService userService, ICouponService couponService, IRatingService ratingService, IProductService productService)
+        IUserService userService, ICouponService couponService, IRatingService ratingService,
+        IProductService productService)
     {
         _unitOfWork = unitOfWork;
         _orderService = orderService;
@@ -47,14 +48,21 @@ public class OrderFacade : IOrderFacade
     {
         var currency = order.CustomerDetails.Customer.UserSettings.SelectedCurrency;
         var products = (await _orderProductService.GetProductsForOrderAsync(order.Id)).ToList();
-        var productsLocalized = products.Select(p => new ProductLocalizedGetDto()
+        var productsLocalized = products.Select(p =>
         {
-            Id = p.Id,
-            Name = p.Name,
-            ImageUrl = p.ImageUrl,
-            Category = p.Category,
-            Restaurant = p.Restaurant,
-            Price = p.Prices.Single(price => price.Currency.Id == currency.Id),
+            var pricePerEach = p.Prices.Single(price => price.Currency.Id == currency.Id);
+            return new ProductLocalizedGetDto
+            {
+                Id = p.Id,
+                Name = p.Name,
+                ImageUrl = p.ImageUrl,
+                Category = p.Category,
+                Restaurant = p.Restaurant,
+                Quantity = p.Quantity,
+                PricePerEach = pricePerEach,
+                TotalPrice = new PriceGetDto
+                    { Amount = pricePerEach.Amount * p.Quantity, Currency = pricePerEach.Currency },
+            };
         }).ToList();
 
         var couponsLocalized = order.Coupons.Select(c => new CouponLocalizedGetDto
@@ -81,7 +89,7 @@ public class OrderFacade : IOrderFacade
         }
 
         var totalAmount = Math.Max(0,
-                productsLocalized.Sum(p => p.Price.Amount) - couponsLocalized.Sum(c => c.Discount.Amount)) +
+                productsLocalized.Sum(p => p.TotalPrice.Amount) - couponsLocalized.Sum(c => c.Discount.Amount)) +
             restaurantLocalized?.DeliveryPrice.Amount ?? 0;
 
         return new OrderWithProductsGetDto
@@ -142,8 +150,10 @@ public class OrderFacade : IOrderFacade
             var productRestaurantId = (await _productService.GetByIdAsync(productId)).Restaurant.Id;
             if (existingRestaurantId != null && existingRestaurantId != productRestaurantId)
             {
-                throw new InvalidOperationException("Cannot add product from different restaurant to the same order. Please finish the current order first or remove the products from it.");
+                throw new InvalidOperationException(
+                    "Cannot add product from different restaurant to the same order. Please finish the current order first or remove the products from it.");
             }
+
             orderId = activeOrder.Id;
         }
         else
@@ -161,11 +171,28 @@ public class OrderFacade : IOrderFacade
             orderId = newOrder.Id;
         }
 
-        _orderProductService.Create(new OrderProductCreateDto
+        var existingOrderProduct = (await _orderProductService.QueryAsync(new QueryDto<OrderProductGetDto>()
+            .Where(op => op.OrderId == orderId && op.ProductId == productId))).SingleOrDefault();
+
+        if (existingOrderProduct != null)
         {
-            OrderId = orderId,
-            ProductId = productId,
-        });
+            _orderProductService.Update(new OrderProductUpdateDto
+            {
+                Id = existingOrderProduct.Id,
+                OrderId = orderId,
+                ProductId = productId,
+                Quantity = existingOrderProduct.Quantity + 1,
+            }, new[] { nameof(OrderProductUpdateDto.Quantity) });
+        }
+        else
+        {
+            _orderProductService.Create(new OrderProductCreateDto
+            {
+                OrderId = orderId,
+                ProductId = productId,
+                Quantity = 1,
+            });
+        }
 
         await _unitOfWork.CommitAsync();
     }
@@ -236,10 +263,10 @@ public class OrderFacade : IOrderFacade
         {
             PriceData = new SessionLineItemPriceDataOptions
             {
-                UnitAmount = (long)(p.Price.Amount * 100), Currency = p.Price.Currency.Name,
+                UnitAmount = (long)(p.PricePerEach.Amount * 100), Currency = p.PricePerEach.Currency.Name,
                 ProductData = new SessionLineItemPriceDataProductDataOptions { Name = p.Name },
             },
-            Quantity = 1,
+            Quantity = p.Quantity,
         }).ToList();
 
         var options = new SessionCreateOptions

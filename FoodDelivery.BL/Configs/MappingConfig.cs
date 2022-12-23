@@ -51,6 +51,7 @@ public static class MappingConfig
         config.CreateMap<Order, OrderUpdateDto>().ReverseMap();
 
         config.CreateMap<OrderProduct, OrderProductGetDto>().ReverseMap();
+        config.CreateMap<OrderProduct, OrderProductUpdateDto>().ReverseMap();
         config.CreateMap<OrderProduct, OrderProductCreateDto>().ReverseMap();
 
         config.CreateMap<CompanyInfo, CompanyInfoGetDto>().ReverseMap();

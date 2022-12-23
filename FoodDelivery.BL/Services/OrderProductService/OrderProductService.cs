@@ -32,6 +32,10 @@ public class OrderProductService :
             new QueryDto<OrderProductGetDto>()
                 .Where(op => op.OrderId == orderId)
         );
-        return orderProducts.Select(op => op.Product);
+        return orderProducts.Select(op =>
+        {
+            op.Product.Quantity = op.Quantity;
+            return op.Product;
+        });
     }
 }

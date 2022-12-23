@@ -29,7 +29,7 @@ public class ProductFacade : IProductFacade
                 ImageUrl = p.ImageUrl,
                 Category = p.Category,
                 Restaurant = p.Restaurant,
-                Price = p.Prices.Single(price => price.Currency.Id == currency.Id),
+                PricePerEach = p.Prices.Single(price => price.Currency.Id == currency.Id),
             });
         return productsLocalized;
     }

@@ -8,4 +8,5 @@ public class OrderProductGetDto
     public Guid OrderId { get; set; }
     public Guid ProductId { get; set; }
     public ProductGetDto Product { get; set; }
+    public int Quantity { get; set; }
 }

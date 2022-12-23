@@ -13,4 +13,6 @@ public class OrderProduct : BaseEntity
 
     [ForeignKey(nameof(ProductId))]
     public virtual Product Product { get; set; }
+    
+    public int Quantity { get; set; }
 }
