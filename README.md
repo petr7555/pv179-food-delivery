@@ -42,3 +42,4 @@ Use `4242 4242 4242 4242` as a card number for Stripe checkout.
 | Code   | Discount        |
 |--------|-----------------|
 | ABC123 | 200 CZK / 8 EUR |
+| DEF456 | 100 CZK / 4 EUR |
