@@ -284,6 +284,22 @@ public class OrderFacade : IOrderFacade
         var options = new SessionCreateOptions
         {
             LineItems = sessionLineItemOptions,
+            ShippingOptions = new List<SessionShippingOptionOptions>
+            {
+                new()
+                {
+                    ShippingRateData = new SessionShippingOptionShippingRateDataOptions
+                    {
+                        Type = "fixed_amount",
+                        FixedAmount = new SessionShippingOptionShippingRateDataFixedAmountOptions
+                        {
+                            Amount = (long)order.Restaurant.DeliveryPrice.Amount * 100,
+                            Currency = order.Restaurant.DeliveryPrice.Currency.Name,
+                        },
+                        DisplayName = "Home delivery",
+                    },
+                },
+            },
             Mode = "payment",
             SuccessUrl = domain + "/Payment/Success",
             CancelUrl = domain + "/Payment/Cancel",
