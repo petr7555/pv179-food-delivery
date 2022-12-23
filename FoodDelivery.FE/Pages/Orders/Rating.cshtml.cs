@@ -36,18 +36,17 @@ public class Review : PageModel
     
     public async Task<IActionResult> OnPost(Guid id)
     {
-        if (!ModelState.IsValid)
-        {
-            return Page();
-        }
-        
         var foundOrder = await _orderFacade.GetByIdAsync(id);
         if (foundOrder == null)
         {
             return NotFound();
         }
-
         Order = foundOrder;
+        
+        if (!ModelState.IsValid)
+        {
+            return Page();
+        }
         
         NewRating.CreatedAt = DateTime.UtcNow;
         NewRating.OrderId = Order.Id;

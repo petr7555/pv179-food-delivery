@@ -17,7 +17,6 @@ public class Rating : BaseEntity
 
     public DateTime CreatedAt { get; set; }
 
-    [Range(1, 5)]
     public int Stars { get; set; }
 
     [MaxLength(255)]
