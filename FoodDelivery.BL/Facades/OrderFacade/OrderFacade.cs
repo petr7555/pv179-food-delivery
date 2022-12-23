@@ -9,6 +9,7 @@ using FoodDelivery.BL.DTOs.Restaurant;
 using FoodDelivery.BL.Services.CouponService;
 using FoodDelivery.BL.Services.OrderProductService;
 using FoodDelivery.BL.Services.OrderService;
+using FoodDelivery.BL.Services.ProductService;
 using FoodDelivery.BL.Services.RatingService;
 using FoodDelivery.BL.Services.UserService;
 using FoodDelivery.DAL.EntityFramework.Models;
@@ -28,9 +29,10 @@ public class OrderFacade : IOrderFacade
     private readonly IUserService _userService;
     private readonly ICouponService _couponService;
     private readonly IRatingService _ratingService;
+    private readonly IProductService _productService;
 
     public OrderFacade(IUnitOfWork unitOfWork, IOrderService orderService, IOrderProductService orderProductService,
-        IUserService userService, ICouponService couponService, IRatingService ratingService)
+        IUserService userService, ICouponService couponService, IRatingService ratingService, IProductService productService)
     {
         _unitOfWork = unitOfWork;
         _orderService = orderService;
@@ -38,6 +40,7 @@ public class OrderFacade : IOrderFacade
         _userService = userService;
         _couponService = couponService;
         _ratingService = ratingService;
+        _productService = productService;
     }
 
     private async Task<OrderWithProductsGetDto> OrderToOrderWithProducts(OrderGetDto order)
@@ -130,12 +133,17 @@ public class OrderFacade : IOrderFacade
     public async Task AddProductToCartAsync(string username, Guid productId)
     {
         var user = await _userService.GetByUsernameAsync(username);
-        var orders = await GetOrdersForUserAsync(username);
-        var activeOrder = orders.SingleOrDefault(o => o.Status == OrderStatus.Active);
+        var activeOrder = await GetActiveOrderAsync(username);
 
         Guid orderId;
         if (activeOrder != null)
         {
+            var existingRestaurantId = activeOrder.Restaurant?.Id;
+            var productRestaurantId = (await _productService.GetByIdAsync(productId)).Restaurant.Id;
+            if (existingRestaurantId != null && existingRestaurantId != productRestaurantId)
+            {
+                throw new InvalidOperationException("Cannot add product from different restaurant to the same order. Please finish the current order first or remove the products from it.");
+            }
             orderId = activeOrder.Id;
         }
         else

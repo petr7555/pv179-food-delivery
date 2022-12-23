@@ -5,6 +5,12 @@
   ViewData["Title"] = "Products";
 }
 
+@if(Model.ErrorMessage != null)
+{
+  <div class="alert alert-danger" role="alert">
+    @Model.ErrorMessage
+  </div>
+}
 
 <ul>
   @foreach (var product in Model.Products)

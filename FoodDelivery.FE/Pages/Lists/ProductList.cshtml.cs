@@ -11,6 +11,7 @@ namespace FoodDelivery.FE.Pages.Lists;
 public class ProductList : PageModel
 {
     public IEnumerable<ProductLocalizedGetDto> Products { get; set; }
+    public string? ErrorMessage;
 
     private readonly IProductFacade _productFacade;
     private readonly IOrderFacade _orderFacade;
@@ -28,8 +29,17 @@ public class ProductList : PageModel
 
     public async Task<IActionResult> OnPost(Guid id)
     {
-        await _orderFacade.AddProductToCartAsync(User.Identity.Name, id);
+        try
+        {
+            await _orderFacade.AddProductToCartAsync(User.Identity.Name, id);
+        }
+        catch (InvalidOperationException e)
+        {
+            ErrorMessage = e.Message;
+        }
 
-        return RedirectToPage("../Lists/ProductList");
+        Products = await _productFacade.GetAllAsync(User.Identity.Name);
+        return Page();
+        // return RedirectToPage("../Lists/ProductList");
     }
 }
