@@ -11,8 +11,6 @@ public interface IUserService : ICrudService<User, Guid, UserGetDto, UserCreateD
 {
     public Task<IEnumerable<UserGetDto>> QueryAsync(QueryDto<UserGetDto> queryDto);
 
-    public Task UpdateCustomerDetailsAsync(Guid userId, CustomerDetailsUpdateDto customerDetailsUpdateDto);
-
     public Task UpdateAddressAsync(Guid userId, Guid addressId, AddressUpdateDto addressUpdateDto);
 
     public Task BanUserAsync(Guid userId);
@@ -20,4 +18,6 @@ public interface IUserService : ICrudService<User, Guid, UserGetDto, UserCreateD
     public Task UnbanUserAsync(Guid userId);
 
     public Task<UserGetDto> GetByUsernameAsync(string username);
+
+    public CustomerDetailsUpdateDto ConvertToUpdateDto(CustomerDetailsGetDto customerDetailsGetDto);
 }

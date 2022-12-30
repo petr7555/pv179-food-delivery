@@ -40,6 +40,18 @@ public class FoodDeliveryDbContext : DbContext
             .Navigation(c => c.Products)
             .AutoInclude();
 
+        modelBuilder.Entity<User>()
+            .Navigation(u => u.CustomerDetails)
+            .AutoInclude();
+
+        modelBuilder.Entity<CustomerDetails>()
+            .Navigation(d => d.BillingAddress)
+            .AutoInclude();
+
+        modelBuilder.Entity<CustomerDetails>()
+            .Navigation(d => d.DeliveryAddress)
+            .AutoInclude();
+
         base.OnModelCreating(modelBuilder);
     }
 }

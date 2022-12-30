@@ -1,5 +1,6 @@
 using AutoMapper;
 using AutoMapper.Extensions.ExpressionMapping;
+using FoodDelivery.BL.DTOs.Address;
 using FoodDelivery.BL.DTOs.Category;
 using FoodDelivery.BL.DTOs.Currency;
 using FoodDelivery.BL.DTOs.CustomerDetails;
@@ -22,7 +23,7 @@ public static class MappingConfig
         config.CreateMap<Restaurant, RestaurantGetDto>().ReverseMap();
         config.CreateMap<Restaurant, RestaurantCreateDto>().ReverseMap();
 
-        config.CreateMap<Product, ProductGetDto>().ReverseMap();
+        config.CreateMap<Product, ProductGetDto>().ReverseMap(); 
 
         config.CreateMap<Price, PriceGetDto>().ReverseMap();
 
@@ -32,9 +33,14 @@ public static class MappingConfig
 
         config.CreateMap<User, UserGetDto>().ReverseMap();
         config.CreateMap<User, UserCreateDto>().ReverseMap();
+        config.CreateMap<User, UserUpdateDto>().ReverseMap();
 
         config.CreateMap<CustomerDetails, CustomerDetailsGetDto>().ReverseMap();
         config.CreateMap<CustomerDetails, CustomerDetailsUpdateDto>().ReverseMap();
+
+        config.CreateMap<Address, AddressGetDto>().ReverseMap();
+        config.CreateMap<Address, AddressCreateDto>().ReverseMap();
+        config.CreateMap<Address, AddressUpdateDto>().ReverseMap();
 
         config.CreateMap<Order, OrderGetDto>().ReverseMap();
         config.CreateMap<Order, OrderCreateDto>().ReverseMap();

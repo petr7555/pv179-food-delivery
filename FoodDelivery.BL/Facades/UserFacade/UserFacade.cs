@@ -1,7 +1,7 @@
 ﻿using FoodDelivery.BL.DTOs;
 using FoodDelivery.BL.DTOs.Address;
-using FoodDelivery.BL.DTOs.CustomerDetails;
 using FoodDelivery.BL.DTOs.User;
+using FoodDelivery.BL.Services.AddressService;
 using FoodDelivery.BL.Services.UserService;
 using FoodDelivery.Infrastructure.UnitOfWork;
 
@@ -12,7 +12,7 @@ public class UserFacade : IUserFacade
     private readonly IUnitOfWork _unitOfWork;
     private readonly IUserService _userService;
 
-    public UserFacade(IUnitOfWork unitOfWork, IUserService userService)
+    public UserFacade(IUnitOfWork unitOfWork, IUserService userService, IAddressService addressService)
     {
         _unitOfWork = unitOfWork;
         _userService = userService;
@@ -26,11 +26,6 @@ public class UserFacade : IUserFacade
     public async Task<IEnumerable<UserGetDto>> QueryAsync(QueryDto<UserGetDto> queryDto)
     {
         return await _userService.QueryAsync(queryDto);
-    }
-
-    public async Task UpdateCustomerDetailsAsync(Guid userId, CustomerDetailsUpdateDto customerDetailsUpdateDto)
-    {
-        await _userService.UpdateCustomerDetailsAsync(userId, customerDetailsUpdateDto);
     }
 
     public async Task UpdateAddressAsync(Guid userId, Guid addressId, AddressUpdateDto addressUpdateDto)

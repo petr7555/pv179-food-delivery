@@ -60,6 +60,7 @@ public class BasicIdentityDbContext : IdentityDbContext
 
         // create customer
         var customerId = Guid.NewGuid().ToString();
+        Console.WriteLine("Generated customerId: "+customerId);
         modelBuilder.Entity<IdentityUser>().HasData(new IdentityUser
         {
             Id = customerId,

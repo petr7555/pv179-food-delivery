@@ -1,13 +1,86 @@
 @page
 @model EditAccount
 
-@* @{ *@
-@*   ViewData["Title"] = "Edit Account"; *@
-@* } *@
-@* @Model. *@
-@* <form method="post"> *@
-@*   <p></p> *@
-@*   $1$ <p>@product.Price.Amount @product.Price.Currency.Name</p> #1# *@
-@*   $1$ <input type="hidden" name="id" value="@product.Id"> #1# *@
-@*   $1$ <input type="submit" value="Add to cart"/> #1# *@
-@* </form> *@
+@{
+   ViewData["Title"] = "Edit Account";
+}
+
+<form method="post">
+	<div class="col-md-4">
+
+    <section>
+      @using (Html.BeginForm())
+      {
+        <section>
+            <h2>Billing address</h2>
+            <div class="form-group">
+              @Html.LabelFor(x => x.CustomerDetails.BillingAddress.FullName, new { @class = "control-label" })
+              @Html.TextBoxFor(x => x.CustomerDetails.BillingAddress.FullName, new { @class = "form-control" })
+              @Html.ValidationMessageFor(x => x.CustomerDetails.BillingAddress.FullName, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+              @Html.LabelFor(x => x.CustomerDetails.BillingAddress.StreetAddress, new { @class = "control-label" })
+              @Html.TextBoxFor(x => x.CustomerDetails.BillingAddress.StreetAddress, new { @class = "form-control" })
+              @Html.ValidationMessageFor(x => x.CustomerDetails.BillingAddress.StreetAddress, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+              @Html.LabelFor(x => x.CustomerDetails.BillingAddress.City, new { @class = "control-label" })
+              @Html.TextBoxFor(x => x.CustomerDetails.BillingAddress.City, new { @class = "form-control" })
+              @Html.ValidationMessageFor(x => x.CustomerDetails.BillingAddress.City, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+              @Html.LabelFor(x => x.CustomerDetails.BillingAddress.State, new { @class = "control-label" })
+              @Html.TextBoxFor(x => x.CustomerDetails.BillingAddress.State, new { @class = "form-control" })
+              @Html.ValidationMessageFor(x => x.CustomerDetails.BillingAddress.State, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+              @Html.LabelFor(x => x.CustomerDetails.BillingAddress.ZipCode, new { @class = "control-label" })
+              @Html.TextBoxFor(x => x.CustomerDetails.BillingAddress.ZipCode, new { @class = "form-control" })
+              @Html.ValidationMessageFor(x => x.CustomerDetails.BillingAddress.ZipCode, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+              @Html.LabelFor(x => x.CustomerDetails.BillingAddress.PhoneNumber, new { @class = "control-label" })
+              @Html.TextBoxFor(x => x.CustomerDetails.BillingAddress.PhoneNumber, new { @class = "form-control" })
+              @Html.ValidationMessageFor(x => x.CustomerDetails.BillingAddress.PhoneNumber, null, new { @class = "text-danger" })
+            </div>
+        </section>
+        <section>
+            <h2>Delivery address</h2>
+            <div class="form-group">
+              @Html.LabelFor(x => x.CustomerDetails.DeliveryAddress.FullName, new { @class = "control-label" })
+              @Html.TextBoxFor(x => x.CustomerDetails.DeliveryAddress.FullName, new { @class = "form-control" })
+              @Html.ValidationMessageFor(x => x.CustomerDetails.DeliveryAddress.FullName, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+              @Html.LabelFor(x => x.CustomerDetails.DeliveryAddress.StreetAddress, new { @class = "control-label" })
+              @Html.TextBoxFor(x => x.CustomerDetails.DeliveryAddress.StreetAddress, new { @class = "form-control" })
+              @Html.ValidationMessageFor(x => x.CustomerDetails.DeliveryAddress.StreetAddress, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+              @Html.LabelFor(x => x.CustomerDetails.DeliveryAddress.City, new { @class = "control-label" })
+              @Html.TextBoxFor(x => x.CustomerDetails.DeliveryAddress.City, new { @class = "form-control" })
+              @Html.ValidationMessageFor(x => x.CustomerDetails.DeliveryAddress.City, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+              @Html.LabelFor(x => x.CustomerDetails.DeliveryAddress.State, new { @class = "control-label" })
+              @Html.TextBoxFor(x => x.CustomerDetails.DeliveryAddress.State, new { @class = "form-control" })
+              @Html.ValidationMessageFor(x => x.CustomerDetails.DeliveryAddress.State, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+              @Html.LabelFor(x => x.CustomerDetails.DeliveryAddress.ZipCode, new { @class = "control-label" })
+              @Html.TextBoxFor(x => x.CustomerDetails.DeliveryAddress.ZipCode, new { @class = "form-control" })
+              @Html.ValidationMessageFor(x => x.CustomerDetails.DeliveryAddress.ZipCode, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+              @Html.LabelFor(x => x.CustomerDetails.DeliveryAddress.PhoneNumber, new { @class = "control-label" })
+              @Html.TextBoxFor(x => x.CustomerDetails.DeliveryAddress.PhoneNumber, new { @class = "form-control" })
+              @Html.ValidationMessageFor(x => x.CustomerDetails.DeliveryAddress.PhoneNumber, null, new { @class = "text-danger" })
+            </div>
+        </section>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+      }
+    </section>
+  </div>
+</form>
