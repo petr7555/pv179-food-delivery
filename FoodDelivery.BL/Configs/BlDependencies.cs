@@ -5,10 +5,12 @@ using FoodDelivery.BL.DTOs.CustomerDetails;
 using FoodDelivery.BL.DTOs.Order;
 using FoodDelivery.BL.DTOs.OrderProduct;
 using FoodDelivery.BL.DTOs.Product;
+using FoodDelivery.BL.DTOs.Rating;
 using FoodDelivery.BL.DTOs.Restaurant;
 using FoodDelivery.BL.DTOs.User;
 using FoodDelivery.BL.Facades.OrderFacade;
 using FoodDelivery.BL.Facades.ProductFacade;
+using FoodDelivery.BL.Facades.RatingFacade;
 using FoodDelivery.BL.Facades.RestaurantFacade;
 using FoodDelivery.BL.Facades.UserFacade;
 using FoodDelivery.BL.QueryObject;
@@ -17,6 +19,7 @@ using FoodDelivery.BL.Services.CategoryService;
 using FoodDelivery.BL.Services.OrderProductService;
 using FoodDelivery.BL.Services.OrderService;
 using FoodDelivery.BL.Services.ProductService;
+using FoodDelivery.BL.Services.RatingService;
 using FoodDelivery.BL.Services.RestaurantService;
 using FoodDelivery.BL.Services.UserService;
 using FoodDelivery.DAL.EntityFramework.Data;
@@ -95,6 +98,15 @@ public static class BlDependencies
             new QueryObject<AddressGetDto, Address>(
                 sp.GetRequiredService<IMapper>(),
                 () => new EfQuery<Address>(sp.GetRequiredService<DbContext>())
+            )
+        );
+
+        services.AddScoped<IRatingService, RatingService>();
+        services.AddScoped<IRatingFacade, RatingFacade>();
+        services.AddScoped<IQueryObject<RatingGetDto, Rating>>(sp =>
+            new QueryObject<RatingGetDto, Rating>(
+                sp.GetRequiredService<IMapper>(),
+                () => new EfQuery<Rating>(sp.GetRequiredService<DbContext>())
             )
         );
 

@@ -16,6 +16,11 @@ public class RestaurantFacade : IRestaurantFacade
         _restaurantService = restaurantService;
     }
 
+    public async Task<RestaurantGetDto> GetById(Guid id)
+    {
+        return await _restaurantService.GetByIdAsync(id);
+    }
+
     public async Task<IEnumerable<RestaurantGetDto>> GetAllAsync()
     {
         return await _restaurantService.GetAllAsync();

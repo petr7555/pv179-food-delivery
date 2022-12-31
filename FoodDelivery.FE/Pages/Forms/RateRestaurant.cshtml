@@ -1,0 +1,39 @@
+﻿@page
+@model FoodDelivery.FE.Pages.Forms.RateRestaurant
+
+@{
+	ViewData["Title"] = "Rate Restaurant";
+}
+
+<form method="post">
+	<div class="col-md-4">
+
+    <section>
+      @using (Html.BeginForm())
+      {
+        <h2>Add rating for @Model.Rating.Restaurant.Name</h2>
+        <section>     
+            <div class="form-group">
+              @Html.HiddenFor(x => x.Rating.RestaurantId, new { @class = "form-control" } )
+            </div>
+            <div class="form-group">
+              @Html.HiddenFor(x => x.Rating.OrderId, new { @class = "form-control" } )
+            </div>
+            <div class="form-group">
+              @Html.LabelFor(x => x.Rating.Stars, new { @class = "control-label" })
+              @Html.TextBoxFor(x => x.Rating.Stars, new { @class = "form-control" })
+              @Html.ValidationMessageFor(x => x.Rating.Stars, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+              @Html.LabelFor(x => x.Rating.Comment, new { @class = "control-label" })
+              @Html.TextBoxFor(x => x.Rating.Comment, new { @class = "form-control" })
+              @Html.ValidationMessageFor(x => x.Rating.Comment, null, new { @class = "text-danger" })
+            </div>            
+        </section>       
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+      }
+    </section>
+  </div>
+</form>

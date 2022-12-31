@@ -13,6 +13,7 @@ public interface IUnitOfWork : IAsyncDisposable
     public IRepository<Category, Guid> CategoryRepository { get; }
     public IRepository<CustomerDetails, Guid> CustomerDetailsRepository { get; }
     public IRepository<Address, Guid> AddressRepository { get; }
+    public IRepository<Rating, Guid> RatingRepository { get; }
 
     public Task CommitAsync();
 }

@@ -18,6 +18,7 @@ public class EfUnitOfWork : IUnitOfWork
     public IRepository<Category, Guid> CategoryRepository { get; }
     public IRepository<CustomerDetails, Guid> CustomerDetailsRepository { get; }
     public IRepository<Address, Guid> AddressRepository { get; }
+    public IRepository<Rating, Guid> RatingRepository { get; }
 
     public EfUnitOfWork(DbContext context)
     {
@@ -31,6 +32,7 @@ public class EfUnitOfWork : IUnitOfWork
         CategoryRepository = new EfRepository<Category, Guid>(_context);
         CustomerDetailsRepository = new EfRepository<CustomerDetails, Guid>(_context);
         AddressRepository = new EfRepository<Address, Guid>(_context);
+        RatingRepository = new EfRepository<Rating, Guid>(_context);
     }
 
     public async Task CommitAsync()

@@ -5,4 +5,33 @@
   ViewData["Title"] = "Order details";
 }
 
+<h1>Restaurants</h1>
+<table class="table">
+  <thead>
+  <tr>
+    <th>
+      @Html.DisplayNameFor(model => model.Restaurants[0].Name)
+    </th>
+    <th>      
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  @foreach (var item in Model.Restaurants)
+  {
+    <tr>
+      <td>
+        @Html.DisplayFor(modelItem => item.Name)
+      </td>
+        @if (!await Model.AlreadyRated(item.Id))
+        {
+          <td>
+            <a class="text-dark" asp-page="/Forms/RateRestaurant" asp-route-restaurantId="@item.Id" asp-route-orderId="@Model.Order.Id">Rate Restaurant</a>
+          </td>          
+        }                
+    </tr>
+  }
+  </tbody>
+</table>
+
 @await Html.PartialAsync("_ProductsPartial", Model.Order.Products)
