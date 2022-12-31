@@ -23,6 +23,11 @@ public class UserFacade : IUserFacade
         return await _userService.GetAllAsync();
     }
 
+    public async Task<UserGetDto> GetByUsernameAsync(string username)
+    {
+        return await _userService.GetByUsernameAsync(username);
+    }
+
     public async Task<IEnumerable<UserGetDto>> QueryAsync(QueryDto<UserGetDto> queryDto)
     {
         return await _userService.QueryAsync(queryDto);
@@ -41,6 +46,11 @@ public class UserFacade : IUserFacade
     public async Task UnbanUserAsync(Guid userId)
     {
         await _userService.UnbanUserAsync(userId);
+    }
+
+    public async Task<bool> IsBanned(Guid userId)
+    {
+        return await _userService.IsBanned(userId);
     }
 
     public async Task CreateUserAsync(UserCreateDto userCreateDto)

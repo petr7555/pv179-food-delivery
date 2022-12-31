@@ -8,6 +8,8 @@ public interface IUserFacade
 {
     public Task<IEnumerable<UserGetDto>> GetAllAsync();
 
+    public Task<UserGetDto> GetByUsernameAsync(string username);
+
     public Task<IEnumerable<UserGetDto>> QueryAsync(QueryDto<UserGetDto> queryDto);
 
     public Task UpdateAddressAsync(Guid userId, Guid addressId, AddressUpdateDto addressUpdateDto);
@@ -15,6 +17,8 @@ public interface IUserFacade
     public Task BanUserAsync(Guid userId);
 
     public Task UnbanUserAsync(Guid userId);
+
+    public Task<bool> IsBanned(Guid userId);
 
     public Task CreateUserAsync(UserCreateDto userCreateDto);
 }

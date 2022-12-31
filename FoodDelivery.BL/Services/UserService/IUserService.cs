@@ -17,6 +17,8 @@ public interface IUserService : ICrudService<User, Guid, UserGetDto, UserCreateD
 
     public Task UnbanUserAsync(Guid userId);
 
+    public Task<bool> IsBanned(Guid userId);
+
     public Task<UserGetDto> GetByUsernameAsync(string username);
 
     public CustomerDetailsUpdateDto ConvertToUpdateDto(CustomerDetailsGetDto customerDetailsGetDto);

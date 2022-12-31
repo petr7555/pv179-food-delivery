@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using FoodDelivery.BL.Facades.UserFacade;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -21,14 +22,16 @@ public class Login : PageModel
 
     private readonly ILogger<Login> _logger;
     private readonly UserManager<IdentityUser> _userManager;
+    private readonly IUserFacade _userFacade;
     private readonly SignInManager<IdentityUser> _signInManager;
 
     public Login(ILogger<Login> logger, UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager)
+        SignInManager<IdentityUser> signInManager, IUserFacade userFacade)
     {
         _logger = logger;
         _userManager = userManager;
         _signInManager = signInManager;
+        _userFacade = userFacade;
     }
 
     public IActionResult OnGet([FromQuery] string? returnUrl)
@@ -58,6 +61,14 @@ public class Login : PageModel
         if (!await _userManager.CheckPasswordAsync(user, Password))
         {
             ModelState.AddModelError("LoginFailed", "Incorrect password");
+            return Page();
+        }
+
+        var NonIdentityUser = await _userFacade.GetByUsernameAsync(user.UserName);
+        Console.WriteLine("NonIdentityUser: " + NonIdentityUser.Username);
+        if (NonIdentityUser.Banned)
+        {
+            ModelState.AddModelError("LoginFailed", "Account has been banned");
             return Page();
         }
 
