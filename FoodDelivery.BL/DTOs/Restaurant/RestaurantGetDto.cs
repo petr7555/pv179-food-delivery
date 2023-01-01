@@ -7,4 +7,5 @@ public class RestaurantGetDto
     public Guid Id { get; set; }
     public string Name { get; set; }
     public Guid DeliveryPriceId { get; set; }
+    public PriceGetDto DeliveryPrice { get; set; }
 }

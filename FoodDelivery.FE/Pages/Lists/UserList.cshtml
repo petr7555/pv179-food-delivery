@@ -36,20 +36,7 @@
           <form method="post" asp-page-handler="BanUser" asp-route-userId="@user.Id">
             <button type="submit" class="btn btn-primary mt-2">Ban</button>
           </form>
-        </td> 
-        @*<td>
-          <form method="post" action="Model.BanUser()">
-	        <div class="col-md-4">
-              <section>
-                @using (Html.BeginForm())
-                {
-                  <input type="button" onClick="Model.BanUser(user.Id)">
-                  <button type="submit" class="btn btn-primary mt-2">Ban</button>
-                }
-              </section>
-            </div>
-          </form>
-        </td>       *@    
+        </td>   
       }
     </tr>
   }

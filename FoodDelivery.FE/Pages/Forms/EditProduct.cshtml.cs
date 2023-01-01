@@ -54,8 +54,6 @@ namespace FoodDelivery.FE.Pages.Forms
                 Product.RestaurantId = restaurantId;
             }
 
-            Console.WriteLine("Price ID (ONGET): " + Product.Price.Id);
-
             Currencies = await _priceService.GetAllCurrencies();
             Categories = await _categoryService.GetAllAsync();
 
@@ -65,8 +63,6 @@ namespace FoodDelivery.FE.Pages.Forms
 
         public async Task<IActionResult> OnPost()
         {
-            Console.WriteLine("Price ID: " + Product.Price.Id);
-
             Product.CategoryId = new Guid(SelectedTagCategory);
             Product.Price.CurrencyId = new Guid(SelectedTagCurrency);
 

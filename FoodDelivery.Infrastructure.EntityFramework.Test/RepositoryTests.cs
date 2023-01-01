@@ -41,7 +41,7 @@ public class RepositoryTests
         _pizzaGiuseppe = new Restaurant
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000001"), Name = "Pizza Guiseppe",
-            DeliveryPriceId = _priceFifty.Id
+            DeliveryPriceId = _priceFifty.Id,
         };
         _pizzaDominos = new Restaurant
         {
@@ -65,7 +65,8 @@ public class RepositoryTests
         };
         _poePoe = new Restaurant
         {
-            Id = Guid.Parse("00000000-0000-0000-0000-000000000006"), Name = "POE POE", DeliveryPriceId = priceEighty.Id
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000006"), Name = "POE POE",
+            DeliveryPriceId = priceEighty.Id
         };
         _context.Restaurants.AddRange(_pizzaGiuseppe, _pizzaDominos, _pizzaHut, _k1, _jeanPauls, _poePoe);
 
@@ -77,6 +78,8 @@ public class RepositoryTests
     {
         var result = await _repository.GetByIdAsync(Guid.Parse("00000000-0000-0000-0000-000000000006"));
 
+        _poePoe.Should().BeNull();
+
         result.Should().BeEquivalentTo(_poePoe);
     }
 
@@ -84,6 +87,8 @@ public class RepositoryTests
     public async Task ItGetsAllRestaurants()
     {
         var result = await _repository.GetAllAsync();
+
+        result.Should().BeEmpty();
 
         result.Should().BeEquivalentTo(new List<Restaurant>
         {
