@@ -27,6 +27,7 @@ public static class MappingConfig
         config.CreateMap<Product, ProductGetDto>().ReverseMap(); 
 
         config.CreateMap<Price, PriceGetDto>().ReverseMap();
+        config.CreateMap<Price, PriceCreateDto>().ReverseMap();
 
         config.CreateMap<Currency, CurrencyGetDto>().ReverseMap();
 

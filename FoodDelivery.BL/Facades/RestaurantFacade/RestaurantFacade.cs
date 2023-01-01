@@ -1,5 +1,7 @@
 using FoodDelivery.BL.DTOs;
+using FoodDelivery.BL.DTOs.Price;
 using FoodDelivery.BL.DTOs.Restaurant;
+using FoodDelivery.BL.Services.PriceService;
 using FoodDelivery.BL.Services.RestaurantService;
 using FoodDelivery.Infrastructure.UnitOfWork;
 
@@ -9,11 +11,13 @@ public class RestaurantFacade : IRestaurantFacade
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IRestaurantService _restaurantService;
+    private readonly IPriceService _priceService;
 
-    public RestaurantFacade(IUnitOfWork unitOfWork, IRestaurantService restaurantService)
+    public RestaurantFacade(IUnitOfWork unitOfWork, IRestaurantService restaurantService, IPriceService priceService)
     {
         _unitOfWork = unitOfWork;
         _restaurantService = restaurantService;
+        _priceService = priceService;
     }
 
     public async Task<RestaurantGetDto> GetById(Guid id)
@@ -34,6 +38,14 @@ public class RestaurantFacade : IRestaurantFacade
     public async Task CreateAsync(RestaurantCreateDto dto)
     {
         _restaurantService.Create(dto);
+        await _unitOfWork.CommitAsync();
+    }
+
+    public async Task CreateWithNewPrice(RestaurantCreateDto restaurantCreateDto, PriceCreateDto priceCreateDto)
+    {
+        _priceService.Create(priceCreateDto);
+        restaurantCreateDto.DeliveryPriceId = priceCreateDto.Id;
+        _restaurantService.Create(restaurantCreateDto);
         await _unitOfWork.CommitAsync();
     }
 }

@@ -5,7 +5,8 @@
   ViewData["Title"] = "Products";
 }
 
-
+<h2>@Model.Restaurant.Name</h2>
+<p>Delivery price: @Model.DeliveryPrice.Amount @Model.DeliveryPrice.Currency.Name</p>
 <ul>
   @foreach (var product in Model.Products)
   {

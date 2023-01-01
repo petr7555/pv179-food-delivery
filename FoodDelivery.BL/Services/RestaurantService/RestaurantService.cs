@@ -1,5 +1,6 @@
 using AutoMapper;
 using FoodDelivery.BL.DTOs;
+using FoodDelivery.BL.DTOs.Price;
 using FoodDelivery.BL.DTOs.Restaurant;
 using FoodDelivery.BL.QueryObject;
 using FoodDelivery.BL.Services.CrudService;

@@ -4,6 +4,7 @@ using FoodDelivery.BL.DTOs.Category;
 using FoodDelivery.BL.DTOs.CustomerDetails;
 using FoodDelivery.BL.DTOs.Order;
 using FoodDelivery.BL.DTOs.OrderProduct;
+using FoodDelivery.BL.DTOs.Price;
 using FoodDelivery.BL.DTOs.Product;
 using FoodDelivery.BL.DTOs.Rating;
 using FoodDelivery.BL.DTOs.Restaurant;
@@ -18,6 +19,7 @@ using FoodDelivery.BL.Services.AddressService;
 using FoodDelivery.BL.Services.CategoryService;
 using FoodDelivery.BL.Services.OrderProductService;
 using FoodDelivery.BL.Services.OrderService;
+using FoodDelivery.BL.Services.PriceService;
 using FoodDelivery.BL.Services.ProductService;
 using FoodDelivery.BL.Services.RatingService;
 using FoodDelivery.BL.Services.RestaurantService;
@@ -107,6 +109,14 @@ public static class BlDependencies
             new QueryObject<RatingGetDto, Rating>(
                 sp.GetRequiredService<IMapper>(),
                 () => new EfQuery<Rating>(sp.GetRequiredService<DbContext>())
+            )
+        );
+
+        services.AddScoped<IPriceService, PriceService>();
+        services.AddScoped<IQueryObject<PriceGetDto, Price>>(sp =>
+            new QueryObject<PriceGetDto, Price>(
+                sp.GetRequiredService<IMapper>(),
+                () => new EfQuery<Price>(sp.GetRequiredService<DbContext>())
             )
         );
 
