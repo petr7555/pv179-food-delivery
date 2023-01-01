@@ -32,16 +32,21 @@ public class AddRestaurant : PageModel
         DeliveryPrice = new PriceCreateDto();
     }
 
-    public async Task OnGetAsync()
+    public async Task OnGetAsync(Guid restaurantId)
     {
+        if (restaurantId != Guid.Empty)
+        {
+            Restaurant = _restaurantFacade.ConvertToCreateDto(await _restaurantFacade.GetById(restaurantId));
+            DeliveryPrice = _priceService.ConvertToCreateDto(await _priceService.GetByIdAsync(Restaurant.DeliveryPriceId));
+        }
         Currencies = await _priceService.GetAllCurrencies();
         TagOptions = new SelectList(Currencies.ToList(), nameof(CurrencyGetDto.Id), nameof(CurrencyGetDto.Name));
     }
 
     public async Task<IActionResult> OnPost()
     {
-        DeliveryPrice.Id = Guid.NewGuid();
-
+        Console.WriteLine("Line 48");
+        Restaurant.DeliveryPriceId = DeliveryPrice.Id;
         if (SelectedTag != null)
         {
             DeliveryPrice.CurrencyId = new Guid(SelectedTag);
@@ -52,7 +57,15 @@ public class AddRestaurant : PageModel
             return Page();
         }
 
-        await _restaurantFacade.CreateWithNewPrice(Restaurant, DeliveryPrice);
+        if (Restaurant.Id == Guid.Empty)
+        {
+            DeliveryPrice.Id = Guid.NewGuid();
+            await _restaurantFacade.CreateWithNewPrice(Restaurant, DeliveryPrice);
+        }
+        else
+        {            
+            await _restaurantFacade.UpdateAsync(Restaurant, DeliveryPrice);
+        }
 
         return RedirectToPage("../Lists/RestaurantList");
     }

@@ -1,0 +1,63 @@
+﻿@page
+@model FoodDelivery.FE.Pages.Forms.EditProduct
+
+@{
+    ViewData["Title"] = "Edit Product";
+}
+
+<form method="post">
+	<div class="col-md-4">
+
+    <section>
+      @using (Html.BeginForm())
+      {
+        <h2></h2>
+        <section>     
+            <div>
+              @Html.HiddenFor(x => x.Product.RestaurantId, new { @class = "form-control" } )
+              @Html.HiddenFor(x => x.Product.CategoryId, new { @class = "form-control" } )
+              @Html.HiddenFor(x => x.Product.Id, new { @class = "form-control" } )
+              @Html.HiddenFor(x => x.Product.Price, new { @class = "form-control" } )
+              @Html.HiddenFor(x => x.Product.PriceId, new { @class = "form-control" } )
+              @Html.HiddenFor(x => x.Product.Price.Id, new { @class = "form-control" } )
+              @Html.HiddenFor(x => x.Product.Price.CurrencyId, new { @class = "form-control" } )
+            </div>
+            <div class="form-group">
+              @Html.LabelFor(x => x.Product.Name, new { @class = "control-label" })
+              @Html.TextBoxFor(x => x.Product.Name, new { @class = "form-control" })
+              @Html.ValidationMessageFor(x => x.Product.Name, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+              @Html.LabelFor(x => x.Product.Description, new { @class = "control-label" })
+              @Html.TextBoxFor(x => x.Product.Description, new { @class = "form-control" })
+              @Html.ValidationMessageFor(x => x.Product.Description, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+              @Html.LabelFor(x => x.Product.ImageUrl, new { @class = "control-label" })
+              @Html.TextBoxFor(x => x.Product.ImageUrl, new { @class = "form-control" })
+              @Html.ValidationMessageFor(x => x.Product.ImageUrl, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                Current category: @await Model.getCategoryName()
+            </div>
+            <div class="form-group">
+              <label class="control-label">Category</label>
+              <select asp-for="SelectedTagCategory" asp-items="Model.TagOptionsCategories"></select>
+            </div>
+            <div class="form-group">
+              @Html.LabelFor(x => x.Product.Price.Amount, new { @class = "control-label" })
+              @Html.TextBoxFor(x => x.Product.Price.Amount, new { @class = "form-control" })
+              @Html.ValidationMessageFor(x => x.Product.Price.Amount, null, new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+              <label class="control-label">Currency</label>
+              <select asp-for="SelectedTagCurrency" asp-items="Model.TagOptionsCurrencies"></select>
+            </div>
+        </section>       
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+      }
+    </section>
+  </div>
+</form>

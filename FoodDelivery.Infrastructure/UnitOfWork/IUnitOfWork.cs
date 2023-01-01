@@ -17,4 +17,5 @@ public interface IUnitOfWork : IAsyncDisposable
     public IRepository<Price, Guid> PriceRepository { get; }
 
     public Task CommitAsync();
+    public void Commit();
 }

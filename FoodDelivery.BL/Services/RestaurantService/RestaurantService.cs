@@ -25,4 +25,14 @@ public class
     {
         return await _queryObject.ExecuteAsync(queryDto);
     }
+
+    public void Update(RestaurantCreateDto restaurantCreateDto)
+    {
+        Update(Mapper.Map<RestaurantUpdateDto>(Mapper.Map<Restaurant>(restaurantCreateDto)));
+    }
+
+    public RestaurantCreateDto ConvertToCreateDto(RestaurantGetDto restaurantGetDto)
+    {
+        return Mapper.Map<RestaurantCreateDto>(Mapper.Map<Restaurant>(restaurantGetDto));
+    }
 }

@@ -10,7 +10,7 @@ using FoodDelivery.Infrastructure.UnitOfWork;
 
 namespace FoodDelivery.BL.Services.PriceService;
 public class PriceService :
-    CrudService<Price, Guid, PriceGetDto, PriceCreateDto, PriceGetDto>,
+    CrudService<Price, Guid, PriceGetDto, PriceCreateDto, PriceUpdateDto>,
     IPriceService
 {
     private readonly IQueryObject<PriceGetDto, Price> _queryObject;
@@ -19,6 +19,11 @@ public class PriceService :
         IQueryObject<PriceGetDto, Price> queryObject) : base(unitOfWork.PriceRepository, mapper)
     {
         _queryObject = queryObject;
+    }
+
+    public void Update(PriceCreateDto priceCreateDto)
+    {
+        Update(Mapper.Map<PriceUpdateDto>(Mapper.Map<Price>(priceCreateDto)));
     }
 
     public async Task<IEnumerable<PriceGetDto>> QueryAsync(QueryDto<PriceGetDto> queryDto)
@@ -30,5 +35,10 @@ public class PriceService :
     {
         var allPrices = await GetAllAsync();
         return allPrices.Select(p => p.Currency).GroupBy(x => x.Name).Select(g => g.First()).ToList();
+    }
+
+    public PriceCreateDto ConvertToCreateDto(PriceGetDto priceGetDto)
+    {
+        return Mapper.Map<PriceCreateDto>(Mapper.Map<Price>(priceGetDto));
     }
 }

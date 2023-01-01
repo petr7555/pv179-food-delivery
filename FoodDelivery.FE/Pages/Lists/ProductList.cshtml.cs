@@ -50,4 +50,16 @@ public class ProductList : PageModel
 
         return redirectPage;
     }
+
+    public async Task<IActionResult> OnPostDeleteProduct(Guid productId, Guid restaurantId)
+    {
+        _productFacade.Delete(productId);
+        return RedirectToPage("/Lists/ProductList", new { restaurantId = restaurantId });
+    }
+
+    public async Task<IActionResult> OnPostDeleteRestaurant(Guid restaurantId)
+    {
+        await _restaurantFacade.Delete(restaurantId);
+        return RedirectToPage("/Lists/RestaurantList");
+    }
 }

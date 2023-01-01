@@ -42,6 +42,11 @@ public class EfUnitOfWork : IUnitOfWork
         await _context.SaveChangesAsync();
     }
 
+    public void Commit()
+    {
+        _context.SaveChanges();
+    }
+
     public async ValueTask DisposeAsync()
     {
         await _context.DisposeAsync();

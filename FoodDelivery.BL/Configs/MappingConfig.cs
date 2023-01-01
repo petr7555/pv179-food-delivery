@@ -23,11 +23,17 @@ public static class MappingConfig
 
         config.CreateMap<Restaurant, RestaurantGetDto>().ReverseMap();
         config.CreateMap<Restaurant, RestaurantCreateDto>().ReverseMap();
+        config.CreateMap<Restaurant, RestaurantUpdateDto>().ReverseMap();
 
-        config.CreateMap<Product, ProductGetDto>().ReverseMap(); 
+        config.CreateMap<Product, ProductGetDto>().ReverseMap();
+        config.CreateMap<Product, ProductCreateDto>().ReverseMap();
+        config.CreateMap<Product, ProductUpdateDto>().ReverseMap();
+        config.CreateMap<ProductGetDto, ProductUpdateDto>().ReverseMap();
 
         config.CreateMap<Price, PriceGetDto>().ReverseMap();
         config.CreateMap<Price, PriceCreateDto>().ReverseMap();
+        config.CreateMap<Price, PriceUpdateDto>().ReverseMap();
+        config.CreateMap<PriceGetDto, PriceUpdateDto>().ReverseMap();
 
         config.CreateMap<Currency, CurrencyGetDto>().ReverseMap();
 
