@@ -32,6 +32,11 @@ public class EfRepository<TEntity, TKey> : IRepository<TEntity, TKey> where TEnt
 
     public void Update(TEntity entity)
     {
+        if (entity == null)
+        {
+            throw new ArgumentNullException(nameof(entity));
+        }
+
         var originalEntity = _dbSet.Find(entity.Id);
         if (originalEntity == null)
         {
