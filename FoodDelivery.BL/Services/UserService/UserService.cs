@@ -44,26 +44,26 @@ public class UserService : CrudService<User, Guid, UserGetDto, UserCreateDto, Us
         await _unitOfWork.CommitAsync();
     }
 
+    public async Task<bool> IsBanned(Guid userId)
+    {
+        var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
+        return user.Banned;
+    }
+
     public async Task BanUserAsync(Guid userId)
     {
-        // TODO Will be reworked based on authentication and authorization
-
-        // TODO check privileges
-
         var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
         user.Banned = true;
         _unitOfWork.UserRepository.Update(user, new[] { nameof(User.Banned) });
+        await _unitOfWork.CommitAsync();
     }
 
     public async Task UnbanUserAsync(Guid userId)
     {
-        // TODO Will be reworked based on authentication and authorization
-
-        // TODO check privileges
-
         var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
         user.Banned = false;
         _unitOfWork.UserRepository.Update(user, new[] { nameof(User.Banned) });
+        await _unitOfWork.CommitAsync();
     }
 
     public async Task<UserGetDto> GetByUsernameAsync(string username)

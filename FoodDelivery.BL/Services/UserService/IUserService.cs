@@ -13,6 +13,8 @@ public interface IUserService : ICrudService<User, Guid, UserGetDto, UserCreateD
 
     public Task UpdateAddressAsync(Guid userId, Guid addressId, AddressUpdateDto addressUpdateDto);
 
+    public Task<bool> IsBanned(Guid userId);
+
     public Task BanUserAsync(Guid userId);
 
     public Task UnbanUserAsync(Guid userId);
