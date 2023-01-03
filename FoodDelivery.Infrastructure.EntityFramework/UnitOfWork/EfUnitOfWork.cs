@@ -43,6 +43,11 @@ public class EfUnitOfWork : IUnitOfWork
         PriceRepository = new EfRepository<Price, Guid>(_context);
     }
 
+    public void Commit()
+    {
+        _context.SaveChanges();
+    }
+
     public async Task CommitAsync()
     {
         await _context.SaveChangesAsync();

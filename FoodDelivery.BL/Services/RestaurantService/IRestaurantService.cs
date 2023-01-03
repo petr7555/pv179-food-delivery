@@ -9,4 +9,8 @@ public interface
     IRestaurantService : ICrudService<Restaurant, Guid, RestaurantGetDto, RestaurantCreateDto, RestaurantUpdateDto>
 {
     public Task<IEnumerable<RestaurantGetDto>> QueryAsync(QueryDto<RestaurantGetDto> queryDto);
+
+    public void Update(RestaurantCreateDto restaurantCreateDto);
+
+    public RestaurantCreateDto ConvertToCreateDto(RestaurantGetDto restaurantGetDto);
 }

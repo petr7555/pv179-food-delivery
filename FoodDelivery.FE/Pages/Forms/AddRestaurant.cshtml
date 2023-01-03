@@ -11,6 +11,9 @@
     <section>
       @using (Html.BeginForm())
       {
+        <div>
+          @Html.HiddenFor(x => x.Restaurant.Id, new { @class = "form-control" } )          
+        </div>
         <div class="form-group">
           @Html.LabelFor(x => x.Restaurant.Name, new { @class = "control-label" })
           @Html.TextBoxFor(x => x.Restaurant.Name, new { @class = "form-control" })

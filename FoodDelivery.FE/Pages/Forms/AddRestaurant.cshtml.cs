@@ -26,28 +26,42 @@ public class AddRestaurant : PageModel
         Prices = new List<PriceCreateDto>();        
     }
 
-    public async Task OnGetAsync()
+    public async Task OnGetAsync(Guid restaurantId)
     {
-        var currencies = await _priceService.GetAllCurrencies();
-        foreach (var currency in currencies)
+        if (restaurantId != Guid.Empty)
         {
-            var price = new PriceCreateDto();
-            price.CurrencyId = currency.Id;
-            price.Currency = currency;
-            Prices.Add(price);
-        }
+            Restaurant = _restaurantFacade.ConvertToCreateDto(await _restaurantFacade.GetByIdAsync(restaurantId));
+            var prices = await _priceService.GetAllAsCreateDtoAsync();
+            Prices = prices.Where(price => price.RestaurantId.Equals(Restaurant.Id)).ToList();
+        } else
+        {
+            var currencies = await _priceService.GetAllCurrencies();
+            foreach (var currency in currencies)
+            {
+                var price = new PriceCreateDto();
+                price.CurrencyId = currency.Id;
+                price.Currency = currency;
+                Prices.Add(price);
+            }
+        }        
     }
 
     public async Task<IActionResult> OnPost()
     {
-        Restaurant.Id = Guid.NewGuid();
-        foreach (var price in Prices)
+        if (Restaurant.Id == Guid.Empty)
         {
-            price.Id = Guid.NewGuid();
-            price.RestaurantId = Restaurant.Id;
+            Restaurant.Id = Guid.NewGuid();
+            foreach (var price in Prices)
+            {
+                price.Id = Guid.NewGuid();
+                price.RestaurantId = Restaurant.Id;
+            }
+            await _restaurantFacade.CreateWithNewPrices(Restaurant, Prices);
         }
-
-        await _restaurantFacade.CreateWithNewPrices(Restaurant, Prices);
+        else
+        {            
+            await _restaurantFacade.UpdateAsync(Restaurant, Prices);
+        }
 
 
         return RedirectToPage("../Lists/RestaurantList");

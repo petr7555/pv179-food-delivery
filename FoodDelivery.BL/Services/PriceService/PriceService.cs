@@ -9,7 +9,7 @@ using FoodDelivery.Infrastructure.UnitOfWork;
 
 namespace FoodDelivery.BL.Services.PriceService;
 public class PriceService :
-    CrudService<Price, Guid, PriceGetDto, PriceCreateDto, PriceGetDto>,
+    CrudService<Price, Guid, PriceGetDto, PriceCreateDto, PriceUpdateDto>,
     IPriceService
 {
     private readonly IQueryObject<PriceGetDto, Price> _queryObject;
@@ -20,14 +20,40 @@ public class PriceService :
         _queryObject = queryObject;
     }
 
+    public async Task<IEnumerable<PriceCreateDto>> GetAllAsCreateDtoAsync()
+    {
+        var allPrices = await GetAllAsync();
+        return allPrices.Select(price => Mapper.Map<PriceCreateDto>(Mapper.Map<Price>(price)));
+    }
+    
     public async Task<IEnumerable<PriceGetDto>> QueryAsync(QueryDto<PriceGetDto> queryDto)
     {
         return await _queryObject.ExecuteAsync(queryDto);
+    }
+
+    public void Create(PriceUpdateDto priceUpdateDto)
+    {
+        Create(Mapper.Map<PriceCreateDto>(Mapper.Map<Price>(priceUpdateDto)));
+    }
+    
+    public void Update(PriceCreateDto priceCreateDto)
+    {
+        Update(
+            Mapper.Map<PriceUpdateDto>(Mapper.Map<Price>(priceCreateDto)),
+            new []
+            {
+                nameof(Price.Amount)
+            });
     }
 
     public async Task<IEnumerable<CurrencyGetDto>> GetAllCurrencies()
     {
         var allPrices = await GetAllAsync();
         return allPrices.Select(p => p.Currency).GroupBy(x => x.Name).Select(g => g.First()).ToList();
+    }
+
+    public PriceCreateDto ConvertToCreateDto(PriceGetDto priceGetDto)
+    {
+        return Mapper.Map<PriceCreateDto>(Mapper.Map<Price>(priceGetDto));
     }
 }

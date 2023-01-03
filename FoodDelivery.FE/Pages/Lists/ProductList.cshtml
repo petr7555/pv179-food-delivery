@@ -17,18 +17,50 @@
 {
   <p>@price.Amount @price.Currency.Name</p>
 }
+@if (User.IsInRole("ContentManager"))
+{
+  <form method="post">
+    <button type="button" class="btn btn-primary mt-2" >
+      <a class="text-dark" style="text-decoration:none" asp-page="/Forms/AddRestaurant" asp-route-restaurantId=@Model.Restaurant.Id>Edit Restaurant</a>
+    </button>
+  </form>
+  <form method="post" asp-page-handler="DeleteRestaurant" asp-route-restaurantId="@Model.Restaurant.Id">
+    <button type="submit" class="btn btn-primary mt-2">Delete Restaurant</button>
+  </form>
+  <form method="post">
+    <button type="button" class="btn btn-primary mt-2" >
+      <a class="text-dark" style="text-decoration:none" asp-page="/Forms/EditProduct" asp-route-productId="" asp-route-restaurantId=@Model.Restaurant.Id>Add Menu Item</a>
+    </button>
+  </form>
+}
 
 <ul>
   @foreach (var product in Model.Products)
   {
     <li>
-      <form method="post">
+      @if (User.IsInRole("Customer"))
+      {
+        <form method="post">
+          <p>@product.Name</p>
+          <p>@product.PricePerEach.Amount @product.PricePerEach.Currency.Name</p>
+          <input type="hidden" name="productId" value="@product.Id">
+          <input type="hidden" name="restaurantId" value="@product.Restaurant.Id">
+          <input type="submit" value="Add to cart"/>
+        </form>
+      }
+      else if (User.IsInRole("ContentManager"))
+      {
         <p>@product.Name</p>
         <p>@product.PricePerEach.Amount @product.PricePerEach.Currency.Name</p>
-        <input type="hidden" name="productId" value="@product.Id">
-        <input type="hidden" name="restaurantId" value="@product.Restaurant.Id">
-        <input type="submit" value="Add to cart"/>
-      </form>
+        <form method="post">
+          <button type="button" class="btn btn-primary mt-2" >
+                <a class="text-dark" style="text-decoration:none" asp-page="/Forms/EditProduct" asp-route-productId="@product.Id"  asp-route-restaurantId=@Model.Restaurant.Id>Edit</a>
+          </button>
+        </form> 
+        <form method="post" asp-page-handler="DeleteProduct" asp-route-productId="@product.Id" asp-route-restaurantId="@product.Restaurant.Id">
+          <button type="submit" class="btn btn-primary mt-2">Delete</button>
+        </form>
+      }
     </li>
   }
 </ul>
