@@ -16,11 +16,21 @@
           @Html.TextBoxFor(x => x.Restaurant.Name, new { @class = "form-control" })
           @Html.ValidationMessageFor(x => x.Restaurant.Name, null, new { @class = "text-danger" })
         </div>
-        <div class="form-group">
-          @Html.LabelFor(x => x.Restaurant.DeliveryPriceId, new { @class = "control-label" })
-          @Html.TextBoxFor(x => x.Restaurant.DeliveryPriceId, new { @class = "form-control" })
-          @Html.ValidationMessageFor(x => x.Restaurant.DeliveryPriceId, null, new { @class = "text-danger" })
-        </div>
+        <h3>Delivery prices</h3>
+        @for (var i=0; i < Model.Prices.Count(); i++)
+        {
+          <div class="form-group">
+            <label class="control-label">@Model.Prices[i].Currency.Name</label>            
+            @Html.TextBoxFor(x => x.Prices[i].Amount, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Prices[i].Amount, null, new { @class = "text-danger" })
+          </div>
+          <div class="form-group">
+              @Html.HiddenFor(x => x.Prices[i].Id, new { @class = "form-control" } )
+              @Html.HiddenFor(x => x.Prices[i].RestaurantId, new { @class = "form-control" } )
+              @Html.HiddenFor(x => x.Prices[i].CurrencyId, new { @class = "form-control" } )
+              @Html.HiddenFor(x => x.Prices[i].Currency, new { @class = "form-control" } )
+          </div>
+        }
         <div class="form-group">
           <button type="submit" class="btn btn-primary">Add</button>
         </div>

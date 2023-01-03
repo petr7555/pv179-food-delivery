@@ -24,28 +24,24 @@ public static class MappingConfig
     {
         config.AddExpressionMapping();
 
-        config.CreateMap<Restaurant, RestaurantGetDto>().ReverseMap();
-        config.CreateMap<Restaurant, RestaurantCreateDto>().ReverseMap();
-
-        config.CreateMap<Product, ProductGetDto>().ReverseMap();
-
-        config.CreateMap<Price, PriceGetDto>().ReverseMap();
-
-        config.CreateMap<Currency, CurrencyGetDto>().ReverseMap();
+        config.CreateMap<Address, AddressGetDto>().ReverseMap();
+        config.CreateMap<Address, AddressCreateDto>().ReverseMap();
+        config.CreateMap<Address, AddressUpdateDto>().ReverseMap();
 
         config.CreateMap<Category, CategoryGetDto>().ReverseMap();
 
-        config.CreateMap<User, UserGetDto>().ReverseMap();
-        config.CreateMap<User, UserCreateDto>().ReverseMap();
-        config.CreateMap<User, UserUpdateDto>().ReverseMap();
+        config.CreateMap<CompanyInfo, CompanyInfoGetDto>().ReverseMap();
+        config.CreateMap<CompanyInfo, CompanyInfoUpdateDto>().ReverseMap();
+        config.CreateMap<CompanyInfo, CompanyInfoCreateDto>().ReverseMap();
+
+        config.CreateMap<Coupon, CouponGetDto>().ReverseMap();
+        config.CreateMap<Coupon, CouponUpdateDto>().ReverseMap();
+
+        config.CreateMap<Currency, CurrencyGetDto>().ReverseMap();
 
         config.CreateMap<CustomerDetails, CustomerDetailsGetDto>().ReverseMap();
         config.CreateMap<CustomerDetails, CustomerDetailsUpdateDto>().ReverseMap();
-        config.CreateMap<CustomerDetails, CustomerDetailsCreateDto>().ReverseMap();
-
-        config.CreateMap<UserSettings, UserSettingsGetDto>().ReverseMap();
-        config.CreateMap<UserSettings, UserSettingsUpdateDto>().ReverseMap();
-        config.CreateMap<UserSettings, UserSettingsCreateDto>().ReverseMap();
+        config.CreateMap<CustomerDetails, CustomerDetailsCreateDto>().ReverseMap();                                                
 
         config.CreateMap<Order, OrderGetDto>().ReverseMap();
         config.CreateMap<Order, OrderCreateDto>().ReverseMap();
@@ -55,18 +51,23 @@ public static class MappingConfig
         config.CreateMap<OrderProduct, OrderProductUpdateDto>().ReverseMap();
         config.CreateMap<OrderProduct, OrderProductCreateDto>().ReverseMap();
 
-        config.CreateMap<CompanyInfo, CompanyInfoGetDto>().ReverseMap();
-        config.CreateMap<CompanyInfo, CompanyInfoUpdateDto>().ReverseMap();
-        config.CreateMap<CompanyInfo, CompanyInfoCreateDto>().ReverseMap();
+        config.CreateMap<Price, PriceGetDto>().ReverseMap();
+        config.CreateMap<Price, PriceCreateDto>().ReverseMap();
 
-        config.CreateMap<Address, AddressGetDto>().ReverseMap();
-        config.CreateMap<Address, AddressCreateDto>().ReverseMap();
-        config.CreateMap<Address, AddressUpdateDto>().ReverseMap();
+        config.CreateMap<Product, ProductGetDto>().ReverseMap();
 
-        config.CreateMap<Coupon, CouponGetDto>().ReverseMap();
-        config.CreateMap<Coupon, CouponUpdateDto>().ReverseMap();
-        
         config.CreateMap<Rating, RatingGetDto>().ReverseMap();
         config.CreateMap<Rating, RatingCreateDto>().ReverseMap();
+
+        config.CreateMap<Restaurant, RestaurantGetDto>().ReverseMap();
+        config.CreateMap<Restaurant, RestaurantCreateDto>().ReverseMap();
+
+        config.CreateMap<User, UserGetDto>().ReverseMap();
+        config.CreateMap<User, UserCreateDto>().ReverseMap();
+        config.CreateMap<User, UserUpdateDto>().ReverseMap();
+
+        config.CreateMap<UserSettings, UserSettingsGetDto>().ReverseMap();
+        config.CreateMap<UserSettings, UserSettingsUpdateDto>().ReverseMap();
+        config.CreateMap<UserSettings, UserSettingsCreateDto>().ReverseMap();
     }
 }

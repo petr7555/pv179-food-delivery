@@ -11,6 +11,12 @@
     @Model.ErrorMessage
   </div>
 }
+<h2>@Model.Restaurant.Name</h2>
+<h6>Delivery prices</h6>
+@foreach(var price in Model.DeliveryPrices)
+{
+  <p>@price.Amount @price.Currency.Name</p>
+}
 
 <ul>
   @foreach (var product in Model.Products)

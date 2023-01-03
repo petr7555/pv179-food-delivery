@@ -4,6 +4,7 @@ using FoodDelivery.BL.DTOs.Category;
 using FoodDelivery.BL.DTOs.Coupon;
 using FoodDelivery.BL.DTOs.Order;
 using FoodDelivery.BL.DTOs.OrderProduct;
+using FoodDelivery.BL.DTOs.Price;
 using FoodDelivery.BL.DTOs.Product;
 using FoodDelivery.BL.DTOs.Restaurant;
 using FoodDelivery.BL.DTOs.User;
@@ -18,6 +19,7 @@ using FoodDelivery.BL.Services.CouponService;
 using FoodDelivery.BL.Services.CurrencyService;
 using FoodDelivery.BL.Services.CustomerDetailsService;
 using FoodDelivery.BL.Services.OrderProductService;
+using FoodDelivery.BL.Services.PriceService;
 using FoodDelivery.BL.Services.OrderService;
 using FoodDelivery.BL.Services.ProductService;
 using FoodDelivery.BL.Services.RatingService;
@@ -43,6 +45,14 @@ public static class BlDependencies
             options.UseNpgsql(connectionString));
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();
 
+        services.AddScoped<IAddressService, AddressService>();
+        services.AddScoped<IQueryObject<AddressGetDto, Address>>(sp =>
+            new QueryObject<AddressGetDto, Address>(
+                sp.GetRequiredService<IMapper>(),
+                () => new EfQuery<Address>(sp.GetRequiredService<DbContext>())
+            )
+        );
+
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IQueryObject<CategoryGetDto, Category>>(sp =>
             new QueryObject<CategoryGetDto, Category>(
@@ -51,21 +61,24 @@ public static class BlDependencies
             )
         );
 
-        services.AddScoped<IRestaurantService, RestaurantService>();
-        services.AddScoped<IRestaurantFacade, RestaurantFacade>();
-        services.AddScoped<IQueryObject<RestaurantGetDto, Restaurant>>(sp =>
-            new QueryObject<RestaurantGetDto, Restaurant>(
+        services.AddScoped<ICouponService, CouponService>();
+        services.AddScoped<IQueryObject<CouponGetDto, Coupon>>(sp =>
+            new QueryObject<CouponGetDto, Coupon>(
                 sp.GetRequiredService<IMapper>(),
-                () => new EfQuery<Restaurant>(sp.GetRequiredService<DbContext>())
+                () => new EfQuery<Coupon>(sp.GetRequiredService<DbContext>())
             )
         );
 
-        services.AddScoped<IProductService, ProductService>();
-        services.AddScoped<IProductFacade, ProductFacade>();
-        services.AddScoped<IQueryObject<ProductGetDto, Product>>(sp =>
-            new QueryObject<ProductGetDto, Product>(
+        services.AddScoped<ICurrencyService, CurrencyService>();
+        services.AddScoped<ICustomerDetailsService, CustomerDetailsService>();
+        services.AddScoped<IUserSettingsService, UserSettingsService>();
+        services.AddScoped<IRatingService, RatingService>();
+
+        services.AddScoped<IOrderProductService, OrderProductService>();
+        services.AddScoped<IQueryObject<OrderProductGetDto, OrderProduct>>(sp =>
+            new QueryObject<OrderProductGetDto, OrderProduct>(
                 sp.GetRequiredService<IMapper>(),
-                () => new EfQuery<Product>(sp.GetRequiredService<DbContext>())
+                () => new EfQuery<OrderProduct>(sp.GetRequiredService<DbContext>())
             )
         );
 
@@ -78,13 +91,31 @@ public static class BlDependencies
             )
         );
 
-        services.AddScoped<IOrderProductService, OrderProductService>();
-        services.AddScoped<IQueryObject<OrderProductGetDto, OrderProduct>>(sp =>
-            new QueryObject<OrderProductGetDto, OrderProduct>(
+        services.AddScoped<IPriceService, PriceService>();
+        services.AddScoped<IQueryObject<PriceGetDto, Price>>(sp =>
+            new QueryObject<PriceGetDto, Price>(
                 sp.GetRequiredService<IMapper>(),
-                () => new EfQuery<OrderProduct>(sp.GetRequiredService<DbContext>())
+                () => new EfQuery<Price>(sp.GetRequiredService<DbContext>())
             )
         );
+
+        services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<IProductFacade, ProductFacade>();
+        services.AddScoped<IQueryObject<ProductGetDto, Product>>(sp =>
+            new QueryObject<ProductGetDto, Product>(
+                sp.GetRequiredService<IMapper>(),
+                () => new EfQuery<Product>(sp.GetRequiredService<DbContext>())
+            )
+        );
+
+        services.AddScoped<IRestaurantService, RestaurantService>();
+        services.AddScoped<IRestaurantFacade, RestaurantFacade>();
+        services.AddScoped<IQueryObject<RestaurantGetDto, Restaurant>>(sp =>
+            new QueryObject<RestaurantGetDto, Restaurant>(
+                sp.GetRequiredService<IMapper>(),
+                () => new EfQuery<Restaurant>(sp.GetRequiredService<DbContext>())
+            )
+        );        
 
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUserFacade, UserFacade>();
@@ -93,28 +124,7 @@ public static class BlDependencies
                 sp.GetRequiredService<IMapper>(),
                 () => new EfQuery<User>(sp.GetRequiredService<DbContext>())
             )
-        );
-        
-        services.AddScoped<ICouponService, CouponService>();
-        services.AddScoped<IQueryObject<CouponGetDto, Coupon>>(sp =>
-            new QueryObject<CouponGetDto, Coupon>(
-                sp.GetRequiredService<IMapper>(),
-                () => new EfQuery<Coupon>(sp.GetRequiredService<DbContext>())
-            )
-        );
-        
-        services.AddScoped<ICurrencyService, CurrencyService>();
-        services.AddScoped<ICustomerDetailsService, CustomerDetailsService>();
-        services.AddScoped<IUserSettingsService, UserSettingsService>();
-        services.AddScoped<IRatingService, RatingService>();
-
-        services.AddScoped<IAddressService, AddressService>();
-        services.AddScoped<IQueryObject<AddressGetDto, Address>>(sp =>
-            new QueryObject<AddressGetDto, Address>(
-                sp.GetRequiredService<IMapper>(),
-                () => new EfQuery<Address>(sp.GetRequiredService<DbContext>())
-            )
-        );
+        );                                        
 
         return services;
     }
