@@ -2,6 +2,7 @@
 
 public class AddressUpdateDto
 {
+    public Guid Id { get; set; }
     public string FullName { get; set; }
     public string StreetAddress { get; set; }
     public string City { get; set; }

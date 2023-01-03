@@ -37,6 +37,7 @@ public static class MappingConfig
 
         config.CreateMap<User, UserGetDto>().ReverseMap();
         config.CreateMap<User, UserCreateDto>().ReverseMap();
+        config.CreateMap<User, UserUpdateDto>().ReverseMap();
 
         config.CreateMap<CustomerDetails, CustomerDetailsGetDto>().ReverseMap();
         config.CreateMap<CustomerDetails, CustomerDetailsUpdateDto>().ReverseMap();
@@ -59,7 +60,9 @@ public static class MappingConfig
         config.CreateMap<CompanyInfo, CompanyInfoCreateDto>().ReverseMap();
 
         config.CreateMap<Address, AddressGetDto>().ReverseMap();
-        
+        config.CreateMap<Address, AddressCreateDto>().ReverseMap();
+        config.CreateMap<Address, AddressUpdateDto>().ReverseMap();
+
         config.CreateMap<Coupon, CouponGetDto>().ReverseMap();
         config.CreateMap<Coupon, CouponUpdateDto>().ReverseMap();
         

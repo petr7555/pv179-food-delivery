@@ -1,7 +1,6 @@
 ﻿using FoodDelivery.BL.DTOs;
 using FoodDelivery.BL.DTOs.Address;
 using FoodDelivery.BL.DTOs.Currency;
-using FoodDelivery.BL.DTOs.CustomerDetails;
 using FoodDelivery.BL.DTOs.User;
 
 namespace FoodDelivery.BL.Facades.UserFacade;
@@ -11,8 +10,6 @@ public interface IUserFacade
     public Task<IEnumerable<UserGetDto>> GetAllAsync();
 
     public Task<IEnumerable<UserGetDto>> QueryAsync(QueryDto<UserGetDto> queryDto);
-
-    public Task UpdateCustomerDetailsAsync(Guid userId, CustomerDetailsUpdateDto customerDetailsUpdateDto);
 
     public Task UpdateAddressAsync(Guid userId, Guid addressId, AddressUpdateDto addressUpdateDto);
 

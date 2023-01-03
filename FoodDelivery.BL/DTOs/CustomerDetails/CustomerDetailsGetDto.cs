@@ -8,7 +8,9 @@ public class CustomerDetailsGetDto
 {
     public Guid Id { get; set; }
     public UserGetDto Customer { get; set; }
+    public Guid BillingAddressId { get; set; }
     public virtual AddressGetDto BillingAddress { get; set; }
+    public Guid? DeliveryAddressId { get; set; }
     public virtual AddressGetDto? DeliveryAddress { get; set; }
     public virtual CompanyInfoGetDto? CompanyInfo { get; set; }
 }

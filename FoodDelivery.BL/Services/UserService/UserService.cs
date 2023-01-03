@@ -27,30 +27,21 @@ public class UserService : CrudService<User, Guid, UserGetDto, UserCreateDto, Us
         return await _queryObject.ExecuteAsync(queryDto);
     }
 
-    public async Task UpdateCustomerDetailsAsync(Guid userId, CustomerDetailsUpdateDto customerDetailsUpdateDto)
-    {
-        var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
-
-        user.CustomerDetails = Mapper.Map<CustomerDetails>(customerDetailsUpdateDto);
-        // TODO
-        _unitOfWork.UserRepository.Update(user, Array.Empty<string>());
-    }
-
     public async Task UpdateAddressAsync(Guid userId, Guid addressId, AddressUpdateDto addressUpdateDto)
     {
-        var user = await _unitOfWork.UserRepository.GetByIdAsync(userId);
-
-        if (user.CustomerDetails.BillingAddressId == addressId)
-        {
-            user.CustomerDetails.BillingAddress = Mapper.Map<Address>(addressUpdateDto);
-        }
-        else if (user.CustomerDetails.DeliveryAddressId == addressId)
-        {
-            user.CustomerDetails.DeliveryAddress = Mapper.Map<Address>(addressUpdateDto);
-        }
-
-        // TODO
-        _unitOfWork.UserRepository.Update(user, Array.Empty<string>());
+        addressUpdateDto.Id = addressId;
+        _unitOfWork.AddressRepository.Update(
+            Mapper.Map<Address>(addressUpdateDto),
+            new[]
+            {
+                nameof(Address.FullName),
+                nameof(Address.StreetAddress),
+                nameof(Address.City),
+                nameof(Address.State),
+                nameof(Address.ZipCode),
+                nameof(Address.PhoneNumber)
+            });
+        await _unitOfWork.CommitAsync();
     }
 
     public async Task BanUserAsync(Guid userId)
@@ -79,5 +70,10 @@ public class UserService : CrudService<User, Guid, UserGetDto, UserCreateDto, Us
     {
         var user = (await QueryAsync(new QueryDto<UserGetDto>().Where(u => u.Email == username))).Single();
         return user;
+    }
+
+    public CustomerDetailsUpdateDto ConvertToUpdateDto(CustomerDetailsGetDto customerDetailsGetDto)
+    {
+        return Mapper.Map<CustomerDetailsUpdateDto>(Mapper.Map<CustomerDetails>(customerDetailsGetDto));
     }
 }

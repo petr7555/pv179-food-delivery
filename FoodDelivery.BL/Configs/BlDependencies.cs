@@ -1,4 +1,5 @@
 using AutoMapper;
+using FoodDelivery.BL.DTOs.Address;
 using FoodDelivery.BL.DTOs.Coupon;
 using FoodDelivery.BL.DTOs.Order;
 using FoodDelivery.BL.DTOs.OrderProduct;
@@ -10,6 +11,7 @@ using FoodDelivery.BL.Facades.ProductFacade;
 using FoodDelivery.BL.Facades.RestaurantFacade;
 using FoodDelivery.BL.Facades.UserFacade;
 using FoodDelivery.BL.QueryObject;
+using FoodDelivery.BL.Services.AddressService;
 using FoodDelivery.BL.Services.CouponService;
 using FoodDelivery.BL.Services.CurrencyService;
 using FoodDelivery.BL.Services.CustomerDetailsService;
@@ -95,6 +97,14 @@ public static class BlDependencies
         services.AddScoped<ICustomerDetailsService, CustomerDetailsService>();
         services.AddScoped<IUserSettingsService, UserSettingsService>();
         services.AddScoped<IRatingService, RatingService>();
+
+        services.AddScoped<IAddressService, AddressService>();
+        services.AddScoped<IQueryObject<AddressGetDto, Address>>(sp =>
+            new QueryObject<AddressGetDto, Address>(
+                sp.GetRequiredService<IMapper>(),
+                () => new EfQuery<Address>(sp.GetRequiredService<DbContext>())
+            )
+        );
 
         return services;
     }
