@@ -22,16 +22,17 @@ public class ProductList : PageModel
         _orderFacade = orderFacade;
     }
 
-    public async Task OnGet()
+    public async Task OnGet(Guid restaurantId)
     {
         Products = await _productFacade.GetAllAsync(User.Identity.Name);
+        Products = Products.Where((product) => product.Restaurant.Id == restaurantId);
     }
 
-    public async Task<IActionResult> OnPost(Guid id)
+    public async Task<IActionResult> OnPost(Guid productId, Guid restaurantId)
     {
         try
         {
-            await _orderFacade.AddProductToCartAsync(User.Identity.Name, id);
+            await _orderFacade.AddProductToCartAsync(User.Identity.Name, productId);
         }
         catch (InvalidOperationException e)
         {
@@ -39,7 +40,13 @@ public class ProductList : PageModel
         }
 
         Products = await _productFacade.GetAllAsync(User.Identity.Name);
-        return Page();
-        // return RedirectToPage("../Lists/ProductList");
+        Products = Products.Where((product) => product.Restaurant.Id == restaurantId);
+
+        var redirectPage = RedirectToPage("../Lists/ProductList");
+
+        redirectPage.RouteValues = new RouteValueDictionary();
+        redirectPage.RouteValues.Add("restaurantId", restaurantId);
+
+        return redirectPage;
     }
 }

@@ -19,7 +19,8 @@
       <form method="post">
         <p>@product.Name</p>
         <p>@product.PricePerEach.Amount @product.PricePerEach.Currency.Name</p>
-        <input type="hidden" name="id" value="@product.Id">
+        <input type="hidden" name="productId" value="@product.Id">
+        <input type="hidden" name="restaurantId" value="@product.Restaurant.Id">
         <input type="submit" value="Add to cart"/>
       </form>
     </li>
