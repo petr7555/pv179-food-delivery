@@ -6,6 +6,11 @@ public class Price : BaseEntity
 {
     public double Amount { get; set; }
 
+    public Guid CurrencyId { get; set; }
+
+    [ForeignKey(nameof(CurrencyId))]
+    public virtual Currency Currency { get; set; }
+
     public Guid? ProductId { get; set; }
 
     [ForeignKey(nameof(ProductId))]
@@ -20,9 +25,4 @@ public class Price : BaseEntity
 
     [ForeignKey(nameof(CouponId))]
     public virtual Coupon? Coupon { get; set; }
-
-    public Guid CurrencyId { get; set; }
-
-    [ForeignKey(nameof(CurrencyId))]
-    public virtual Currency Currency { get; set; }
 }

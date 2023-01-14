@@ -9,6 +9,7 @@ using FoodDelivery.BL.DTOs.Restaurant;
 using FoodDelivery.BL.Services.CouponService;
 using FoodDelivery.BL.Services.OrderProductService;
 using FoodDelivery.BL.Services.OrderService;
+using FoodDelivery.BL.Services.PriceService;
 using FoodDelivery.BL.Services.ProductService;
 using FoodDelivery.BL.Services.RatingService;
 using FoodDelivery.BL.Services.UserService;
@@ -30,10 +31,11 @@ public class OrderFacade : IOrderFacade
     private readonly ICouponService _couponService;
     private readonly IRatingService _ratingService;
     private readonly IProductService _productService;
+    private readonly IPriceService _priceService;
 
     public OrderFacade(IUnitOfWork unitOfWork, IOrderService orderService, IOrderProductService orderProductService,
         IUserService userService, ICouponService couponService, IRatingService ratingService,
-        IProductService productService)
+        IProductService productService, IPriceService priceService)
     {
         _unitOfWork = unitOfWork;
         _orderService = orderService;
@@ -42,15 +44,18 @@ public class OrderFacade : IOrderFacade
         _couponService = couponService;
         _ratingService = ratingService;
         _productService = productService;
+        _priceService = priceService;
     }
 
     private async Task<OrderWithProductsGetDto> OrderToOrderWithProducts(OrderGetDto order)
     {
+        var finalizedOrder = order.Status == OrderStatus.Submitted || order.Status == OrderStatus.Paid;
         var currency = order.CustomerDetails.Customer.UserSettings.SelectedCurrency;
         var products = (await _orderProductService.GetProductsForOrderAsync(order.Id)).ToList();
         var productsLocalized = products.Select(p =>
         {
-            var pricePerEach = p.Prices.Single(price => price.Currency.Id == currency.Id);
+            var pricePerEach =
+                finalizedOrder ? p.FinalPrice : p.Prices.Single(price => price.Currency.Id == currency.Id);
             return new ProductLocalizedGetDto
             {
                 Id = p.Id,
@@ -83,7 +88,9 @@ public class OrderFacade : IOrderFacade
             {
                 Id = restaurant.Id,
                 Name = restaurant.Name,
-                DeliveryPrice = restaurant.DeliveryPrices.Single(price => price.Currency.Id == currency.Id),
+                DeliveryPrice = finalizedOrder
+                    ? order.FinalDeliveryPrice
+                    : restaurant.DeliveryPrices.Single(price => price.Currency.Id == currency.Id),
                 AverageRating = restaurant.Ratings.Any() ? restaurant.Ratings.Average(r => r.Stars) : null,
             };
         }
@@ -107,7 +114,7 @@ public class OrderFacade : IOrderFacade
             TotalPrice = new PriceGetDto
             {
                 Amount = totalAmount,
-                Currency = currency,
+                Currency = finalizedOrder ? order.FinalCurrency : currency,
             },
         };
     }
@@ -219,17 +226,58 @@ public class OrderFacade : IOrderFacade
             Status = status,
         };
         _orderService.Update(updatedOrder, new[] { nameof(OrderUpdateDto.Status) });
-        await _unitOfWork.CommitAsync();
     }
 
-    public async Task FulfillOrderAsync(Guid orderId)
+    private async Task FixOrderPricesAsync(Guid orderId)
+    {
+        var orderProducts = await _orderProductService.QueryAsync(new QueryDto<OrderProductGetDto>()
+            .Where(op => op.OrderId == orderId));
+        var order = await _orderService.GetByIdAsync(orderId);
+        var finalCurrency = order.FinalCurrency;
+
+        foreach (var orderProduct in orderProducts)
+        {
+            var finalProductPriceCreateDto = new PriceCreateDto
+            {
+                Id = Guid.NewGuid(),
+                Amount = orderProduct.Product.Prices.Single(p => p.Currency.Id == finalCurrency.Id).Amount,
+                CurrencyId = finalCurrency.Id,
+            };
+            _priceService.Create(finalProductPriceCreateDto);
+            _orderProductService.Update(new OrderProductUpdateDto
+            {
+                Id = orderProduct.Id,
+                FinalPriceId = finalProductPriceCreateDto.Id,
+            }, new[] { nameof(OrderProductUpdateDto.FinalPriceId) });
+        }
+
+        var restaurant = order.OrderProducts.First().Product.Restaurant;
+        var restaurantDeliveryPrice = restaurant.DeliveryPrices.Single(p => p.Currency.Id == finalCurrency.Id);
+        var finalDeliveryPriceCreateDto = new PriceCreateDto
+        {
+            Id = Guid.NewGuid(),
+            Amount = restaurantDeliveryPrice.Amount,
+            CurrencyId = finalCurrency.Id,
+        };
+        _priceService.Create(finalDeliveryPriceCreateDto);
+        _orderService.Update(new OrderUpdateDto
+        {
+            Id = order.Id,
+            FinalDeliveryPriceId = finalDeliveryPriceCreateDto.Id,
+        }, new[] { nameof(OrderUpdateDto.FinalDeliveryPriceId) });
+    }
+
+    public async Task MarkOrderAsPaid(Guid orderId)
     {
         await ChangeOrderStatusAsync(orderId, OrderStatus.Paid);
+        await _unitOfWork.CommitAsync();
     }
 
     public async Task SubmitOrderAsync(Guid orderId)
     {
         await ChangeOrderStatusAsync(orderId, OrderStatus.Submitted);
+        await FixOrderPricesAsync(orderId);
+        await _unitOfWork.CommitAsync();
     }
 
     public async Task<MemoryStream> CreatePdfFromOrder(string url)
@@ -306,12 +354,16 @@ public class OrderFacade : IOrderFacade
             ClientReferenceId = order.Id.ToString(),
             CustomerEmail = order.CustomerDetails.Customer.Email,
             Currency = order.TotalPrice.Currency.Name,
-            Discounts = order.Coupons.Select(c => new SessionDiscountOptions
+        };
+
+        if (order.Coupons.Count > 0)
+        {
+            options.Discounts = order.Coupons.Select(c => new SessionDiscountOptions
                 {
                     Coupon = c.Code,
                 }
-            ).ToList(),
-        };
+            ).ToList();
+        }
 
         var service = new SessionService();
         var session = await service.CreateAsync(options);
@@ -373,6 +425,17 @@ public class OrderFacade : IOrderFacade
             ProductId = productId,
             Quantity = quantity,
         }, new[] { nameof(OrderProductUpdateDto.Quantity) });
+
+        await _unitOfWork.CommitAsync();
+    }
+
+    public async Task SetFinalCurrency(Guid orderId, Guid currencyId)
+    {
+        _orderService.Update(new OrderUpdateDto
+        {
+            Id = orderId,
+            FinalCurrencyId = currencyId,
+        }, new[] { nameof(OrderUpdateDto.FinalCurrencyId) });
 
         await _unitOfWork.CommitAsync();
     }

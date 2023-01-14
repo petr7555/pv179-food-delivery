@@ -1,6 +1,8 @@
 ﻿using FoodDelivery.BL.DTOs.Coupon;
+using FoodDelivery.BL.DTOs.Currency;
 using FoodDelivery.BL.DTOs.CustomerDetails;
 using FoodDelivery.BL.DTOs.OrderProduct;
+using FoodDelivery.BL.DTOs.Price;
 using FoodDelivery.BL.DTOs.Rating;
 using FoodDelivery.DAL.EntityFramework.Models;
 
@@ -17,4 +19,6 @@ public class OrderGetDto
     public List<OrderProductGetDto> OrderProducts { get; set; }
     public List<CouponGetDto> Coupons { get; set; }
     public RatingGetDto? Rating { get; set; }
+    public CurrencyGetDto? FinalCurrency { get; set; }
+    public PriceGetDto? FinalDeliveryPrice { get; set; }
 }

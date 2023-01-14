@@ -34,8 +34,10 @@ public class OrderProductService :
         );
         return orderProducts.Select(op =>
         {
-            op.Product.Quantity = op.Quantity;
-            return op.Product;
+            var result = op.Product;
+            result.Quantity = op.Quantity;
+            result.FinalPrice = op.FinalPrice;
+            return result;
         });
     }
 }

@@ -38,9 +38,11 @@ public class AddRestaurant : PageModel
             var currencies = await _priceService.GetAllCurrencies();
             foreach (var currency in currencies)
             {
-                var price = new PriceCreateDto();
-                price.CurrencyId = currency.Id;
-                price.Currency = currency;
+                var price = new PriceCreateDto
+                {
+                    CurrencyId = currency.Id,
+                    Currency = currency,
+                };
                 Prices.Add(price);
             }
         }        

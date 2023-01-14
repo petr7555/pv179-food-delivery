@@ -33,11 +33,13 @@ public class Checkout : PageModel
     public async Task<IActionResult> OnPost()
     {
         Order = await _orderFacade.GetActiveOrderAsync(User.Identity.Name);
+        await _orderFacade.SetFinalCurrency(Order.Id, Order.CustomerDetails.Customer.UserSettings.SelectedCurrency.Id);
 
         if (Order?.TotalPrice.Amount == 0)
         {
             await _orderFacade.SetPaymentMethodAsync(Order.Id, PaymentMethod.Free);
-            await _orderFacade.FulfillOrderAsync(Order.Id);
+            await _orderFacade.SubmitOrderAsync(Order.Id);
+            await _orderFacade.MarkOrderAsPaid(Order.Id);
             return RedirectToPage("/Payment/Success");
         }
 

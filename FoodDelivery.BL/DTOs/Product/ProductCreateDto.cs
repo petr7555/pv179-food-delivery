@@ -13,6 +13,5 @@ public class ProductCreateDto
     public string ImageUrl { get; set; }
     public string Name { get; set; }
     public Guid CategoryId { get; set; }
-    //public Guid PriceId { get; set; }
     public List<PriceGetDto> Prices { get; set; }
 }

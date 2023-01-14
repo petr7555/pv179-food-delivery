@@ -20,6 +20,16 @@ public class Order : BaseEntity
     public virtual List<Coupon> Coupons { get; set; }
     
     public virtual Rating? Rating { get; set; }
+    
+    public Guid? FinalCurrencyId { get; set; }
+
+    [ForeignKey(nameof(FinalCurrencyId))]
+    public virtual Currency? FinalCurrency { get; set; }   
+    
+    public Guid? FinalDeliveryPriceId { get; set; }
+
+    [ForeignKey(nameof(FinalDeliveryPriceId))]
+    public virtual Price? FinalDeliveryPrice { get; set; }
 }
 
 public enum PaymentMethod

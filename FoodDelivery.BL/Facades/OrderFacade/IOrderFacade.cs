@@ -14,7 +14,7 @@ public interface IOrderFacade
 
     public Task AddProductToCartAsync(string username, Guid productId);
 
-    public Task FulfillOrderAsync(Guid orderId);
+    public Task MarkOrderAsPaid(Guid orderId);
 
     public Task SubmitOrderAsync(Guid orderId);
 
@@ -33,4 +33,6 @@ public interface IOrderFacade
     public Task AddRatingForOrderAsync(RatingCreateDto ratingCreateDto);
     
     public Task UpdateQuantityAsync(Guid orderId, Guid productId, int quantity);
+    
+    public Task SetFinalCurrency(Guid orderId, Guid currencyId);
 }

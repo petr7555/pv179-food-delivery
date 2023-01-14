@@ -20,4 +20,5 @@ public class ProductGetDto
     public RestaurantGetDto Restaurant { get; set; }
     public List<PriceGetDto> Prices { get; set; }
     public int Quantity { get; set; }
+    public PriceGetDto? FinalPrice { get; set; }  
 }

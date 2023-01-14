@@ -9,4 +9,6 @@ public class OrderUpdateDto
     public Guid CustomerDetailsId { get; set; }
     public PaymentMethod PaymentMethod { get; set; }
     public OrderStatus Status { get; set; }
+    public Guid FinalCurrencyId { get; set; }
+    public Guid FinalDeliveryPriceId { get; set; }
 }

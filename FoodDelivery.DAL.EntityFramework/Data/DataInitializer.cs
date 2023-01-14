@@ -252,6 +252,9 @@ public static class DataInitializer
          **   ORDERS   **
          ****************/
 
+        var finalPizzeriaGiuseppeDeliveryPriceCzkId = Guid.NewGuid();
+        var finalBurgerinoDeliveryPriceEurId = Guid.NewGuid();
+
         var pizzaSalamiAndPizzaMargheritaOrder = new Order
         {
             Id = Guid.NewGuid(),
@@ -259,6 +262,8 @@ public static class DataInitializer
             CustomerDetailsId = customerDetails.Id,
             Status = OrderStatus.Paid,
             PaymentMethod = PaymentMethod.Cash,
+            FinalCurrencyId = czkCurrency.Id,
+            FinalDeliveryPriceId = finalPizzeriaGiuseppeDeliveryPriceCzkId,
         };
 
         var royalBurgerOrder = new Order
@@ -268,6 +273,8 @@ public static class DataInitializer
             CustomerDetailsId = customerDetails.Id,
             Status = OrderStatus.Paid,
             PaymentMethod = PaymentMethod.Card,
+            FinalCurrencyId = eurCurrency.Id,
+            FinalDeliveryPriceId = finalBurgerinoDeliveryPriceEurId,
         };
 
         modelBuilder.Entity<Order>().HasData(pizzaSalamiAndPizzaMargheritaOrder, royalBurgerOrder);
@@ -309,7 +316,7 @@ public static class DataInitializer
             ValidUntil = DateTime.UtcNow.AddDays(30),
             Status = CouponStatus.Valid,
         };
-        
+
         var secondValidCoupon = new Coupon
         {
             Id = Guid.NewGuid(),
@@ -318,7 +325,8 @@ public static class DataInitializer
             Status = CouponStatus.Valid,
         };
 
-        modelBuilder.Entity<Coupon>().HasData(expiredCoupon, firstUsedCoupon, secondUsedCoupon, firstValidCoupon, secondValidCoupon);
+        modelBuilder.Entity<Coupon>().HasData(expiredCoupon, firstUsedCoupon, secondUsedCoupon, firstValidCoupon,
+            secondValidCoupon);
 
         /****************
          **   PRICES   **
@@ -326,6 +334,8 @@ public static class DataInitializer
 
         var pizzeriaGiuseppeDeliveryPriceCzk = new Price
             { Id = Guid.NewGuid(), Amount = 29, CurrencyId = czkCurrency.Id, RestaurantId = pizzeriaGuiseppe.Id };
+        var finalPizzeriaGiuseppeDeliveryPriceCzk = new Price
+            { Id = finalPizzeriaGiuseppeDeliveryPriceCzkId, Amount = 29, CurrencyId = czkCurrency.Id };
         var pizzeriaGiuseppeDeliveryPriceEur = new Price
             { Id = Guid.NewGuid(), Amount = 1.5, CurrencyId = eurCurrency.Id, RestaurantId = pizzeriaGuiseppe.Id };
         var happySushiDeliveryPriceCzk = new Price
@@ -336,13 +346,19 @@ public static class DataInitializer
             { Id = Guid.NewGuid(), Amount = 25, CurrencyId = czkCurrency.Id, RestaurantId = burgerino.Id };
         var burgerinoDeliveryPriceEur = new Price
             { Id = Guid.NewGuid(), Amount = 1, CurrencyId = eurCurrency.Id, RestaurantId = burgerino.Id };
+        var finalBurgerinoDeliveryPriceEur = new Price
+            { Id = finalBurgerinoDeliveryPriceEurId, Amount = 1, CurrencyId = eurCurrency.Id };
 
         var pizzaSalamiPriceCzk = new Price
             { Id = Guid.NewGuid(), Amount = 199, CurrencyId = czkCurrency.Id, ProductId = pizzaSalami.Id };
+        var finalPizzaSalamiPriceCzk = new Price
+            { Id = Guid.NewGuid(), Amount = 199, CurrencyId = czkCurrency.Id };
         var pizzaSalamiPriceEur = new Price
             { Id = Guid.NewGuid(), Amount = 8, CurrencyId = eurCurrency.Id, ProductId = pizzaSalami.Id };
         var pizzaMargheritaPriceCzk = new Price
             { Id = Guid.NewGuid(), Amount = 149, CurrencyId = czkCurrency.Id, ProductId = pizzaMargherita.Id };
+        var finalPizzaMargheritaPriceCzk = new Price
+            { Id = Guid.NewGuid(), Amount = 149, CurrencyId = czkCurrency.Id };
         var pizzaMargheritaPriceEur = new Price
             { Id = Guid.NewGuid(), Amount = 6, CurrencyId = eurCurrency.Id, ProductId = pizzaMargherita.Id };
 
@@ -373,6 +389,8 @@ public static class DataInitializer
             { Id = Guid.NewGuid(), Amount = 269, CurrencyId = czkCurrency.Id, ProductId = royalBurger.Id };
         var royalBurgerPriceEur = new Price
             { Id = Guid.NewGuid(), Amount = 11, CurrencyId = eurCurrency.Id, ProductId = royalBurger.Id };
+        var finalRoyalBurgerPriceEur = new Price
+            { Id = Guid.NewGuid(), Amount = 11, CurrencyId = eurCurrency.Id };
         var devilBurgerPriceCzk = new Price
             { Id = Guid.NewGuid(), Amount = 249, CurrencyId = czkCurrency.Id, ProductId = devilBurger.Id };
         var devilBurgerPriceEur = new Price
@@ -403,17 +421,17 @@ public static class DataInitializer
             { Id = Guid.NewGuid(), Amount = 4, CurrencyId = eurCurrency.Id, CouponId = secondValidCoupon.Id };
 
         modelBuilder.Entity<Price>().HasData(
-            pizzaSalamiPriceCzk, pizzaSalamiPriceEur,
-            pizzaMargheritaPriceCzk, pizzaMargheritaPriceEur,
-            pizzeriaGiuseppeDeliveryPriceCzk, pizzeriaGiuseppeDeliveryPriceEur,
+            pizzaSalamiPriceCzk, finalPizzaSalamiPriceCzk, pizzaSalamiPriceEur,
+            pizzaMargheritaPriceCzk, finalPizzaMargheritaPriceCzk, pizzaMargheritaPriceEur,
+            pizzeriaGiuseppeDeliveryPriceCzk, finalPizzeriaGiuseppeDeliveryPriceCzk, pizzeriaGiuseppeDeliveryPriceEur,
             californiaSalmonEightRollsPriceCzk, californiaSalmonEightRollsPriceEur,
             salmonTunaPrawnEightMakiEachPriceCzk, salmonTunaPrawnEightMakiEachPriceEur,
             happySushiDeliveryPriceCzk, happySushiDeliveryPriceEur,
             barbecueBurgerPriceCzk, barbecueBurgerPriceEur,
             chickenBurgerPriceCzk, chickenBurgerPriceEur,
-            royalBurgerPriceCzk, royalBurgerPriceEur,
+            royalBurgerPriceCzk, royalBurgerPriceEur, finalRoyalBurgerPriceEur,
             devilBurgerPriceCzk, devilBurgerPriceEur,
-            burgerinoDeliveryPriceCzk, burgerinoDeliveryPriceEur,
+            burgerinoDeliveryPriceCzk, burgerinoDeliveryPriceEur, finalBurgerinoDeliveryPriceEur,
             expiredCouponPriceCzk, expiredCouponPriceEur,
             firstUsedCouponPriceCzk, firstUsedCouponPriceEur,
             secondUsedCouponPriceCzk, secondUsedCouponPriceEur,
@@ -434,6 +452,7 @@ public static class DataInitializer
                     OrderId = pizzaSalamiAndPizzaMargheritaOrder.Id,
                     ProductId = pizzaSalami.Id,
                     Quantity = 1,
+                    FinalPriceId = finalPizzaSalamiPriceCzk.Id,
                 },
                 new
                 {
@@ -441,6 +460,7 @@ public static class DataInitializer
                     OrderId = pizzaSalamiAndPizzaMargheritaOrder.Id,
                     ProductId = pizzaMargherita.Id,
                     Quantity = 2,
+                    FinalPriceId = finalPizzaMargheritaPriceCzk.Id,
                 },
                 new
                 {
@@ -448,6 +468,7 @@ public static class DataInitializer
                     OrderId = royalBurgerOrder.Id,
                     ProductId = royalBurger.Id,
                     Quantity = 1,
+                    FinalPriceId = finalRoyalBurgerPriceEur.Id,
                 }
             );
 

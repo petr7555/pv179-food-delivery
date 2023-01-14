@@ -1,7 +1,5 @@
-using FoodDelivery.BL.DTOs.Category;
-using FoodDelivery.BL.DTOs.Price;
-using FoodDelivery.BL.DTOs.Restaurant;
 using System.ComponentModel.DataAnnotations;
+using FoodDelivery.BL.DTOs.Price;
 
 namespace FoodDelivery.BL.DTOs.Product;
 
@@ -15,6 +13,5 @@ public class ProductUpdateDto
     public string ImageUrl { get; set; }
     public string Name { get; set; }
     public Guid CategoryId { get; set; }
-    //public Guid PriceId { get; set; }
     public List<PriceUpdateDto> Prices { get; set; }
 }

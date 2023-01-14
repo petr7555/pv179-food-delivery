@@ -31,7 +31,8 @@ public class ProductFacade : IProductFacade
         var currency = user.UserSettings.SelectedCurrency;
         var products = await _productService.GetAllAsync();
         var productsLocalized = products.Select(p =>
-            new ProductLocalizedGetDto
+        {
+            return new ProductLocalizedGetDto
             {
                 Id = p.Id,
                 Name = p.Name,
@@ -39,7 +40,8 @@ public class ProductFacade : IProductFacade
                 Category = p.Category,
                 Restaurant = p.Restaurant,
                 PricePerEach = p.Prices.Single(price => price.Currency.Id == currency.Id),
-            });
+            };
+        });
         return productsLocalized;
     }
 
