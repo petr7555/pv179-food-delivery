@@ -13,11 +13,11 @@ public class OrderProduct : BaseEntity
 
     [ForeignKey(nameof(ProductId))]
     public virtual Product Product { get; set; }
-    
-    public int Quantity { get; set; }
-    
+
     public Guid? FinalPriceId { get; set; }
 
     [ForeignKey(nameof(FinalPriceId))]
-    public Price? FinalPrice  { get; set; } 
+    public Price? FinalPrice { get; set; }
+
+    public int Quantity { get; set; }
 }

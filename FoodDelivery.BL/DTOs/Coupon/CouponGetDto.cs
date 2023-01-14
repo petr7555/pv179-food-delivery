@@ -10,4 +10,5 @@ public class CouponGetDto
     public DateTime ValidUntil { get; set; }
     public CouponStatus Status { get; set; }
     public List<PriceGetDto> Prices { get; set; }
+    public PriceGetDto FinalPrice { get; set; }
 }

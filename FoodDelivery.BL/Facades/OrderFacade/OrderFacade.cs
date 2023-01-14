@@ -76,7 +76,7 @@ public class OrderFacade : IOrderFacade
             Code = c.Code,
             ValidUntil = c.ValidUntil,
             Status = c.Status,
-            Discount = c.Prices.Single(price => price.Currency.Id == currency.Id),
+            Discount = finalizedOrder ? c.FinalPrice : c.Prices.Single(price => price.Currency.Id == currency.Id),
         }).ToList();
 
         RestaurantLocalizedGetDto? restaurantLocalized = null;
@@ -96,8 +96,9 @@ public class OrderFacade : IOrderFacade
         }
 
         var totalAmount = Math.Max(0,
-                productsLocalized.Sum(p => p.TotalPrice.Amount) - couponsLocalized.Sum(c => c.Discount.Amount)) +
-            restaurantLocalized?.DeliveryPrice.Amount ?? 0;
+            productsLocalized.Sum(p => p.TotalPrice.Amount)
+            - couponsLocalized.Sum(c => c.Discount.Amount)
+            + restaurantLocalized?.DeliveryPrice.Amount ?? 0);
 
         return new OrderWithProductsGetDto
         {
@@ -235,6 +236,7 @@ public class OrderFacade : IOrderFacade
         var order = await _orderService.GetByIdAsync(orderId);
         var finalCurrency = order.FinalCurrency;
 
+        // fix products prices
         foreach (var orderProduct in orderProducts)
         {
             var finalProductPriceCreateDto = new PriceCreateDto
@@ -251,6 +253,7 @@ public class OrderFacade : IOrderFacade
             }, new[] { nameof(OrderProductUpdateDto.FinalPriceId) });
         }
 
+        // fix restaurant delivery price
         var restaurant = order.OrderProducts.First().Product.Restaurant;
         var restaurantDeliveryPrice = restaurant.DeliveryPrices.Single(p => p.Currency.Id == finalCurrency.Id);
         var finalDeliveryPriceCreateDto = new PriceCreateDto
@@ -265,6 +268,23 @@ public class OrderFacade : IOrderFacade
             Id = order.Id,
             FinalDeliveryPriceId = finalDeliveryPriceCreateDto.Id,
         }, new[] { nameof(OrderUpdateDto.FinalDeliveryPriceId) });
+
+        // fix coupon prices
+        foreach (var coupon in order.Coupons)
+        {
+            var finalCouponPriceCreateDto = new PriceCreateDto
+            {
+                Id = Guid.NewGuid(),
+                Amount = coupon.Prices.Single(p => p.Currency.Id == finalCurrency.Id).Amount,
+                CurrencyId = finalCurrency.Id,
+            };
+            _priceService.Create(finalCouponPriceCreateDto);
+            _couponService.Update(new CouponUpdateDto
+            {
+                Id = coupon.Id,
+                FinalPriceId = finalCouponPriceCreateDto.Id,
+            }, new[] { nameof(OrderProductUpdateDto.FinalPriceId) });
+        }
     }
 
     public async Task MarkOrderAsPaid(Guid orderId)

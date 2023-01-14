@@ -11,25 +11,25 @@ public class Order : BaseEntity
     [ForeignKey(nameof(CustomerDetailsId))]
     public virtual CustomerDetails CustomerDetails { get; set; }
 
-    public PaymentMethod? PaymentMethod { get; set; }
-
-    public OrderStatus Status { get; set; }
- 
-    public virtual List<OrderProduct> OrderProducts { get; set; }
-
-    public virtual List<Coupon> Coupons { get; set; }
-    
-    public virtual Rating? Rating { get; set; }
-    
     public Guid? FinalCurrencyId { get; set; }
 
     [ForeignKey(nameof(FinalCurrencyId))]
-    public virtual Currency? FinalCurrency { get; set; }   
-    
+    public virtual Currency? FinalCurrency { get; set; }
+
     public Guid? FinalDeliveryPriceId { get; set; }
 
     [ForeignKey(nameof(FinalDeliveryPriceId))]
     public virtual Price? FinalDeliveryPrice { get; set; }
+
+    public PaymentMethod? PaymentMethod { get; set; }
+
+    public OrderStatus Status { get; set; }
+
+    public virtual List<OrderProduct> OrderProducts { get; set; }
+
+    public virtual List<Coupon> Coupons { get; set; }
+
+    public virtual Rating? Rating { get; set; }
 }
 
 public enum PaymentMethod

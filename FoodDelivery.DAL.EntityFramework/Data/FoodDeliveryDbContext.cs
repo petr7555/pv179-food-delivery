@@ -20,12 +20,20 @@ public class FoodDeliveryDbContext : DbContext
     {
         modelBuilder.Seed();
 
+        modelBuilder.Entity<Coupon>()
+            .HasMany(c => c.Prices)
+            .WithOne(p => p.Coupon);
+        
         modelBuilder.Entity<Category>()
             .Navigation(c => c.Products)
             .AutoInclude();
 
         modelBuilder.Entity<Coupon>()
             .Navigation(c => c.Prices)
+            .AutoInclude();
+
+        modelBuilder.Entity<Coupon>()
+            .Navigation(c => c.FinalPrice)
             .AutoInclude();
 
         modelBuilder.Entity<CustomerDetails>()

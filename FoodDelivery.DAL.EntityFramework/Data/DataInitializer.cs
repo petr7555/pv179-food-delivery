@@ -255,6 +255,9 @@ public static class DataInitializer
         var finalPizzeriaGiuseppeDeliveryPriceCzkId = Guid.NewGuid();
         var finalBurgerinoDeliveryPriceEurId = Guid.NewGuid();
 
+        var finalFirstUsedCouponPriceCzkId = Guid.NewGuid();
+        var finalSecondUsedCouponPriceCzkId = Guid.NewGuid();
+
         var pizzaSalamiAndPizzaMargheritaOrder = new Order
         {
             Id = Guid.NewGuid(),
@@ -298,6 +301,7 @@ public static class DataInitializer
             ValidUntil = DateTime.UtcNow.AddDays(30),
             Status = CouponStatus.Used,
             OrderId = pizzaSalamiAndPizzaMargheritaOrder.Id,
+            FinalPriceId = finalFirstUsedCouponPriceCzkId,
         };
 
         var secondUsedCoupon = new Coupon
@@ -307,6 +311,7 @@ public static class DataInitializer
             ValidUntil = DateTime.UtcNow.AddDays(30),
             Status = CouponStatus.Used,
             OrderId = pizzaSalamiAndPizzaMargheritaOrder.Id,
+            FinalPriceId = finalSecondUsedCouponPriceCzkId,
         };
 
         var firstValidCoupon = new Coupon
@@ -403,11 +408,15 @@ public static class DataInitializer
 
         var firstUsedCouponPriceCzk = new Price
             { Id = Guid.NewGuid(), Amount = 200, CurrencyId = czkCurrency.Id, CouponId = firstUsedCoupon.Id };
+        var finalFirstUsedCouponPriceCzk = new Price
+            { Id = finalFirstUsedCouponPriceCzkId, Amount = 200, CurrencyId = czkCurrency.Id };
         var firstUsedCouponPriceEur = new Price
             { Id = Guid.NewGuid(), Amount = 8, CurrencyId = eurCurrency.Id, CouponId = firstUsedCoupon.Id };
 
         var secondUsedCouponPriceCzk = new Price
             { Id = Guid.NewGuid(), Amount = 50, CurrencyId = czkCurrency.Id, CouponId = secondUsedCoupon.Id };
+        var finalSecondUsedCouponPriceCzk = new Price
+            { Id = finalSecondUsedCouponPriceCzkId, Amount = 50, CurrencyId = czkCurrency.Id };
         var secondUsedCouponPriceEur = new Price
             { Id = Guid.NewGuid(), Amount = 2, CurrencyId = eurCurrency.Id, CouponId = secondUsedCoupon.Id };
 
@@ -433,8 +442,8 @@ public static class DataInitializer
             devilBurgerPriceCzk, devilBurgerPriceEur,
             burgerinoDeliveryPriceCzk, burgerinoDeliveryPriceEur, finalBurgerinoDeliveryPriceEur,
             expiredCouponPriceCzk, expiredCouponPriceEur,
-            firstUsedCouponPriceCzk, firstUsedCouponPriceEur,
-            secondUsedCouponPriceCzk, secondUsedCouponPriceEur,
+            firstUsedCouponPriceCzk, finalFirstUsedCouponPriceCzk, firstUsedCouponPriceEur,
+            secondUsedCouponPriceCzk, finalSecondUsedCouponPriceCzk, secondUsedCouponPriceEur,
             firstValidCouponPriceCzk, firstValidCouponPriceEur,
             secondValidCouponPriceCzk, secondValidCouponPriceEur
         );

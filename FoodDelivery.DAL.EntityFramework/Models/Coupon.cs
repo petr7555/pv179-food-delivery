@@ -20,6 +20,11 @@ public class Coupon : BaseEntity
 
     [ForeignKey(nameof(OrderId))]
     public virtual Order? Order { get; set; }
+    
+    public Guid? FinalPriceId { get; set; }
+
+    [ForeignKey(nameof(FinalPriceId))]
+    public virtual Price? FinalPrice { get; set; }
 }
 
 public enum CouponStatus
