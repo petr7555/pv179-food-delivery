@@ -35,7 +35,7 @@ public class Checkout : PageModel
         Order = await _orderFacade.GetActiveOrderAsync(User.Identity.Name);
         await _orderFacade.SetFinalCurrency(Order.Id, Order.CustomerDetails.Customer.UserSettings.SelectedCurrency.Id);
 
-        if (Order?.TotalPrice.Amount == 0)
+        if (Order.TotalPrice.Amount == 0)
         {
             await _orderFacade.SetPaymentMethodAsync(Order.Id, PaymentMethod.Free);
             await _orderFacade.SubmitOrderAsync(Order.Id);
