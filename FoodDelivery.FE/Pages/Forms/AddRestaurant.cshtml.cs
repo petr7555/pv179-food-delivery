@@ -13,6 +13,7 @@ public class AddRestaurant : PageModel
 {
     [BindProperty]
     public RestaurantCreateDto Restaurant { get; set; }
+
     [BindProperty]
     public List<PriceCreateDto> Prices { get; set; }
 
@@ -23,7 +24,7 @@ public class AddRestaurant : PageModel
     {
         _restaurantFacade = restaurantFacade;
         _priceService = priceService;
-        Prices = new List<PriceCreateDto>();        
+        Prices = new List<PriceCreateDto>();
     }
 
     public async Task OnGetAsync(Guid restaurantId)
@@ -33,7 +34,8 @@ public class AddRestaurant : PageModel
             Restaurant = _restaurantFacade.ConvertToCreateDto(await _restaurantFacade.GetByIdAsync(restaurantId));
             var prices = await _priceService.GetAllAsCreateDtoAsync();
             Prices = prices.Where(price => price.RestaurantId.Equals(Restaurant.Id)).ToList();
-        } else
+        }
+        else
         {
             var currencies = await _priceService.GetAllCurrencies();
             foreach (var currency in currencies)
@@ -45,7 +47,7 @@ public class AddRestaurant : PageModel
                 };
                 Prices.Add(price);
             }
-        }        
+        }
     }
 
     public async Task<IActionResult> OnPost()
@@ -58,10 +60,11 @@ public class AddRestaurant : PageModel
                 price.Id = Guid.NewGuid();
                 price.RestaurantId = Restaurant.Id;
             }
+
             await _restaurantFacade.CreateWithNewPrices(Restaurant, Prices);
         }
         else
-        {            
+        {
             await _restaurantFacade.UpdateAsync(Restaurant, Prices);
         }
 

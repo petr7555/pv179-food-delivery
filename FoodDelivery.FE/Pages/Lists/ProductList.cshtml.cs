@@ -25,13 +25,13 @@ public class ProductList : PageModel
     private readonly IRestaurantFacade _restaurantFacade;
     private readonly IPriceService _priceService;
 
-    public ProductList(IProductFacade productFacade, IOrderFacade orderFacade, IRestaurantFacade restaurantFacade, IPriceService priceService)
+    public ProductList(IProductFacade productFacade, IOrderFacade orderFacade, IRestaurantFacade restaurantFacade,
+        IPriceService priceService)
     {
         _productFacade = productFacade;
         _orderFacade = orderFacade;
         _restaurantFacade = restaurantFacade;
         _priceService = priceService;
-
     }
 
     public async Task OnGet(Guid restaurantId)

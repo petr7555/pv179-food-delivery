@@ -4,7 +4,6 @@ using FoodDelivery.BL.DTOs.Restaurant;
 using FoodDelivery.BL.Services.PriceService;
 using FoodDelivery.BL.Services.ProductService;
 using FoodDelivery.BL.Services.RestaurantService;
-using FoodDelivery.DAL.EntityFramework.Models;
 using FoodDelivery.Infrastructure.UnitOfWork;
 
 namespace FoodDelivery.BL.Facades.RestaurantFacade;
@@ -17,7 +16,8 @@ public class RestaurantFacade : IRestaurantFacade
     private readonly IProductService _productService;
     private readonly IRestaurantService _restaurantService;
 
-    public RestaurantFacade(IUnitOfWork unitOfWork,IPriceService priceService, IProductService productService, IRestaurantService restaurantService)
+    public RestaurantFacade(IUnitOfWork unitOfWork, IPriceService priceService, IProductService productService,
+        IRestaurantService restaurantService)
     {
         _unitOfWork = unitOfWork;
         _priceService = priceService;
@@ -46,7 +46,8 @@ public class RestaurantFacade : IRestaurantFacade
         await _unitOfWork.CommitAsync();
     }
 
-    public async Task CreateWithNewPrices(RestaurantCreateDto restaurantCreateDto, IEnumerable<PriceCreateDto> priceCreateDtos)
+    public async Task CreateWithNewPrices(RestaurantCreateDto restaurantCreateDto,
+        IEnumerable<PriceCreateDto> priceCreateDtos)
     {
         _restaurantService.Create(restaurantCreateDto);
 
@@ -56,7 +57,7 @@ public class RestaurantFacade : IRestaurantFacade
         }
 
         await _unitOfWork.CommitAsync();
-    }    
+    }
 
     public async Task UpdateAsync(RestaurantCreateDto restaurantCreateDto, List<PriceCreateDto> priceCreateDtos)
     {
@@ -64,6 +65,7 @@ public class RestaurantFacade : IRestaurantFacade
         {
             _priceService.Update(priceCreateDto);
         }
+
         _restaurantService.Update(restaurantCreateDto);
         await _unitOfWork.CommitAsync();
     }
@@ -78,6 +80,7 @@ public class RestaurantFacade : IRestaurantFacade
             {
                 _priceService.Delete(price.Id);
             }
+
             _productService.Delete(product.Id);
         }
 

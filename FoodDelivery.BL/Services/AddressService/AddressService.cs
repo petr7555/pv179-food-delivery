@@ -8,11 +8,13 @@ using FoodDelivery.Infrastructure.UnitOfWork;
 
 namespace FoodDelivery.BL.Services.AddressService;
 
-public class AddressService : CrudService<Address, Guid, AddressGetDto, AddressCreateDto, AddressUpdateDto>, IAddressService
+public class AddressService : CrudService<Address, Guid, AddressGetDto, AddressCreateDto, AddressUpdateDto>,
+    IAddressService
 {
     private readonly IQueryObject<AddressGetDto, Address> _queryObject;
 
-    public AddressService(IUnitOfWork unitOfWork, IMapper mapper, IQueryObject<AddressGetDto, Address> queryObject) : base(
+    public AddressService(IUnitOfWork unitOfWork, IMapper mapper,
+        IQueryObject<AddressGetDto, Address> queryObject) : base(
         unitOfWork.AddressRepository, mapper)
     {
         _queryObject = queryObject;

@@ -19,6 +19,7 @@ public class UserList : PageModel
         _userFacade = userFacade;
         Users = _userFacade.GetAllAsync().Result;
     }
+
     public async void OnGet()
     {
     }

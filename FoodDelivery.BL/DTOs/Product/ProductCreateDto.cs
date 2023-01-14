@@ -1,5 +1,5 @@
-using FoodDelivery.BL.DTOs.Price;
 using System.ComponentModel.DataAnnotations;
+using FoodDelivery.BL.DTOs.Price;
 
 namespace FoodDelivery.BL.DTOs.Product;
 
@@ -11,6 +11,7 @@ public class ProductCreateDto
 
     [Display(Name = "Image")]
     public string ImageUrl { get; set; }
+
     public string Name { get; set; }
     public Guid CategoryId { get; set; }
     public List<PriceGetDto> Prices { get; set; }

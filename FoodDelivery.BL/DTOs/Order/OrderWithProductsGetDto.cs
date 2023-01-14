@@ -36,6 +36,6 @@ public class OrderWithProductsGetDto
     public List<CouponLocalizedGetDto> Coupons { get; set; }
 
     public RestaurantLocalizedGetDto? Restaurant { get; set; }
-    
+
     public RatingGetDto? Rating { get; set; }
 }

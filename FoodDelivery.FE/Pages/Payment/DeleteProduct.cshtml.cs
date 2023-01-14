@@ -23,8 +23,9 @@ public class DeleteProduct : PageModel
         {
             return NotFound();
         }
+
         await _orderFacade.DeleteProductFromOrderAsync(activeOrder, productId);
-        
+
         return Redirect(returnUrl);
     }
 }

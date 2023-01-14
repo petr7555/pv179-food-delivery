@@ -8,6 +8,6 @@ public class Restaurant : BaseEntity
     public string Name { get; set; }
 
     public virtual List<Price> DeliveryPrices { get; set; }
-    
+
     public virtual List<Rating> Ratings { get; set; }
 }

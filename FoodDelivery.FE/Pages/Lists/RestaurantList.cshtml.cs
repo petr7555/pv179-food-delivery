@@ -23,8 +23,10 @@ public class RestaurantList : PageModel
 
     [BindProperty]
     public string SelectedTagCategory { get; set; }
+
     [BindProperty]
     public string SelectedTagSortOption { get; set; }
+
     public SelectList TagOptionsCategory { get; set; }
     public SelectList TagSortOptions { get; set; }
 
@@ -35,7 +37,8 @@ public class RestaurantList : PageModel
 
     private readonly IRestaurantFacade _restaurantFacade;
 
-    public RestaurantList(IProductFacade productFacade, IRatingService ratingService, ICategoryService categoryService, IRestaurantFacade restaurantFacade)
+    public RestaurantList(IProductFacade productFacade, IRatingService ratingService, ICategoryService categoryService,
+        IRestaurantFacade restaurantFacade)
     {
         _categoryService = categoryService;
         _restaurantFacade = restaurantFacade;
@@ -43,18 +46,20 @@ public class RestaurantList : PageModel
         _ratingService = ratingService;
     }
 
-    public async Task OnGetAsync(string sortOrder, string searchString, string SelectedTagCategory, string SelectedTagSortOption)
+    public async Task OnGetAsync(string sortOrder, string searchString, string SelectedTagCategory,
+        string SelectedTagSortOption)
     {
         NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
 
         CurrentFilter = searchString;
         Categories = await _categoryService.GetAllAsync();
-        SortOptions = new List<SelectListItem>() {
-            new SelectListItem{ Selected=true, Value="-1", Text=string.Empty },
-            new SelectListItem{ Selected=false, Value = "0", Text="Alphabetically" },
-            new SelectListItem{ Selected=false, Value = "1", Text="Average Menu Price" },
-            new SelectListItem{ Selected=false, Value = "2", Text="Delivery Price" },
-            new SelectListItem{ Selected=false, Value = "3", Text="Rating" }
+        SortOptions = new List<SelectListItem>()
+        {
+            new SelectListItem { Selected = true, Value = "-1", Text = string.Empty },
+            new SelectListItem { Selected = false, Value = "0", Text = "Alphabetically" },
+            new SelectListItem { Selected = false, Value = "1", Text = "Average Menu Price" },
+            new SelectListItem { Selected = false, Value = "2", Text = "Delivery Price" },
+            new SelectListItem { Selected = false, Value = "3", Text = "Rating" }
         };
 
         // sort categories by its tree structure, then alphabetically for each layer
@@ -100,17 +105,22 @@ public class RestaurantList : PageModel
 
                 for (int i = 0; i < Restaurants.Count(); i++)
                 {
-                    var restaurantProducts = products.Where((product) => product.Restaurant.Id == Restaurants.ElementAt(i).Id);
+                    var restaurantProducts =
+                        products.Where((product) => product.Restaurant.Id == Restaurants.ElementAt(i).Id);
                     var averageCost = restaurantProducts.Average(product => product.PricePerEach.Amount);
-                    restaurantsWithAverageCost.Add(new KeyValuePair<RestaurantGetDto, float>(Restaurants.ElementAt(i), averageCost));
+                    restaurantsWithAverageCost.Add(
+                        new KeyValuePair<RestaurantGetDto, float>(Restaurants.ElementAt(i), averageCost));
                 }
+
                 restaurantsWithAverageCost = restaurantsWithAverageCost.OrderBy((pair) => pair.Value).ToList();
                 Restaurants = restaurantsWithAverageCost.Select(pair => pair.Key);
             }
             else if (SelectedTagSortOption.Equals("2"))
             {
                 var currencySortingId = Restaurants.First().DeliveryPrices[0].Currency.Id;
-                Restaurants = Restaurants.OrderBy(restaurant => restaurant.DeliveryPrices.Where(price => price.CurrencyId.Equals(currencySortingId)).First().Amount);
+                Restaurants = Restaurants.OrderBy(restaurant =>
+                    restaurant.DeliveryPrices.Where(price => price.CurrencyId.Equals(currencySortingId)).First()
+                        .Amount);
             }
             else if (SelectedTagSortOption.Equals("3"))
             {
@@ -119,9 +129,13 @@ public class RestaurantList : PageModel
 
                 for (int i = 0; i < Restaurants.Count(); i++)
                 {
-                    var restaurantRatings = ratings.Where(rating => rating.RestaurantId.Equals(Restaurants.ElementAt(i).Id));
-                    var averageRating = restaurantRatings.Count() == 0 ? 0 : restaurantRatings.Average(rating => rating.Stars);
-                    restaurantsWithRating.Add(new KeyValuePair<RestaurantGetDto, double>(Restaurants.ElementAt(i), averageRating));
+                    var restaurantRatings =
+                        ratings.Where(rating => rating.RestaurantId.Equals(Restaurants.ElementAt(i).Id));
+                    var averageRating = restaurantRatings.Count() == 0
+                        ? 0
+                        : restaurantRatings.Average(rating => rating.Stars);
+                    restaurantsWithRating.Add(
+                        new KeyValuePair<RestaurantGetDto, double>(Restaurants.ElementAt(i), averageRating));
                 }
 
                 restaurantsWithRating = restaurantsWithRating.OrderBy((pair) => pair.Value).ToList();
@@ -133,6 +147,5 @@ public class RestaurantList : PageModel
         {
             Restaurants = Restaurants.Where(restaurant => restaurant.Name.ToLower().Contains(searchString.ToLower()));
         }
-
     }
 }

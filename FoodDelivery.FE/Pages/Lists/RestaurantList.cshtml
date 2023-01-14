@@ -6,25 +6,25 @@
 }
 
 <form asp-page="./RestaurantList" method="get">
-    <div class="form-actions no-color">
-        <p>
-            Find by name:
-            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
-            <!-- <label>Select category</label> -->
-            <select asp-for="SelectedTagCategory" asp-items="Model.TagOptionsCategory"></select>
-            Sort by:
-            <select asp-for="SelectedTagSortOption" asp-items="Model.TagSortOptions"></select>
-            <input type="submit" value="Search" class="btn btn-primary" />
-            <a asp-page="./RestaurantList">Back to full List</a>
-        </p>
-    </div>
+  <div class="form-actions no-color">
+    <p>
+      Find by name:
+      <input type="text" name="SearchString" value="@Model.CurrentFilter"/>
+      <!-- <label>Select category</label> -->
+      <select asp-for="SelectedTagCategory" asp-items="Model.TagOptionsCategory"></select>
+      Sort by:
+      <select asp-for="SelectedTagSortOption" asp-items="Model.TagSortOptions"></select>
+      <input type="submit" value="Search" class="btn btn-primary"/>
+      <a asp-page="./RestaurantList">Back to full List</a>
+    </p>
+  </div>
 </form>
 
 <ul>
   @foreach (var restaurant in Model.Restaurants)
   {
     <li>
-        <a class="text-dark" asp-page="/Lists/ProductList" asp-route-restaurantId="@restaurant.Id">@restaurant.Name</a>
+      <a class="text-dark" asp-page="/Lists/ProductList" asp-route-restaurantId="@restaurant.Id">@restaurant.Name</a>
     </li>
   }
 </ul>

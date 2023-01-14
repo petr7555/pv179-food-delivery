@@ -1,11 +1,11 @@
-using Microsoft.AspNetCore.Authorization;
 using System.ComponentModel.DataAnnotations;
 using FoodDelivery.BL.DTOs.User;
+using FoodDelivery.BL.DTOs.UserSettings;
 using FoodDelivery.BL.Facades.UserFacade;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using FoodDelivery.BL.DTOs.UserSettings;
 
 namespace FoodDelivery.FE.Pages.Forms;
 
@@ -29,12 +29,14 @@ public class AddContentManager : PageModel
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly IUserFacade _userFacade;
 
-    public AddContentManager(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IUserFacade userFacade)
+    public AddContentManager(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,
+        IUserFacade userFacade)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _userFacade = userFacade;
     }
+
     public void OnGet()
     {
     }

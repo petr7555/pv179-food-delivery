@@ -1,6 +1,6 @@
 @page
 @using FoodDelivery.DAL.EntityFramework.Models
-@model FoodDelivery.FE.Pages.Payment.Checkout
+@model Checkout
 
 @{
   ViewData["Title"] = "Checkout";
@@ -29,7 +29,7 @@ else
   <form method="post">
     @Html.LabelFor(x => x.PaymentMethod)
     @Html.DropDownList("PaymentMethod",
-      Html.GetEnumSelectList<PaymentMethod>().Where(i => i.Text != "Free"), 
+      Html.GetEnumSelectList<PaymentMethod>().Where(i => i.Text != "Free"),
       new { @class = "form-control", style = "max-width: 200px;" })
 
     <button type="submit" class="btn btn-success mt-2">Submit order</button>

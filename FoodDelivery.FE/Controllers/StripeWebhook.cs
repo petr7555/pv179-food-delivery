@@ -2,6 +2,7 @@ using FoodDelivery.BL.Facades.OrderFacade;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;
 using Stripe.Checkout;
+using PaymentMethod = FoodDelivery.DAL.EntityFramework.Models.PaymentMethod;
 
 namespace FoodDelivery.FE.Controllers;
 
@@ -39,7 +40,7 @@ public class StripeWebhook : ControllerBase
                 var session = stripeEvent.Data.Object as Session;
                 var orderId = Guid.Parse(session.ClientReferenceId);
 
-                await _orderFacade.SetPaymentMethodAsync(orderId, DAL.EntityFramework.Models.PaymentMethod.Card);
+                await _orderFacade.SetPaymentMethodAsync(orderId, PaymentMethod.Card);
                 await _orderFacade.SubmitOrderAsync(orderId);
                 await _orderFacade.MarkOrderAsPaid(orderId);
             }

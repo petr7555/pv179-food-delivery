@@ -1,5 +1,4 @@
 using FoodDelivery.BL.DTOs.Category;
-using FoodDelivery.BL.DTOs.Currency;
 using FoodDelivery.BL.DTOs.Price;
 using FoodDelivery.BL.DTOs.Product;
 using FoodDelivery.BL.Facades.ProductFacade;

@@ -17,7 +17,8 @@ public class ProductFacade : IProductFacade
     private readonly IProductService _productService;
     private readonly IUserService _userService;
 
-    public ProductFacade(IUnitOfWork unitOfWork, IPriceService priceService, IProductService productService, IUserService userService)
+    public ProductFacade(IUnitOfWork unitOfWork, IPriceService priceService, IProductService productService,
+        IUserService userService)
     {
         _unitOfWork = unitOfWork;
         _priceService = priceService;
@@ -68,6 +69,7 @@ public class ProductFacade : IProductFacade
         {
             _priceService.Create(price);
         }
+
         await _unitOfWork.CommitAsync();
     }
 
@@ -80,16 +82,17 @@ public class ProductFacade : IProductFacade
 
         _productService.Update(
             product,
-            new [] 
-            { 
+            new[]
+            {
                 nameof(Product.Name),
                 nameof(Product.Description),
                 nameof(Product.ImageUrl),
                 nameof(Product.CategoryId)
-            });        
-        
+            });
+
         await _unitOfWork.CommitAsync();
     }
+
     public void Delete(Guid productId)
     {
         _productService.Delete(productId);

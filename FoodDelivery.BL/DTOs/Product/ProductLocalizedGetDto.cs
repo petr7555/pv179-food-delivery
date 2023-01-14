@@ -17,7 +17,7 @@ public class ProductLocalizedGetDto
     public CategoryGetDto Category { get; set; }
 
     public RestaurantGetDto Restaurant { get; set; }
-    
+
     public int Quantity { get; set; }
 
     [Display(Name = "Price per each")]

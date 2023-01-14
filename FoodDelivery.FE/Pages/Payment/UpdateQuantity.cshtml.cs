@@ -23,9 +23,9 @@ public class UpdateQuantity : PageModel
         {
             return NotFound();
         }
-        
+
         await _orderFacade.UpdateQuantityAsync(activeOrder.Id, productId, quantity);
-        
+
         return Redirect(returnUrl);
     }
 }

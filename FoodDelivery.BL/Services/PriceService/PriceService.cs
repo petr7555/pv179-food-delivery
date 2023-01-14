@@ -8,6 +8,7 @@ using FoodDelivery.DAL.EntityFramework.Models;
 using FoodDelivery.Infrastructure.UnitOfWork;
 
 namespace FoodDelivery.BL.Services.PriceService;
+
 public class PriceService :
     CrudService<Price, Guid, PriceGetDto, PriceCreateDto, PriceUpdateDto>,
     IPriceService
@@ -25,7 +26,7 @@ public class PriceService :
         var allPrices = await GetAllAsync();
         return allPrices.Select(price => Mapper.Map<PriceCreateDto>(Mapper.Map<Price>(price)));
     }
-    
+
     public async Task<IEnumerable<PriceGetDto>> QueryAsync(QueryDto<PriceGetDto> queryDto)
     {
         return await _queryObject.ExecuteAsync(queryDto);
@@ -35,12 +36,12 @@ public class PriceService :
     {
         Create(Mapper.Map<PriceCreateDto>(Mapper.Map<Price>(priceUpdateDto)));
     }
-    
+
     public void Update(PriceCreateDto priceCreateDto)
     {
         Update(
             Mapper.Map<PriceUpdateDto>(Mapper.Map<Price>(priceCreateDto)),
-            new []
+            new[]
             {
                 nameof(Price.Amount)
             });

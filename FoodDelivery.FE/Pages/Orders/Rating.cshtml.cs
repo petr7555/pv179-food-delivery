@@ -10,7 +10,7 @@ public class Review : PageModel
 {
     [BindProperty]
     public RatingCreateDto NewRating { get; set; } = default!;
-    
+
     public OrderWithProductsGetDto Order { get; set; } = default!;
     public bool SuccessfullyAddedRating { get; set; }
 
@@ -33,7 +33,7 @@ public class Review : PageModel
 
         return Page();
     }
-    
+
     public async Task<IActionResult> OnPost(Guid id)
     {
         var foundOrder = await _orderFacade.GetByIdAsync(id);
@@ -41,22 +41,22 @@ public class Review : PageModel
         {
             return NotFound();
         }
+
         Order = foundOrder;
-        
+
         if (!ModelState.IsValid)
         {
             return Page();
         }
-        
+
         NewRating.CreatedAt = DateTime.UtcNow;
         NewRating.OrderId = Order.Id;
         NewRating.RestaurantId = Order.Restaurant.Id;
 
         await _orderFacade.AddRatingForOrderAsync(NewRating);
-        
+
         Order = await _orderFacade.GetByIdAsync(id);
         SuccessfullyAddedRating = true;
         return Page();
     }
 }
-

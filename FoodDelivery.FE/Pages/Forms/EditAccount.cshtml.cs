@@ -11,8 +11,10 @@ public class EditAccount : PageModel
 {
     [BindProperty]
     public CustomerDetailsUpdateDto CustomerDetails { get; set; }
+
     [BindProperty]
     public AddressUpdateDto BillingAddress { get; set; }
+
     [BindProperty]
     public AddressUpdateDto DeliveryAddress { get; set; }
 
@@ -36,11 +38,13 @@ public class EditAccount : PageModel
     {
         var user = await _userService.GetByUsernameAsync(User.Identity.Name);
 
-        await _userFacade.UpdateAddressAsync(user.Id, user.CustomerDetails.BillingAddressId, CustomerDetails.BillingAddress);
+        await _userFacade.UpdateAddressAsync(user.Id, user.CustomerDetails.BillingAddressId,
+            CustomerDetails.BillingAddress);
 
         if (user.CustomerDetails.DeliveryAddressId.HasValue)
         {
-            await _userFacade.UpdateAddressAsync(user.Id, user.CustomerDetails.DeliveryAddressId.Value, CustomerDetails.DeliveryAddress);
+            await _userFacade.UpdateAddressAsync(user.Id, user.CustomerDetails.DeliveryAddressId.Value,
+                CustomerDetails.DeliveryAddress);
         }
 
         var userNew = await _userService.GetByUsernameAsync(User.Identity.Name);

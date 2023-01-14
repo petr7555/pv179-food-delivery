@@ -11,6 +11,7 @@ public class ProductUpdateDto
 
     [Display(Name = "Image")]
     public string ImageUrl { get; set; }
+
     public string Name { get; set; }
     public Guid CategoryId { get; set; }
     public List<PriceUpdateDto> Prices { get; set; }

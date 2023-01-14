@@ -29,7 +29,7 @@ public class
     {
         Update(
             Mapper.Map<RestaurantUpdateDto>(Mapper.Map<Restaurant>(restaurantCreateDto)),
-            new [] 
+            new[]
             {
                 nameof(Restaurant.Name)
             }

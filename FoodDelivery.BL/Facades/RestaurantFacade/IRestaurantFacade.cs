@@ -14,7 +14,8 @@ public interface IRestaurantFacade
 
     public Task CreateAsync(RestaurantCreateDto restaurantCreateDto);
 
-    public Task CreateWithNewPrices(RestaurantCreateDto restaurantCreateDto, IEnumerable<PriceCreateDto> priceCreateDtos);    
+    public Task CreateWithNewPrices(RestaurantCreateDto restaurantCreateDto,
+        IEnumerable<PriceCreateDto> priceCreateDtos);
 
     public Task UpdateAsync(RestaurantCreateDto restaurantCreateDto, List<PriceCreateDto> priceCreateDtos);
     public Task Delete(Guid restaurantId);

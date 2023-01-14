@@ -23,7 +23,7 @@ public class FoodDeliveryDbContext : DbContext
         modelBuilder.Entity<Coupon>()
             .HasMany(c => c.Prices)
             .WithOne(p => p.Coupon);
-        
+
         modelBuilder.Entity<Category>()
             .Navigation(c => c.Products)
             .AutoInclude();
@@ -67,11 +67,11 @@ public class FoodDeliveryDbContext : DbContext
         modelBuilder.Entity<Order>()
             .Navigation(o => o.Rating)
             .AutoInclude();
-        
+
         modelBuilder.Entity<Order>()
             .Navigation(o => o.FinalCurrency)
-            .AutoInclude();       
-        
+            .AutoInclude();
+
         modelBuilder.Entity<Order>()
             .Navigation(o => o.FinalDeliveryPrice)
             .AutoInclude();
@@ -90,19 +90,19 @@ public class FoodDeliveryDbContext : DbContext
 
         modelBuilder.Entity<Product>()
             .Navigation(p => p.Prices)
-            .AutoInclude();        
+            .AutoInclude();
 
         modelBuilder.Entity<Product>()
             .Navigation(p => p.Restaurant)
-            .AutoInclude();        
+            .AutoInclude();
 
         modelBuilder.Entity<Restaurant>()
             .Navigation(r => r.DeliveryPrices)
             .AutoInclude();
-        
+
         modelBuilder.Entity<Restaurant>()
             .Navigation(r => r.Ratings)
-            .AutoInclude();                                
+            .AutoInclude();
 
         modelBuilder.Entity<User>()
             .Navigation(u => u.CustomerDetails)

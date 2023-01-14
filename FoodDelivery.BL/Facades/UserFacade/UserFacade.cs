@@ -1,7 +1,6 @@
 ﻿using FoodDelivery.BL.DTOs;
 using FoodDelivery.BL.DTOs.Address;
 using FoodDelivery.BL.DTOs.Currency;
-using FoodDelivery.BL.DTOs.CustomerDetails;
 using FoodDelivery.BL.DTOs.User;
 using FoodDelivery.BL.DTOs.UserSettings;
 using FoodDelivery.BL.Services.AddressService;

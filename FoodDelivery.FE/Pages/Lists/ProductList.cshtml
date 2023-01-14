@@ -5,7 +5,7 @@
   ViewData["Title"] = "Products";
 }
 
-@if(Model.ErrorMessage != null)
+@if (Model.ErrorMessage != null)
 {
   <div class="alert alert-danger" role="alert">
     @Model.ErrorMessage
@@ -13,14 +13,14 @@
 }
 <h2>@Model.Restaurant.Name</h2>
 <h6>Delivery prices</h6>
-@foreach(var price in Model.DeliveryPrices)
+@foreach (var price in Model.DeliveryPrices)
 {
   <p>@price.Amount @price.Currency.Name</p>
 }
 @if (User.IsInRole("ContentManager"))
 {
   <form method="post">
-    <button type="button" class="btn btn-primary mt-2" >
+    <button type="button" class="btn btn-primary mt-2">
       <a class="text-dark" style="text-decoration:none" asp-page="/Forms/AddRestaurant" asp-route-restaurantId=@Model.Restaurant.Id>Edit Restaurant</a>
     </button>
   </form>
@@ -28,7 +28,7 @@
     <button type="submit" class="btn btn-primary mt-2">Delete Restaurant</button>
   </form>
   <form method="post">
-    <button type="button" class="btn btn-primary mt-2" >
+    <button type="button" class="btn btn-primary mt-2">
       <a class="text-dark" style="text-decoration:none" asp-page="/Forms/EditProduct" asp-route-productId="" asp-route-restaurantId=@Model.Restaurant.Id>Add Menu Item</a>
     </button>
   </form>
@@ -53,10 +53,10 @@
         <p>@product.Name</p>
         <p>@product.PricePerEach.Amount @product.PricePerEach.Currency.Name</p>
         <form method="post">
-          <button type="button" class="btn btn-primary mt-2" >
-                <a class="text-dark" style="text-decoration:none" asp-page="/Forms/EditProduct" asp-route-productId="@product.Id"  asp-route-restaurantId=@Model.Restaurant.Id>Edit</a>
+          <button type="button" class="btn btn-primary mt-2">
+            <a class="text-dark" style="text-decoration:none" asp-page="/Forms/EditProduct" asp-route-productId="@product.Id" asp-route-restaurantId=@Model.Restaurant.Id>Edit</a>
           </button>
-        </form> 
+        </form>
         <form method="post" asp-page-handler="DeleteProduct" asp-route-productId="@product.Id" asp-route-restaurantId="@product.Restaurant.Id">
           <button type="submit" class="btn btn-primary mt-2">Delete</button>
         </form>

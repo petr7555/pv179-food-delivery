@@ -19,7 +19,7 @@ public class DeleteCoupon : PageModel
     public async Task<IActionResult> OnPost(Guid couponId, string returnUrl)
     {
         await _orderFacade.DeleteCouponFromOrderAsync(couponId);
-        
+
         return Redirect(returnUrl);
     }
 }

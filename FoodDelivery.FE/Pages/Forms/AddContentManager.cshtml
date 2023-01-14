@@ -6,33 +6,33 @@
 }
 
 <form method="post">
-	<div class="col-md-4">
+  <div class="col-md-4">
 
     <section>
       @using (Html.BeginForm())
-    {
-      if (ModelState["RegistrationFailed"] != null)
       {
-        foreach (var error in @ModelState["RegistrationFailed"]!.Errors)
+        if (ModelState["RegistrationFailed"] != null)
         {
-          <div class="alert alert-danger" role="alert">
-            @error.ErrorMessage
-          </div>
+          foreach (var error in @ModelState["RegistrationFailed"]!.Errors)
+          {
+            <div class="alert alert-danger" role="alert">
+              @error.ErrorMessage
+            </div>
+          }
         }
-      }
 
-      <div class="form-group">
-        @Html.LabelFor(x => x.Email)
-        @Html.TextBoxFor(x => x.Email, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.Email, null, new { @class = "text-danger" })
-      </div>
-      <div class="form-group">
-        @Html.LabelFor(x => x.Password)
-        @Html.PasswordFor(x => x.Password, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.Password, null, new { @class = "text-danger" })
-      </div>
-      <button type="submit" class="btn btn-primary mt-2">Register</button>
-    }
+        <div class="form-group">
+          @Html.LabelFor(x => x.Email)
+          @Html.TextBoxFor(x => x.Email, new { @class = "form-control" })
+          @Html.ValidationMessageFor(x => x.Email, null, new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+          @Html.LabelFor(x => x.Password)
+          @Html.PasswordFor(x => x.Password, new { @class = "form-control" })
+          @Html.ValidationMessageFor(x => x.Password, null, new { @class = "text-danger" })
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Register</button>
+      }
     </section>
   </div>
 </form>

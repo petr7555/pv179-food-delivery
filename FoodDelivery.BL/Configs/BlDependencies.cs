@@ -19,8 +19,8 @@ using FoodDelivery.BL.Services.CouponService;
 using FoodDelivery.BL.Services.CurrencyService;
 using FoodDelivery.BL.Services.CustomerDetailsService;
 using FoodDelivery.BL.Services.OrderProductService;
-using FoodDelivery.BL.Services.PriceService;
 using FoodDelivery.BL.Services.OrderService;
+using FoodDelivery.BL.Services.PriceService;
 using FoodDelivery.BL.Services.ProductService;
 using FoodDelivery.BL.Services.RatingService;
 using FoodDelivery.BL.Services.RestaurantService;
@@ -115,7 +115,7 @@ public static class BlDependencies
                 sp.GetRequiredService<IMapper>(),
                 () => new EfQuery<Restaurant>(sp.GetRequiredService<DbContext>())
             )
-        );        
+        );
 
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUserFacade, UserFacade>();
@@ -124,7 +124,7 @@ public static class BlDependencies
                 sp.GetRequiredService<IMapper>(),
                 () => new EfQuery<User>(sp.GetRequiredService<DbContext>())
             )
-        );                                        
+        );
 
         return services;
     }

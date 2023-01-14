@@ -25,14 +25,14 @@ public interface IOrderFacade
     public Task<string> PayByCardAsync(OrderWithProductsGetDto order, string domain);
 
     public Task SetPaymentMethodAsync(Guid orderId, PaymentMethod paymentMethod);
-    
+
     public Task DeleteProductFromOrderAsync(OrderWithProductsGetDto order, Guid productId);
-    
+
     public Task DeleteCouponFromOrderAsync(Guid couponId);
-    
+
     public Task AddRatingForOrderAsync(RatingCreateDto ratingCreateDto);
-    
+
     public Task UpdateQuantityAsync(Guid orderId, Guid productId, int quantity);
-    
+
     public Task SetFinalCurrency(Guid orderId, Guid currencyId);
 }

@@ -40,7 +40,7 @@ public class Basket : PageModel
         {
             return Page();
         }
-        
+
         try
         {
             await _orderFacade.ApplyCouponCodeAsync(Order.Id, CouponCode);
@@ -50,7 +50,7 @@ public class Basket : PageModel
             ModelState.AddModelError(nameof(CouponCode), e.Message);
             return Page();
         }
-        
+
         return RedirectToPage();
     }
 }

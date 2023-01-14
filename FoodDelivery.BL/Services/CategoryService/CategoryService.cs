@@ -57,11 +57,12 @@ public class CategoryService : CrudService<Category, Guid, CategoryGetDto, Categ
         {
             restaurants.AddRange(
                 category.Products
-                .Select(product => product.Restaurant)
+                    .Select(product => product.Restaurant)
             );
         }
 
         // remove duplicates and return
-        return restaurants.GroupBy(restaurant => restaurant.Id).Select(group => Mapper.Map<RestaurantGetDto>(group.First()));
+        return restaurants.GroupBy(restaurant => restaurant.Id)
+            .Select(group => Mapper.Map<RestaurantGetDto>(group.First()));
     }
 }
