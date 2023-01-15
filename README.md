@@ -31,6 +31,12 @@ See the app [deployed here](https://pv179-food-delivery.azurewebsites.net/).
 - To use Stripe checkout when running the application locally,
   you must run `stripe listen --forward-to https://localhost:7127/webhook/StripeWebHook`.
 
+### Using Docker
+
+- `docker build -t food-delivery .` to build the image
+- `docker run -p 8000:8000 food-delivery` to run the image
+- visit [http://localhost:8000](http://localhost:8000) to see the app
+
 ## Manual Testing
 
 ### Users

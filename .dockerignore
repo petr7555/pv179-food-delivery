@@ -1,0 +1,9 @@
+.git/
+.github/
+.idea/
+docs/
+bin/
+obj/
+.gitignore
+README.md
+FoodDelivery.sln.DotSettings.user
