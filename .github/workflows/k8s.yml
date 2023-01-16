@@ -29,6 +29,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Create app settings for production
+        env:
+          APP_SETTINGS: FoodDelivery.FE/appsettings.Production.json
+        run: |
+          echo '{'> $APP_SETTINGS
+          echo '  "ConnectionStrings": {' >> $APP_SETTINGS
+          echo '    "DefaultConnection": "${{ secrets.DEFAULT_CONNECTION_STRING }}",' >> $APP_SETTINGS
+          echo '    "IdentityConnection": "${{ secrets.IDENTITY_CONNECTION_STRING }}"' >> $APP_SETTINGS
+          echo '  },' >> $APP_SETTINGS
+          echo '  "Stripe": {' >> $APP_SETTINGS
+          echo '    "SecretApiKey": "${{ secrets.STRIPE_API_KEY }}",' >> $APP_SETTINGS
+          echo '    "SecretWebhookKey": "${{ secrets.STRIPE_WEBHOOK_KEY }}"' >> $APP_SETTINGS
+          echo '  }' >> $APP_SETTINGS
+          echo '}' >> $APP_SETTINGS
+
       - name: Log in to the Container registry
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
