@@ -81,7 +81,7 @@ jobs:
           args: apply -f k8s/postgres
       
       - name: Update server deployment to built image tag
-        run: sed -i "s|ghcr.io/petr7555/pv179-food-delivery:main|ghcr.io/petr7555/pv179-food-delivery:${{ steps.meta.outputs.tags }}|g" k8s/server/deployment.yaml
+        run: sed -i "s|ghcr.io/petr7555/pv179-food-delivery:main|${{ steps.meta.outputs.tags }}|g" k8s/server/deployment.yaml
         
       - name: Deploy server to Kubernetes
         uses: actions-hub/kubectl@master
