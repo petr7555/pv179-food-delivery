@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: food-delivery-ingress
+  annotations:
+    kuberentes.io/ingress.class: "nginx"
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  tls:
+    - hosts:                                            
+        - "food-delivery.dyn.cloud.e-infra.cz"
+      # has to match DNS name but all dots are substituted by ‘-‘ and -tls is added at the end 
+      secretName: food-delivery-dyn-cloud-e-infra-cz-tls
+  rules:
+    - host: "food-delivery.dyn.cloud.e-infra.cz"
+      http:
+        paths:
+          - backend:
+              service:
+                name: food-delivery-svc
+                port:
+                  number: 80
+            pathType: ImplementationSpecific

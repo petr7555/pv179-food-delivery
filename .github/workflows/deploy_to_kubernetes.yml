@@ -7,7 +7,7 @@
 # To get a newer version, you will need to update the SHA.
 # You can also reference a tag or branch, but the action may change without warning.
 
-name: Create and publish a Docker image
+name: Deploy to Kubernetes
 
 on:
   push:
@@ -19,7 +19,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build-and-push-image:
+  deploy-to-kubernetes:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -35,8 +35,8 @@ jobs:
         run: |
           echo '{'> $APP_SETTINGS
           echo '  "ConnectionStrings": {' >> $APP_SETTINGS
-          echo '    "DefaultConnection": "${{ secrets.DEFAULT_CONNECTION_STRING }}",' >> $APP_SETTINGS
-          echo '    "IdentityConnection": "${{ secrets.IDENTITY_CONNECTION_STRING }}"' >> $APP_SETTINGS
+          echo '    "DefaultConnection": "Server=food-delivery-postgres-svc.janik-ns.svc.cluster.local;Port=5432;Username=postgres;Password=${{ secrets.POSTGRES_PASSWORD }};Database=FoodDeliveryDB;",' >> $APP_SETTINGS
+          echo '    "IdentityConnection": "Server=food-delivery-postgres-svc.janik-ns.svc.cluster.local;Port=5432;Username=postgres;Password=${{ secrets.POSTGRES_PASSWORD }};Database=FoodDeliveryUsersDB;"' >> $APP_SETTINGS
           echo '  },' >> $APP_SETTINGS
           echo '  "Stripe": {' >> $APP_SETTINGS
           echo '    "SecretApiKey": "${{ secrets.STRIPE_API_KEY }}",' >> $APP_SETTINGS
@@ -64,3 +64,32 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      # https://github.com/actions-hub/kubectl
+      - name: Update postgres secret step 1/2
+        uses: actions-hub/kubectl@master
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+        with:
+          args: delete secret food-delivery-postgres-secret --ignore-not-found
+
+      - name: Update postgres secret step 2/2
+        uses: actions-hub/kubectl@master
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+        with:
+          args: create secret generic food-delivery-postgres-secret --from-literal=password=${{ secrets.POSTGRES_PASSWORD }}
+
+      - name: Deploy postgres database to Kubernetes
+        uses: actions-hub/kubectl@master
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+        with:
+          args: apply -f k8s/postgres
+
+      - name: Deploy server to Kubernetes
+        uses: actions-hub/kubectl@master
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+        with:
+          args: apply -f k8s/server
