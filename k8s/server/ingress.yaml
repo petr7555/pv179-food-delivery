@@ -4,6 +4,7 @@ metadata:
   name: food-delivery-ingress
   annotations:
     kuberentes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/affinity: "cookie"
     kubernetes.io/tls-acme: "true"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
